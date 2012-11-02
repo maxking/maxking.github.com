@@ -1,0 +1,23 @@
+---
+layout: base
+---
+<div class="container">
+    <div class="header">
+	<img  id="logo" src="/images/logo.png">
+	<a href="http://maxking.github.com" title="Abhilash Raj's weblog">abhilash<b>raj</b></a>  </div>
+  
+  <div class="content">
+    can i write anythign here?
+    {{ content }}
+  </div>
+
+    <div class="sidebar">
+      <ul>
+	<li> <a href="http://maxking.github.com" > home </a>
+	<li> <a href="http://about.me/maxking" > about </a>
+	<li> <a href="http://github.com/maxking" > projects </a>
+      </ul>
+    </div>
+</div>
+</div>
+

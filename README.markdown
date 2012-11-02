@@ -1,0 +1,1 @@
+This is my weblog meant for writing my mind out and trying out programming and web designing skills.

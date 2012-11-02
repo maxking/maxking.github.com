@@ -1,0 +1,17 @@
+<div class="post">
+  <h3 class="post-title"> <a href="{{ post.id }}.html"> {{ post.title }} </a></h3>
+  <h5 class="date" >{{ post.date | date: "%h %d %Y" }}</h5>
+  <div class="post-text">
+    {% if content %}
+        {{ content }}
+    {% else %}
+        {{ post.comment }}
+    {% endif %}
+  </div>
+
+  <div class="tags-list">
+    {% unless post.tags == empty %}
+        tags:{{ post.tags | limit: 2 | join: "," }}
+    {% endunless %}
+    </div>
+</div>

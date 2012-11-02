@@ -1,0 +1,7 @@
+auto: true
+lsi: false
+pygments: true
+exclude: README.markdown
+paginate: 2
+permalink: /:title.html
+markdown: rdiscount
