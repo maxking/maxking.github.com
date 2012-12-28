@@ -1,1 +1,1 @@
-This is my weblog meant for writing my mind out and trying out programming and web designing skills.
+This is maxking's(Abhilash Raj) blog.
