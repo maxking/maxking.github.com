@@ -3,7 +3,7 @@ layout: home
 ---
 
 <div class="posts">
-  {% for posts in site.posts %}
+  {% for post in site.posts %}
   <h3><a href="{{ post.link }}">
       {% if site.titlecase %}
           {{ post.title | titlecase }}
