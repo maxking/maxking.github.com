@@ -1,7 +1,6 @@
 auto: true
 lsi: false
 pygments: true
-paginate: 100
 exclude: README.markdown
 permalink: /:title.html
 markdown: rdiscount

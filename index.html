@@ -3,9 +3,15 @@ layout: home
 ---
 
 <div class="posts">
-  {% for page in paginator.posts %}
-      {% include post.html %}
-  <hr>
+  {% for posts in site.posts %}
+  <h3><a href="{{ post.link }}">
+      {% if site.titlecase %}
+          {{ post.title | titlecase }}
+      {% else %}
+          {{ post.title }}
+      {% endif %}
+  </a></h3>
+  <br><br>
   {% endfor %}
 </div>
 
