@@ -1,10 +1,10 @@
----
+B1;2802;0c---
 layout: home
 ---
 
 <div class="posts">
   {% for post in site.posts %}
-  <h3><a href="{{ post.link }}">
+  <h3><a href="{{ post.url }}">
       {% if site.titlecase %}
           {{ post.title | titlecase }}
       {% else %}
