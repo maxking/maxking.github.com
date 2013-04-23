@@ -1,44 +1,23 @@
 ---
-layout: home
+layout: base
 ---
+<link rel="stylesheet" media="screen" type="text/css" href="/css/home.css">
+<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400" rel="stylesheet" type="text/css">
+<center>
 
+  <img src="/images/me.jpg" id="me">
 
-
-
-
-<!-- <div class="posts">
-  {% for post in site.posts %}
-  <h3><a href="{{ post.link }}">
-      {% if site.titlecase %}
-          {{ post.title | titlecase }}
-      {% else %}
-          {{ post.title }}
-      {% endif %}
-  </a></h3>
-  {% endfor %}
-</div>
--->
-<div id="posts">
-  <h2>Blog Posts</h2>
-  <ul>
-    {% for post in site.posts %}
-      <li><span>{{ post.date | date_to_string }}</span> - <a href="{{ post.url }}">{{ post.title }}</a></li>
-    {% endfor %}
-  </ul>
-</div>
-<!-- <div class="paginator">	
-  <div class="previous-next">
-    {% if paginator.previous_page %}
-        <a href="/page{{paginator.previous_page}}" class="previous" title="previous"> Previous</a>
-    {% else %}
-        <span class="previous" >Previous</span>
-    {% endif %}
- 
-    {% if paginator.next_page %}
-        <a href="/page{{paginator.next_page}}" class="next" title="next"> Next </a>
-    {% else %}
-	<span class="next"> Next </span>
-    {% endif %}
-	
-  </div>
-</div>  -->
+  <br>
+  I am <b>Abhilash Raj</b>, a Indian web developer.
+  <br>
+  I blog at <a href="/blog.html" title="abhilash's weblog">abhilash's weblog</a>.
+  <br>
+  I share code at <a href="https://github.com/maxking" titile="github">Github </a> and 
+  <a href="https://launchpad.net/~raj-abhilash1" title="launchpad">launchpad</a>.
+  <br>
+  I live in Kharagpur. I study at  IIT Kharagpur.
+  <br>
+  Contact me at <a href="https://twitter.com/raj_abhilash1" title="twitter">@raj_abhilash1</a> or 
+  <a href="mailto:raj.abhilash1@gmail.com" title="email">raj.abhilash1@gmail.com</a>
+  <br>
+</center>

@@ -1,9 +1,17 @@
+@font-face {
+  font-family: 'PT Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('PT Sans'), local('PTSans-Regular'), url(http://themes.googleusercontent.com/static/fonts/ptsans/v4/LKf8nhXsWg5ybwEGXk8UBQ.woff) format('woff');
+}
+
+
 .page h1 h2 h3 h4 h5 h6 {
     color: #15317E;
 }
 
 .content a {
-    color: #736F6E;
+    color: #ededed;
     text-decoration: none;
     border-bottom: 1px Dotted #736F6E;
 }
@@ -13,52 +21,61 @@
     border-bottom: 1px Solid #6D7B8D;
 }
 
-.sidebar a {
-    color: #736F6E;
-    text-decoration: none;
-    border-bottom: 1px Dotted #736F6E;
+.sidebar a, .sidebar a:visited {
+  color: white;
+  text-decoration: none;
+  border-bottom: 1px solid #ededed;
+  font-weight: 300;
 }
 
 .sidebar a:hover {
-    color: #6D7B8D;
-    border-bottom: 1px Solid #6D7B8D;
+  color: #01aa9c;
+  border-color: #bbb;
+}
+
+.sidebar a:focus {
+      outline: thin dotted;
 }
 
 body {
     font-family: georgia;
     font-size: 1.2em;
     line-height: 1.3em;
+    margin: 0px;
 }
+#me {
+    width: 100%;
+}
+.posts {
+    padding-top: 30px;
 
+}
 .page {
-    width: 850px;
+    width: 70%;
+    position: relative;
     margin: 0px auto;
     display: block;
 }
 
-.header {
-    margin-bottom:10px;
-}
-
-.header img{
-    height: 300px;
-    width: 340px;
-    border: none;;
-}
 
 .content {
-    float: right;
+    padding-top: 5%;
+    float: left;
     width: 650px;
     display: block;
 }
 
 .sidebar{
-    float:left; 
-    width: 150px;
-    display:block;
-    border-right: 2px Solid #736F6E;
-    text-align: right;
-    margin-right: 10px;
+    float: right; 
+    width: 220px;
+    display: block;
+    text-align: left;
+    background-color: #23ccbe;
+    height: 100%;
+    padding-top: 100px;
+    position: fixed;
+    top: 0px;
+    right: 15%;
 }
 
 .sidebar ul {
@@ -67,11 +84,30 @@ body {
     padding: 10px 10px 10px 0;
     font-size: 1.7em;
     line-height: 1.7em;
+    margin: 20px;
 }
 
 .date {
     font-size: .8em;
-    color: #5E5A80;
+    color: #59CC0D;
+    font-family: sans-serif;
+    text-transform: 'PT sans';
+    display: block;
+    float: left;
+    padding-right: 30px;
+}
+
+article {
+    margin-top: 20px;
+}
+
+.title{
+    font-size: 1.2em;
+    color: #EB5937;
+}
+
+.title a{
+    color: #EB5937;
 }
 
 .tags-list {
