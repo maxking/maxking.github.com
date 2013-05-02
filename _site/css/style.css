@@ -1,124 +1,127 @@
 @font-face {
-  font-family: 'PT Sans';
+    font-family: 'PT Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('PT Sans'), local('PTSans-Regular'), url(http://themes.googleusercontent.com/static/fonts/ptsans/v4/LKf8nhXsWg5ybwEGXk8UBQ.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
   font-style: normal;
   font-weight: 400;
-  src: local('PT Sans'), local('PTSans-Regular'), url(http://themes.googleusercontent.com/static/fonts/ptsans/v4/LKf8nhXsWg5ybwEGXk8UBQ.woff) format('woff');
-}
-
-
-.page h1 h2 h3 h4 h5 h6 {
-    color: #15317E;
-}
-
-.content a {
-    color: #ededed;
-    text-decoration: none;
-    border-bottom: 1px Dotted #736F6E;
-}
-
-.content a:hover {
-    color:#6D7B8D;
-    border-bottom: 1px Solid #6D7B8D;
-}
-
-.sidebar a, .sidebar a:visited {
-  color: white;
-  text-decoration: none;
-  border-bottom: 1px solid #ededed;
-  font-weight: 300;
-}
-
-.sidebar a:hover {
-  color: #01aa9c;
-  border-color: #bbb;
-}
-
-.sidebar a:focus {
-      outline: thin dotted;
+  src: local('Source Sans Pro'), local('SourceSansPro-Regular'), url(http://themes.googleusercontent.com/static/fonts/sourcesanspro/v5/ODelI1aHBYDBqgeIAH2zlBM0YzuT7MdOe03otPbuUS0.woff) format('woff');
 }
 
 body {
-    font-family: georgia;
-    font-size: 1.2em;
-    line-height: 1.3em;
+    padding: 0px;
     margin: 0px;
 }
-#me {
+
+a {
+    text-decoration: None;
+    color: #FA5B0F;
+}
+
+a:hover {
+    text-decoration: None;
+}
+
+hr{
+    width: 90%;
+    align: center;
+}
+
+div.header {
+    display: block;
     width: 100%;
-}
-.posts {
-    padding-top: 30px;
-
-}
-.page {
-    width: 70%;
-    position: relative;
-    margin: 0px auto;
-    display: block;
+    font-family: 'Source Sans Pro', 'Helvetica Neue', sans-serif;
+    font-weight: 300;
+    background: #5CA2BE;
+    margin: 0px;
+    height: 100px;
+    padding-top: 40px;
+    padding-left: 26%;
 }
 
-
-.content {
-    padding-top: 5%;
-    float: left;
-    width: 650px;
-    display: block;
+div.header h2{
+    font-family: 'Source Sans Pro', 'Helvetica Neue', sans-serif;
+    font-weight: 300;
+    font-size: 2.5em;
+    line-height: 1.5em;
+    color: #ffffff;
+    transition: color 0.5s;
+   # width: 50%;
+    margin: auto;
 }
 
-.sidebar{
-    float: right; 
-    width: 220px;
-    display: block;
-    text-align: left;
-    background-color: #23ccbe;
-    height: 100%;
-    padding-top: 100px;
-    position: fixed;
-    top: 0px;
-    right: 15%;
+span.header-span {
+    width: 40%;
+    margin: auto;
+    color: #ffffff;
 }
 
-.sidebar ul {
+div.header a{
+    color: #ffffff;
+    transition: color 0.5s;
+}
+
+div.header a:hover {
+    color: #355487;
+    transition: color 0.75s;
+
+}
+div.page {
+    width: 50%;
+    margin: auto;
+}
+
+div.navbar ul {
     list-style: none;
-    margin: 4px;
-    padding: 10px 10px 10px 0;
-    font-size: 1.7em;
-    line-height: 1.7em;
-    margin: 20px;
 }
 
-.date {
-    font-size: .8em;
-    color: #59CC0D;
-    font-family: sans-serif;
-    text-transform: 'PT sans';
-    display: block;
-    float: left;
-    padding-right: 30px;
+div.navbar li {
+    display: inline;
+    margin-right: 50px;
+    font-size: 1.5em;
+}
+
+div.navbar a {
+    color: #60c21e;
+    transition: color 0.5s;
+}
+
+div.navbar a:hover {
+    color: #BF3604;
+    transition: color 0.5s;
+}
+
+div.content {
+    
 }
 
 article {
-    margin-top: 20px;
+    display: block;
+    padding: 5px;
 }
 
-.title{
-    font-size: 1.2em;
-    color: #EB5937;
+ h3.title {
+    font-size: 1.8em;
+    font-weight: 400;
+    margin-bottom: 2px;
+    font-family: 'PT Sans';
 }
 
-.title a{
-    color: #EB5937;
+div.date {
+    font-size: 1em;
+    color: #aaaaaa;
+    font-family: 'Source Sans Pro';
 }
 
-.tags-list {
-    font-size: 0.8em;
-    color: #5E5A80;
-}
-
-.previous {
-    float: left;
-}
-
-.next {
-    float: right;
+div.content {
+    display: block;
+    padding: 5px;
+    color: #444444;
+    font-size: 1.1em;
+    text-decoration: justify;
+    font-family: 'Source Sans Pro';
 }

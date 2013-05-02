@@ -1,17 +1,14 @@
-<div class="post">
-  <h3 class="post-title"> <a href="{{ page.id }}.html"> {{ page.title }} </a></h3>
-  <h5 class="date" >{{ page.date | date: "%h-%d-%Y" }}</h5>
-  <div class="post-text">
+<h3 class="title"> <a href="{{ page.id }}.html"> {{ page.title }} </a></h3>
+  <div class="date" >written on {{ page.date | date_to_long_string }}</div>
     {% if content %}
         {{ content }}
     {% else %}
         {{ page.content }}
     {% endif %}
-  </div>
 
   <div class="tags-list">
     {% unless page.tags == empty %}
         tags {{ page.tags | limit: 2 | join: "," }}
     {% endunless %}
     </div>
-</div>
+
