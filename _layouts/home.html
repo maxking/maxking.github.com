@@ -5,26 +5,46 @@ layout: base
 
 <div class="header">  
   <h2>
-    <a href="/blog.html">Abhilash Raj</a>
+    <a href="/blog.html">abhilash's weblog</a>
   </h2>
   <span class="header-span">eat, sleep, code</span>
 </div>
-<div class="page">  
-  <center>
-    <div class="navbar">
+
+<!-- header ends here--->
+
+<div class="container">
+
+  <div class="sidebar">
+
+    <center>
+      <img src="/images/me.jpg">
+    </center>
+
+      <div class="navbar">
       <ul>
 	<li> <a href="/" > home </a>
 	<li> <a href="/blog.html" > posts </a>
 	<li> <a href="http://github.com/maxking" > projects </a>
-	<li> <a href="/feed.xml"> feed </a>
+	<li> <a href="/feed/"> feed </a>
+	<li> <a href="/about/"> about </a>
       </ul>
     </div>
-  </center>
-  <hr>
+
+
+<!--
+    <span class="intro">
+      A undergraduate student at <a href="http://iitkgp.ac.in">Indian Institude of Technology, Kharagpur</a>. As evident from the caption in the title i love to eat, sleep and code. This summer I am working as a <a href="http://www.google-melange.com/gsoc/homepage/google/gsoc2013">Google Summer of Code</a> intern for GNU Mailman under Python Software Foundation.
+    
+-->
+</span>
+  </div> 
+  
+  <div class="page">  
+  
   <div class="content">
-    {{ content }}
+      {{ content }}
+    </div>
+
   </div>
-
-
+  
 </div>
-

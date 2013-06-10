@@ -15,6 +15,8 @@
 body {
     padding: 0px;
     margin: 0px;
+    font-family: 'Source Sans Pro', 'Helvetica Neue', sans-serif;
+    tex-align: justify;
 }
 
 a {
@@ -26,31 +28,24 @@ a:hover {
     text-decoration: None;
 }
 
-hr{
-    width: 90%;
-    align: center;
-}
-
 div.header {
     display: block;
     width: 100%;
-    font-family: 'Source Sans Pro', 'Helvetica Neue', sans-serif;
     font-weight: 300;
     background: #5CA2BE;
     margin: 0px;
     height: 100px;
     padding-top: 40px;
-    padding-left: 26%;
+    padding-left: 32%;
+    position: fixed;
 }
 
 div.header h2{
-    font-family: 'Source Sans Pro', 'Helvetica Neue', sans-serif;
     font-weight: 300;
     font-size: 2.5em;
     line-height: 1.5em;
     color: #ffffff;
     transition: color 0.5s;
-   # width: 50%;
     margin: auto;
 }
 
@@ -72,7 +67,22 @@ div.header a:hover {
 }
 div.page {
     width: 50%;
+    padding-top: 14%;
     margin: auto;
+}
+
+div.sidebar {
+    width: 200px;
+    margin: auto;
+    float: left;
+    border-right: 2px solid #dddddd;
+    position: fixed;
+}
+
+div.sidebar img {
+    height: 200px;
+    margin-top: 20px;
+
 }
 
 div.navbar ul {
@@ -82,7 +92,8 @@ div.navbar ul {
 div.navbar li {
     display: inline;
     margin-right: 50px;
-    font-size: 1.5em;
+    font-size: 2.5em;
+    float: right;
 }
 
 div.navbar a {
@@ -104,7 +115,7 @@ article {
     padding: 5px;
 }
 
- h3.title {
+h3.title {
     font-size: 1.8em;
     font-weight: 400;
     margin-bottom: 2px;
@@ -114,7 +125,6 @@ article {
 div.date {
     font-size: 1em;
     color: #aaaaaa;
-    font-family: 'Source Sans Pro';
 }
 
 div.content {
@@ -123,5 +133,21 @@ div.content {
     color: #444444;
     font-size: 1.1em;
     text-decoration: justify;
-    font-family: 'Source Sans Pro';
+}
+
+div.about {
+    display: box;
+    padding: 25px;
+    margin: 0px;
+    background-color: #dddddd;
+}
+
+span.intro {
+    display: box;
+    width: 200px;
+}
+
+div.container {
+    width: 80%;
+    margin: auto;
 }
