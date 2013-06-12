@@ -8,7 +8,7 @@ layout: none
     <description>Posts tagged as 'gsoc13'</description>
     <link>{{ site.url }}</link>
     <atom:link href="{{ site.url }}/feed.category.xml" rel="self" type="application/rss+xml" />
-    {% for post in site.tags.random limit:10 %}
+    {% for post in site.tags.gsoc limit:10 %}
     <item>
       <title>{{ post.title }}</title>
       <description>{{ post.content | xml_escape }}</description>
