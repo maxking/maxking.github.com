@@ -1,14 +1,15 @@
 <h3 class="title"> <a href="{{ page.id }}.html"> {{ page.title }} </a></h3>
   <div class="date" >written on {{ page.date | date_to_long_string }}</div>
+    <div class="date">
+    {% unless page.tags == empty %}
+        taged as: {{ page.tags | join: "," }}
+    {% endunless %}
+    </div>
+
     {% if content %}
         {{ content }}
     {% else %}
         {{ page.content }}
     {% endif %}
 
-  <div class="tags-list">
-    {% unless page.tags == empty %}
-        tags {{ page.tags | limit: 2 | join: "," }}
-    {% endunless %}
-    </div>
 
