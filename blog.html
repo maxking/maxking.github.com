@@ -5,11 +5,11 @@ layout: home
 <div class="posts">
   {% for post in site.posts %}
   <article>
-    <h3 class="title">
-      <a href="{{ post.url }}">{{ post.title }}</a>
-    </h3>
+      <a href="{{ post.url }}"><h3 class="title">{{ post.title }}</h3></a>
     <div class="date"> written on {{ post.date | date_to_long_string }} </div>
-    {{ post.content | truncatewords 80 }} 
+    {{ post.content | truncatewords: 80 }}
+    <br>
+    <span class="read_more"><a href="{{ post.url }}">Read More-></a></span>
 </article>
   {% endfor %}
 </div>

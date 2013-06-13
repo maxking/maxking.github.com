@@ -25,28 +25,45 @@ a {
 }
 
 p {
+    font-size: 16px;
     text-align: justify;
+    margin-bottom: 20px;
+    font-weight: 100;
+    line-height: 1.4em;
 }
 
 a:hover {
     text-decoration: None;
 }
 
+span.read_more {
+    display: box;
+    padding: 5px;
+    margin: 5px;
+    background: #cccccc;
+    float: right;
+}
+
+span.read_more:hover {
+    background: #ffffff;
+}
+
 div.header {
     display: block;
     width: 100%;
     font-weight: 300;
-    background: #5CA2BE;
+    background-color: #8FBCC9;
     margin: 0px;
     height: 100px;
     padding-top: 40px;
-    padding-left: 32%;
+    padding-left: 20%;
     position: fixed;
+    z-index: 10;
 }
 
 div.header h2{
-    font-weight: 300;
-    font-size: 2.5em;
+    font-weight: 100;
+    font-size: 2em;
     line-height: 1.5em;
     color: #ffffff;
     transition: color 0.5s;
@@ -54,6 +71,7 @@ div.header h2{
 }
 
 span.header-span {
+    font-style: italic;
     width: 40%;
     margin: auto;
     color: #ffffff;
@@ -65,28 +83,30 @@ div.header a{
 }
 
 div.header a:hover {
-    color: #355487;
+    color: #5d6c6c;
     transition: color 0.75s;
 
 }
 div.page {
-    width: 50%;
-    padding-top: 14%;
-    margin: auto;
+    width: 60%;
+    padding-top: 10%;
+    position: relative;
+    left: 18%;
 }
 
 div.sidebar {
-    width: 200px;
+    width: 16%;
     height: 100%;
     margin: auto;
     float: left;
     border-right: 2px solid #dddddd;
     position: fixed;
+    z-index: 20;
 }
 
 div.sidebar img {
     height: 200px;
-    margin-top: 20px;
+    margin-top: 35px;
 
 }
 
@@ -97,7 +117,7 @@ div.navbar ul {
 div.navbar li {
     display: inline;
     margin-right: 50px;
-    font-size: 2.5em;
+    font-size: 2em;
     float: right;
 }
 
@@ -111,20 +131,17 @@ div.navbar a:hover {
     transition: color 0.5s;
 }
 
-div.content {
-    
-}
-
 article {
     display: block;
     padding: 5px;
 }
 
 h3.title {
-    font-size: 1.8em;
+    font-size: 1.4em;
     font-weight: 400;
     margin-bottom: 2px;
-    font-family: 'PT Sans';
+    font-family: sans-serif;
+    color: #0066aa;
 }
 
 div.date {
@@ -151,8 +168,6 @@ span.intro {
     display: box;
     width: 200px;
 }
-
 div.container {
-    width: 80%;
     margin: auto;
 }
