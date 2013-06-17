@@ -112,13 +112,13 @@ div.sidebar img {
 
 div.navbar ul {
     list-style: none;
+    text-align: right;
 }
 
 div.navbar li {
-    display: inline;
+    display: block;
     margin-right: 50px;
     font-size: 2em;
-    float: right;
 }
 
 div.navbar a {
