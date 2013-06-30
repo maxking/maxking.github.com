@@ -1,7 +1,7 @@
 <a href="{{ page.id }}.html"><h3 class="title"> {{ page.title }}</h3> </a>
   <div class="date" >written on {{ page.date | date_to_long_string }} ||     
     {% unless page.tags == empty %}
-    taged as: {{ page.tags | join: "," }}
+    taged as: {{ page.tags | join: ", " }}
     {% endunless %}</div>
   
     {% if content %}

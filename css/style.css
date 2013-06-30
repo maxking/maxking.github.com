@@ -170,3 +170,11 @@ span.intro {
 div.container {
     margin: auto;
 }
+
+span.inline-code {
+    background: #eeeeee;
+    color: #666666;
+    border-radius: 2px;
+    padding: 2px;
+    font-weight: 1.5em;
+}
