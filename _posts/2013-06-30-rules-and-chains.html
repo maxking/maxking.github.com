@@ -5,7 +5,7 @@ title: Rules and Chains
 time: 2013-06-30 17:23:00.001000 +05.30
 tags: gsoc mailman
 ---
-<p>This posts talks about the basic messaging flow in mailman and then a little
+<p>This post talks about the basic messaging flow in mailman and then a little
 detail about what are rules and chains in Mailman. So a message can be injected
 in mailman system using a LMTP server via
 LMTP. <a href="http://tools.ietf.org/html/rfc2033#section-4">LMTP</a>(Local Mail
@@ -27,7 +27,7 @@ for moderation. Below is a graph depicting the message flow in mailman.</p>
 </center>
 <p>How is it decided if a message is 'fit' for posting? This process is
 called <i>Moderation</i> where a message is tested against a set of rules. Rules
-are simple checks which returns True if the rule hits and False in-case it
+are simple checks which return True if the rule hits and False in-case it
 misses. Moderation does not change anything in message, but it may record the
 processing information(like rule hits and misses) information in a metadata
 dictionary. Each rule has the following structure:</p>
