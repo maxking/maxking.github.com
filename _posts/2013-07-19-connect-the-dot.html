@@ -11,8 +11,8 @@ graphviz suite. It is a very easy tp user program whose details can be
 read <a href="http://www.graphviz.org/">here</a> at graphviz official website. I
 would like to share the code for the graph that I made for the last post:
 </p>
-<pre>
 
+<pre>
 digraph G {
     IN -> approved;
     approved -> emergency[label="No"];
@@ -28,7 +28,6 @@ digraph G {
     emergency -> HOLD[label="Yes"];
     loop -> DISCARD[label="Yes"];
 }
-
 </pre>
 <p>The above code produces the graph below:
 
