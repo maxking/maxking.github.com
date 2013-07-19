@@ -21,7 +21,7 @@ layer? Mailman uses "zope.testing" framework for testing, it has a concept of
 layers which instantiates all the modules of the project so that they can be
 used in the tests. Occasionally you can use temporary directories and values for
 testing purposes in-case you don't want the tests to alter your actual data. So
-config layer creates a temp ¡®var director¡¯ during test runtime. See the code
+config layer creates a temp "var director" during test runtime. See the code
 below for the initialization of the gpg handler:
 
 {% highlight python linenos %}
@@ -42,7 +42,7 @@ class GPG:
 {% endhighlight %}
 
 <p>So the `config layer` creates a new temp var directory every time tests are
-run and thus my test data inside ¡®/home/maxking/mailman/mailman/var/gpg¡¯ is
+run and thus my test data inside "/home/maxking/mailman/mailman/var/gpg" is
 never found during the test run. So the workaround that I was suggested by Barry
 to copy the test data to whatever temp var directory that is created the tests
 are now running smoothly. Below is a snippet of the code how it works:
