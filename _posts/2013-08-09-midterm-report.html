@@ -1,0 +1,75 @@
+---
+name: midterm-report
+layout: post
+title: Midterm Report
+time: 2013-08-09 00:23:00.001000 +05.30
+tags: gsoc mailman
+---
+<p>
+This is report of my GSoC project - OpenPG integration with GNU Mailman for
+midterm. The code is updated at
+my <a href="https://code.launchpad.net/~raj-abhilash1/mailman/master"> launchpad
+branch</a>.
+
+<p>
+  <b>Accomplishments:</b> 
+<ul>
+  <li> A signature rule(src/mailman/rules/signature.py) to check for OpenPGP
+     signature in a message, incase the signature is found it tries to verify the
+     message using gpg utility.</li>
+
+  <li> A gpg utility(src/mailman/utilities/gpg.py) to perform all the signature
+    related tasks using `python-gnupg`(v0.3.4). It signs and verifies the signature.</li>
+    
+  <li> A signmessage handler(src/mailman/handlers/signmessage.py) to sign the
+    outgoing message using the gpg utility.(Signing a message is still incomplete in
+    the sense we do not have a way to store and use keys. For now it has a
+    pubring.gpg and secring.gpg inside (var/gpg/). It will be replaced with actual
+    keyrings in future.)</li>
+
+  <li> Tests for each of the three modules above. Testing gpg.py was a small
+    challenge(for me).</li>
+</ul>
+<p>
+  <b>Issues and Roadblocks:</b>
+  <ul>
+    <li> Signature verification using `python-gnupg` was a PITA to me for
+      sometime. The way it accepts the string and signature for detached
+      signature is not documented at all and is converse of what I could think
+      of. It just occurred to me to try out the other possibility which turned
+      out to be the right way.</li>
+  
+    <li> Version control was also a issue that I encountered. Initially I
+      started to work on git mirror of mailman. When I tried to port the code
+      back to bazaar and push to github it took me(and others) a lot of
+      brainstorming. Finally I did that using bzr-git.</li>
+  
+    <li> Deciding the structure of the signed message that we were going to send
+      out. Initially it was decided to leave sender's signature intact so that
+      if someone wants to verify it he can do it, but there can-not be two
+      'pgp-signature' parts in a conventional multipart/signed message. I wrote
+      the code to follow
+      an <a href="http://tools.ietf.org/html/draft-ietf-openpgp-multsig-02">
+      internet-draft</a> i discovered one-day. But then I commented out the code
+      and also added another format.</li>
+    <pre>
+      mutipart/alternative {
+            multipart/signed { text/plain, application/pgp-signature }
+            multipart/signed { text/plain, application/pgp-signature }
+      }
+    </pre>
+  </ul>
+<p>
+  Some furthur assistance and research on which format do MUAs support the
+  most should be implemented.
+  
+  * python-gnupg does not provide any way to search for keys based on
+  key-data like email-address. I need some more work to get this working.
+
+<p>
+  <b>Future Plan:</b>
+  The next plans for this project include testing all the above parts
+  thoroughly and then moving on to creating a PKI for the key. Also the
+  settings for the list-manager to adjust a few options related to signed
+  lists - like time limit(decided from date in signature) to consider a
+  message old, and also implementing this in code.
