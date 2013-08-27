@@ -1,0 +1,50 @@
+---
+name: gsoc-updates
+layout: post
+title: GSoC Updates
+time: 2013-08-28 12:00:00.001000 +05.30
+tags: gsoc
+---
+
+<p>This posts unlike previous posts is just a collection of all the updates
+from my gsoc project. Recently I have been working on setting up the
+infrastructure to contain public and private keys for the gpg process to use. A
+few problems that I encountered were:
+</p>
+
+<ol>
+<li>How do list owner create keys? What parameters? Which address?</li>
+
+<p>The solution to this came down to gpg defaults, i.e. (size=2048, type=RSA). I
+don't think it is wise to impose a limit to the hashing algorithms used in the
+generation of the keys, although md5 is considered to be quite less secure we
+could only ask admins to not to use md5.
+</p>
+
+<li>How to manage paraphrase(or passwords) for keys?</li>
+
+<p>Now this is one of the big issues in this project. Passphrase should be
+something that is not stored on the disk for the reasons of security but then
+making the list-owner enter every-time a mail arrives is like impossible. So we
+I came up with gnupg-agent which stores the passphrase in memory and the user
+does not need to enter it everytime a key needs to be used, but the catch is it
+is again not a very good policy to ask list-admins to keep entering passphrase
+after every reboot. So finally it was decided that we can let the key be without
+any passphrase for the moment and later on we can add this functionality when the
+major focus of the work is that itself unlike now.
+</p>
+
+<li> How to securely upload keys?</li?>
+
+<p>Well this question was later on replaced by whether upload the keys? Initially it
+was decided to ask the list admin to generate and upload keys to the server, but
+this process renders the secret key vulnerable to attacks which may effect the
+security of the list, so instead we decided to create the keys on the server
+itself by mailman so that the keys never have to be moved at all.</p>
+
+</ol>
+
+<p>During the course of coding I also realized since the basic structure of a
+default message that can pass through the default-posting-chain has changed and
+now is a multipart/signed message a few of the tests are failing. I talked to
+Barry about it and it seems that it is not my problem(for a while).</p>
