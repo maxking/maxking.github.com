@@ -1,0 +1,39 @@
+---
+name: message-structure
+layout: post
+title: "GSoC Finale"
+time: 2013-09-24 03:44:00.0001000 +5.30
+tags: gsoc mailman 
+---
+
+<p>So I have pushed my final commit for now for my GSoC project. I will try
+to be brief on all the accomplishments and mention concisely
+what-is-working.</p>
+
+<ul>
+<li> Signature rule following strict rfc 3156 can now be verified, only
+pgp-mime messages are accepted and messages without a (valid) signature
+are held.</li>
+
+<li>SignMessage handler creates multipart/signed message, first of whose
+part is the original message formed after all the processing(in
+default-posting-pipeline this handler is at last before the message is
+send out or copied to nntp or any other queue). It expects a
+`multipart/signed` or `multipart/mixeed` message. The signature is
+calculated on whole part using the list's secret key.
+</li>
+
+<li>A List's key can be created from postorius and other signature
+parameters can also be changed from there( only 'signature_max_age for
+now).</li>
+
+<li> A user can import his public key from public keyservers( defaults to
+ha.pool.sks-keyservers.net) by entering their public key id or they can
+copy paste their public key data to upload their public key.( Exceptions
+handling is not implemented yet in postorius, if works fine in perfect
+situations).</li>
+</ul>
+
+<p>I will soon come up with post more detailed about how my project functions,
+but for now if anyone wants to have a look my code it
+is <a href="https://code.launchpad.net/~raj-abhilash1">here</a></p>.
