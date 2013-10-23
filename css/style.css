@@ -50,15 +50,12 @@ span.read_more:hover {
 
 div.header {
     display: block;
-    width: 100%;
     font-weight: 300;
     background-color: #8FBCC9;
     margin: 0px;
     height: 100px;
     padding-top: 40px;
-    padding-left: 20%;
-    position: fixed;
-    z-index: 10;
+    padding-left: 10%;
 }
 
 div.header h2{
@@ -72,7 +69,6 @@ div.header h2{
 
 span.header-span {
     font-style: italic;
-    width: 40%;
     margin: auto;
     color: #ffffff;
 }
@@ -87,42 +83,9 @@ div.header a:hover {
     transition: color 0.75s;
 
 }
-div.page {
-    width: 60%;
-    padding-top: 10%;
-    position: relative;
-    left: 18%;
-}
-
-div.sidebar {
-    width: 16%;
-    height: 100%;
-    margin: auto;
-    float: left;
-    border-right: 2px solid #dddddd;
-    position: fixed;
-    z-index: 20;
-}
-
-div.sidebar img {
-    height: 200px;
-    margin-top: 35px;
-
-}
-
-div.navbar ul {
-    list-style: none;
-    text-align: right;
-}
-
-div.navbar li {
-    margin-right: 50px;
-    font-size: 2em;
-}
-
 div.navbar a {
-    color: #60c21e;
-    transition: color 0.5s;
+    color: #888888;
+    font-size: 1.3em;
 }
 
 div.navbar a:hover {
@@ -132,7 +95,11 @@ div.navbar a:hover {
 
 article {
     display: block;
-    padding: 5px;
+    padding: 7px;
+}
+
+article a{
+    color: #111111;
 }
 
 h3.title {
@@ -142,35 +109,35 @@ h3.title {
     font-family: sans-serif;
     color: #0066aa;
 }
-
 div.date {
-    font-size: 1em;
+    font-size: 0.9em;
     color: #aaaaaa;
 }
-
+.right {
+float: right;
+}
 div.content {
     display: block;
     padding: 5px;
     color: #444444;
     font-size: 1.1em;
     text-decoration: justify;
+    padding-top: 15px;
 }
-
 div.about {
     display: box;
     padding: 25px;
     margin: 0px;
     background-color: #dddddd;
 }
-
 span.intro {
     display: box;
     width: 200px;
 }
 div.container {
     margin: auto;
+    width: 800px;
 }
-
 span.inline-code {
     background: #eeeeee;
     color: #666666;
