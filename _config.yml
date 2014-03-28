@@ -1,9 +1,3 @@
-auto: true
-lsi: false
+name: Flex
+markdown: redcarpet
 pygments: true
-exclude: README.markdown
-permalink: /:title.html
-markdown: rdiscount
-name: abhilash's blog
-description: This is the official blog of Abhilash Raj(raj.abhilash1@gmail.com)
-url: http://maxking.github.io

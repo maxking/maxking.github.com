@@ -1,23 +1,8 @@
 ---
-layout: base
+layout: default
+title: Home
 ---
-<link rel="stylesheet" media="screen" type="text/css" href="/css/home.css">
-<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400" rel="stylesheet" type="text/css">
-<center>
 
-  <img src="/images/me.jpg" id="me">
-
-  <br>
-  I am <b>Abhilash Raj</b>, an Indian web developer.
-  <br>
-  I blog at <a href="/blog.html" title="abhilash's weblog">abhilash's weblog</a>.
-  <br>
-  I share code at <a href="https://github.com/maxking" titile="github">Github </a> and 
-  <a href="https://launchpad.net/~raj-abhilash1" title="launchpad">launchpad</a>.
-  <br>
-  I live in Kharagpur. I study at  IIT Kharagpur.
-  <br>
-  Contact me at <a href="https://twitter.com/raj_abhilash1" title="twitter">@raj_abhilash1</a> or 
-  <a href="mailto:raj.abhilash1@gmail.com" title="email">raj.abhilash1@gmail.com</a>
-  <br>
-</center>
+{% assign page = site.posts.first %}
+{% assign content = page.content %}
+{% include post.html %}

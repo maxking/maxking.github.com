@@ -1,14 +1,26 @@
-<a href="{{ page.id }}.html">
-  <h3 class="title"> {{ page.title }}</h3>
-</a>
-<div class="date" >
-  {{ page.date | date_to_long_string }} |
-  {% unless page.tags == empty %}
-  {{ page.tags | join: ", " }}
-  {% endunless %}
+<div class="content" id="home">
+  <div id="sidebar-button">
+    <img src="/images/sidebar-button.png">
+  </div>
+  <div id="post-info">
+    <div id="cover-photo-container">
+      <img id="cover-photo" {% if page.cover %} src="/images/{{ page.cover }}" {% else %} src="/images/cover.jpg" {% endif %}>
+    </div>
+    <div id="info-container">
+      <h1 id="title">{{ page.title }}</h1>
+      <span id="date">{{ page.date | date_to_string }}</a>
+    </div>
+    <div id="tags-info">
+      <h4 id="tags">{% unless page.tags == empty %}{{ page.tags | upcase }} {% endunless %}</h6>
+  </div>
+
+  <div class="post">
+    {{ content }}
+  </div>
+  <div class="colophon">
+    <p>
+      <span id="pub-date">Published on {{ page.date | date_to_string }}</span> <span class="separator">&bull;</span>
+      <span id="social">Find me on <a href="https://twitter.com/_maxking_">Twitter</a>!</span>
+    </p>
+  </div>
 </div>
-{% if content %}
-  {{ content }}
-{% else %}
-  {{ page.content }}
-{% endif %}
