@@ -1,17 +1,16 @@
 # Site settings
-title: Pixyll
-email: your_email@example.com
+title: Eat &#9900 Sleep &#9900 Code
+email: maxking@hotmail.co.in
 author: John Otander
-description: "A simple, beautiful theme for Jekyll that emphasizes content rather than aesthetic fluff."
+description: "maxking's rants and experiments"
 baseurl: ""
-url: "http://pixyll.com"
-google_analytics:
-animated: false
+url: "http://asynchronous.in"
+animated: False
+
 
 # Build settings
 markdown: kramdown
 permalink: pretty
-paginate: 3
+paginate: 10
 sass:
   compressed: true
-

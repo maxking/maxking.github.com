@@ -10,13 +10,17 @@ layout: default
         <a href="{{ post.url | prepend: site.baseurl }}" class="post-link">
           <p class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</p>
           <h3 class="h2 post-title">{{ post.title }}</h3>
+          {% if post.summary %}
           <p class="post-summary">{{ post.summary }}</p>
+          {% else %}
+          <p class="post-summary">{{post.content | strip_html | truncate:100 , '...' }}</p>
+          {% endif %}
         </a>
       </div>
     {% endfor %}
   </div>
 
-  {% include pagination.html %}
+ {% include pagination.html %}
 
-  <!--<p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>-->
+  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
 </div>
