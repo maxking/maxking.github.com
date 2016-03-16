@@ -1,8 +1,8 @@
-This is maxking's(Abhilash Raj) blog.
+This is [maxking's(Abhilash Raj) blog][1].
+===
 
-This blog uses jekyll to generate the website and thus requires ruby and jekyll
-to be installed on the system before running this. The rakefile has been adopted
-from [here][1].
+This is the source code for my website that works in Jekyll and is hosted on
+github pages.
 
 The following commands are handy to manage the website:
 
@@ -21,4 +21,4 @@ rake preview                                   # Preview on local machine (serve
 
 New posts are added in _drafts.
 
-[1]: https://github.com/avillafiorita/jekyll-rakefile
+[1]: http://asynchronous.in
