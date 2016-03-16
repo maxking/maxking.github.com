@@ -1,0 +1,100 @@
+---
+name: rules-and-chains
+layout: post
+title: Rules and Chains
+time: 2013-06-30 17:23:00.001000 +05.30
+tags: gsoc mailman
+---
+<p>This post talks about the basic messaging flow in mailman and then a little
+detail about what are rules and chains in Mailman. So a message can be injected
+in mailman system using a LMTP server via
+LMTP. <a href="http://tools.ietf.org/html/rfc2033#section-4">LMTP</a>(Local Mail
+Transfer Protocol) is a derivative of ESMTP(Extended SMTP), which is a extension
+of well known SMTP(Simple Mail Transfer Protocol). LMTP runner parses the
+message into a tuple of type (mailing_list, message, message_data) and stores it
+in a serialized form
+called <a href="http://docs.python.org/2/library/pickle.html">python
+pickle(.pck)</a> file, which is then queued in either one of <i>incoming queue,
+bounce queue or command processing queue</i>. If the message parsing fails then
+it is discarded. Queues are nothing but a set of directories managed
+by <i>switchboards</i>, where all the messages are stored till a <i>runner</i>
+wakes up and sends them one by one for processing according to the queue that
+they were queued in, e.g. IN runner sends to file to pipeline queue where i
+Below is a graph is decided if the message will be accepted, discarded or held
+for moderation. Below is a graph depicting the message flow in mailman.</p>
+<center>
+  <img src="/images/mailman-messaging-flow.png" height="400px">
+</center>
+<p>How is it decided if a message is 'fit' for posting? This process is
+called <i>Moderation</i> where a message is tested against a set of rules. Rules
+are simple checks which return True if the rule hits and False in-case it
+misses. Moderation does not change anything in message, but it may record the
+processing information(like rule hits and misses) information in a metadata
+dictionary. Each rule has the following structure:</p>
+
+{% highlight python linenos %}
+@implementer(IRule)
+class New_Rule:
+
+    def check(self, mlist, msg, msgdata):
+        if foo == foobar:
+            return True
+        else:
+            return False
+{% endhighlight %}
+<p>
+You can write your own rules to check whatever criteria you want mailman to
+check before accepting the message. All the rules reside
+inside <b>/src/mailman/rules/</b> in mailman source code. All of the rules are
+arranged in a sequential manner to create a <b>chain</b>. Each list has two
+default start chains associated with it - first for normal postings and second
+one is for admin postings. The incoming runner checks who the message is
+addressed to and accordingly the moderation occurs for admin or normal postings.
+</p>
+
+<p>The <b>default-builtin-chain</b> has a predefined list of rules to check
+before the message is discarded, held or accepted. In mailman3 the list is as
+follows in the order in which they are called:</p>
+
+{% highlight python linenos %}
+
+    _link_descriptions = (
+        ('approved', LinkAction.jump, 'accept'),
+        ('emergency', LinkAction.jump, 'hold'),
+        ('loop', LinkAction.jump, 'discard'),
+        # Determine whether the member or nonmember has an action shortcut.
+        ('member-moderation', LinkAction.jump, 'moderation'),
+        # Do all of the following before deciding whether to hold the message.
+        ('signature', LinkAction.jump, 'discard'),
+        ('administrivia', LinkAction.defer, None),
+        ('implicit-dest', LinkAction.defer, None),
+        ('max-recipients', LinkAction.defer, None),
+        ('max-size', LinkAction.defer, None),
+        ('news-moderation', LinkAction.defer, None),
+        ('no-subject', LinkAction.defer, None),
+        ('suspicious-header', LinkAction.defer, None),
+        # Now if any of the above hit, jump to the hold chain.
+        ('any', LinkAction.jump, 'hold'),
+        # Take a detour through the header matching chain, which we'll create
+        # later.
+        ('truth', LinkAction.detour, 'header-match'),
+        # Check for nonmember moderation.
+        ('nonmember-moderation', LinkAction.jump, 'moderation'),
+        # Finally, the builtin chain jumps to acceptance.
+        ('truth', LinkAction.jump, 'accept'),
+     )
+
+{% endhighlight %}
+
+<p>In the above list each entry consists of a tuple of the
+form <span class="inline-code"> ('rule_name', LinkAction.action,
+'target')</span>. The first element ,as evident from the name, is the name of
+the rule that is to be called, the second element tell about what action is
+taken if the rule hits(or return True). The last part is the target queue to
+which the message is copied to if the rule hits(or you may customise it of course
+for when rule misses), it is `None` incase the rule does not have
+action. According to your convenience you can create your own chains. In the
+above list the <b>signature</b> rule is the one I added to check for
+openpgp-signature.
+</p>
+

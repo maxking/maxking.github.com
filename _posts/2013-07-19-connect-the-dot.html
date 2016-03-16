@@ -1,0 +1,37 @@
+---
+name: connect-the-dot
+layout: post
+title: Connect the DOT
+time: 2013-06-12 17:23:00.001000 +05.30
+tags: gsoc got graph
+---
+<p>This post talks about dot program from graphviz suite. If you read my last
+post you may have noticed the dot graph that I made using the dot program from
+graphviz suite. It is a very easy to use program whose details can be
+read <a href="http://www.graphviz.org/">here</a> at graphviz official website. I
+would like to share the code for the graph that I made for the last post:
+</p>
+
+<pre>
+digraph G {
+    IN -> approved;
+    approved -> emergency[label="No"];
+    emergency -> loop[label="No"];	
+    loop -> member_moderated[label="No"];
+    member_moderated -> administrivia["No"];
+    administrivia -> max_size;
+    max_size -> truth;
+    max_size -> MODERATION[label="exceeds"];
+    truth -> PIPELINE;
+    approved -> PIPELINE[label="Yes"];
+    member_moderated -> MODERATION[label="Yes"]; 
+    emergency -> HOLD[label="Yes"];
+    loop -> DISCARD[label="Yes"];
+}
+</pre>
+<p>The above code produces the graph below:
+
+<center>
+  <img src="/images/posting_chain.png" height="500px">
+</center>
+

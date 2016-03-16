@@ -1,0 +1,83 @@
+---
+name: message-structure
+layout: post
+title: Structure of Email
+time: 2013-08-09 00:23:00.001000 +05.30
+tags: gsoc mailman email
+---
+
+<p> This week I was busy investigating which kind of email does MUAs accept and
+display nicely. Now wait! What does *kind of email* and *MUA* mean?</p>
+
+<p>Emails that you use everyday are of various types, much more than you would
+have though before. There are emails which can remove styling depending on the
+mail client where you are viewing the email. The email clients are generally
+called as MUA(Mail User Agent). Now as per decided before we were planning to
+send out signed emails which had signature from both sender and mailman. The
+structure of a normal `pgp-signed` message is: 
+<pre>
+multipart/signed
+    text/plain
+    application/pgp-signature
+</pre>
+But this structure as you can see can with-hold only one signature part,
+ofcourse if you strictly follow
+<a href="https://tools.ietf.org/html/rfc3156"> rfc3156 </a>. So we tried to
+deviate a bit from convention and tried out a few more structures like below:
+<pre>
+multipart/signed
+    text/plain
+    multipart/mixed
+       application/pgp-signature
+       application/pgp-signature
+</pre>
+
+The above structure does not work with my MUA for the reason that my
+MUA(<a href="http://www.djcbsoftware.nl/code/mu/mu4e.html">mu4e</a>) fails to
+find any signature part inside the email as it gets an 'multipart/mixed' type
+instead of 'application/pgp-signature'. 
+<pre>
+multipart/alternative
+    multipart/signed
+       text/plain
+       application/pgp-signature
+    multipart/signed
+       text/plain
+       application/pgp-signature
+</pre>
+
+This part was recognized well by my MUA but it got confused to display which
+type. Usually 'multipart/alternative' emails are made so that MUA selects the
+best suited type it supports and display that part, but here it gets confused as
+technically both parts have same type(only different signatures). So it
+displayed both the parts one-after-another.Bah.
+<pre>
+mutipart/signed
+   text/plain
+   application/pgp-signature
+   application/pgp-signature
+</pre>
+
+This was one of the types where I inserted an extra signature part in the
+original message. My MUA was although able to show both signatures, I am trying
+to test all the three types with various other MUAs and then finally decide.
+</p>
+
+<b>EDIT</b><br>
+<p> Finally we came up with another idea which was according to rfc as
+well got verified in some of the MUAs that we tried, it goes like following:</p>
+
+<pre>
+multipart/signed
+    multipart/mixed
+       multipart/signed
+           text/plain
+           application/pgp-signature
+       text/plain
+    application/pgp-signature
+</pre>
+<p> In the above structure we have a multipart/mixed part which is actually
+produces by mailman as of now, but from now(if my code is merged to the main
+trunk) on it will be further modified to created a multipart/signed message
+where whole multipart/mixed part is faltened and signature is calculate over the
+whole part.<p>

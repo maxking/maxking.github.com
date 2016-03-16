@@ -1,0 +1,101 @@
+---
+name: non-trivial-unit-tests
+layout: post
+title: Non-trivial unittests
+time: 2013-07-19 12:23:00.001000 +05.30
+tags: gsoc mailman python unittest testing
+---
+
+<p>Unit tests are mostly trivial to write with only those assert statements over
+the expected results of the function (which is to be tested) instances. But
+sometimes it gets difficult to test some functions which require test data and
+the place where you store the data is not accessible in the tests.</p>
+
+<p> was trying to test my <b>gpg</b> utility which uses a home directory where
+all the public and secret key rings are stored(or supposed to be stored by
+default) whose hard-coded-path in my project is
+"/home/maxking/mailman/mailman/var/gpg" . Usually I can point to
+"/home/maxking/mailman/mailman/var/" with the "config.VAR_DIR" variable which
+gets initialized when the config layer is initialized during tests. What is a
+layer? Mailman uses "zope.testing" framework for testing, it has a concept of
+layers which instantiates all the modules of the project so that they can be
+used in the tests. Occasionally you can use temporary directories and values for
+testing purposes in-case you don't want the tests to alter your actual data. So
+config layer creates a temp "var director" during test runtime. See the code
+below for the initialization of the gpg handler:
+
+{% highlight python linenos %}
+class GPG:
+    def __init__(self, dir):
+        self._gpg = None
+        self._home = dir
+        self._gpg = gnupg.GPG(gnupghome=self._home)
+{% endhighlight %}
+<p>And this module is used as:
+
+{% highlight python linenos %}
+  from mailman.utilities.gpg import GPG
+  
+  gpg_dir = os.path.join(config.VAR_DIR, "gpg")
+  gpg = GPG(gpg_dir)
+
+{% endhighlight %}
+
+<p>So the `config layer` creates a new temp var directory every time tests are
+run and thus my test data inside "/home/maxking/mailman/mailman/var/gpg" is
+never found during the test run. So the workaround that I was suggested by Barry
+to copy the test data to whatever temp var directory that is created the tests
+are now running smoothly. Below is a snippet of the code how it works:
+</p>
+{% highlight python linenos %}
+  from mailman.testing.helpers import setup_keyrings, makedirs
+
+  class TestGPG(unittest.TestCase):
+    """Testing functions in the gpg utility"""
+    
+    layer = ConfigLayer
+    
+    def test_keyring(self):
+        """verify the keyrings"""
+
+        gpg_dir = os.path.join(config.VAR_DIR, 'gpg')
+        makedirs(gpg_dir)
+        setup_keyrings(gpg_dir)
+        gpg = GPG(gpg_dir)
+
+{% endhighlight %}
+
+<p> And below are the helper functions that are used above.</p>
+
+{% highlight python linenos %}
+  
+def test_data_path(filename):
+    return os.path.abspath(
+        resource_filename(
+            'mailman.utilities.tests.data', filename))
+
+def makedirs(dir):
+    try:
+        os.makedirs(dir)
+    except OSError as e:
+        pass
+
+def copy(filename, dst):
+    src = test_data_path(filename)
+    makedirs(dst)
+    try: 
+        shutil.copy(src, dst)
+    except IOError:
+        raise IOError('File {0} copy to {1} failed'.format(filename, dst))
+
+def setup_keyrings(dst):
+    """Copy the keyrings to the right place.
+    """
+    keyrings = ('pubring.gpg', 'secring.gpg')
+    
+    for keyring in keyrings:
+        # The local keyrings live in the .gpg file with the same keyring name
+        # in the temporary directory.
+        copy(keyring, dst)
+
+{% endhighlight %}

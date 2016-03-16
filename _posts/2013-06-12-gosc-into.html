@@ -1,0 +1,80 @@
+---
+name: gsoc-intro
+layout: post
+title: Gsoc 2013 - Pilot!
+time: 2013-06-12 17:23:00.001000 +05.30
+tags: gsoc mailman
+---
+<p>In this post I will first start with my introduction in brief and then move
+on to my gsoc project. I am a undergrad student
+at <a href="http://iitkgp.ac.in">Indian Institute of Technology, Kharagpur</a>
+doing my majors in Department of Metallurgical and Materials Engineering
+expecting to pass out in 2015. This summer I will be working for GNU Mailman
+under Python Software Foundation for my gsoc project -
+<i>Implementation of OpenPGP with Mailman.</i><p>
+
+<center>
+<img src="/images/mailman.png" id="mailman_logo">
+<img src="/images/python-logo.gif" id="python-logo">
+</center>
+
+<p>
+While many of you might be aware about what OpenPGP/GPG is, but for those of you
+who don't I will try to introduce it in brief. OpenPGP is the world's most
+widely used email encryption/signing standard. It was originally derived from
+PGP( Pretty Good Privacy ), first created
+by <a href="https://www.philzimmermann.com/EN/background/index.html">Phil
+Zimmermann</a> in 1991. GPG( Gnu Privacy Guard ) is complete free implementation
+of OpenPGP and comes with most of linux distros today with a default command
+line and various other GUI tools. Although I have mentioned GPG in reference to
+emails, it can be used to sign/encrypt any text or file. You can encrypt files
+on your disk. If you see its actually analogous to email -- you are sending some
+encrypted data to future-you and want that the data remains same and protected
+when future-you receives it.
+</p>
+<p>
+I remember when first time I asked Steve about how should OpenPGP be implemented
+in mailman? He answered "<i>It depends on what OpenPGP means to you</i>". There
+are a lot of things that you can do with OpenPGP but not all is of our interest
+here. A very brief description of my project is : You digitally sign your email;
+send it to mailman; mailman checks your signature(analogous to physical
+signatures); verifies that its you; mailman then signs the emails itself; sends
+it to all the subscribers. You want to know what <i>Mailman</i>
+is? <a href="http://www.list.org/"> Mailman </a> is the GNU mailing list
+software which can be used for e-newsletters and few other purposes
+too. Currently Mailman3 is under <a href="https://launchpad.net/mailman">
+development </a> along with its web interface(Postorius)and the
+archiver(Hyperkitty).</p>
+<p>
+So coming back to my project, what do you actually mean by signing an email? A
+typical OpenPGP signed message looks like this:
+</p>
+<pre>
+  -----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Kindly reply in a signed email only.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iQEcBAEBAgAGBQJRuU57AAoJEPVZtmCk10dURYUH/2FPPllsJcXhL3nXLkqT3Zc0
+v/vjc0AGgQPj7/Ir9ENxOjgzQ/Mvp5HAMTE1jk+0wsF0Ma8HAu8SxtuFSpgsa78Z
+FqkfHYtwvHsErdNOy6hfjEZG6h6I+Y1lKO6B/aQ2trEy1ZTUWyJx9bK0u0VR8JSc
+xaUw+YNAAWDzKPac9XLdUTbL4/2gPEeX/mqs0wkpn+2MXMp3Tj1Vf6E829C3NKKq
+VkUTtVzFoiEHdh1axmIBea/8dLxqoDVAuzUJyt9zxDjz/8p0ZweLUFk0XGbwpiqk
+qn7nw1UGgkDyLxk77o5QMorFB7B/zJjT3FJGnTSwT3GBLelrD6V+rIrYuq/BH0s=
+=psBF
+-----END PGP SIGNATURE-----
+
+</pre>
+<p>
+The <b>Hash</b> tells about the hashing algorithm used to create the signature,
+then there is the actual message followed by the signature. This is a ascii
+coded signature so that it can be attached in emails without problems of
+unsupported charset. The signature is actually a gibberish text created by
+processing your message, using your secret-key, which is very difficult to
+reproduce without your secret-key. Because of this reason it acts as your
+signature, a mark of your <i>ownership</i> of the message. I will come up with a
+detailed post on OpenPGP signature types and application soon.
+</p>
