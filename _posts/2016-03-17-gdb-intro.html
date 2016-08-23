@@ -1,0 +1,139 @@
+---
+title: "Basic GDB"
+layout: post
+name: basic-gdb
+date: 2016-07-03 02:50:24 PST
+tags: c gdb
+---
+
+[GDB][1](The GNU Project Debugger) is one of the most awesome softwares ever
+built for C programmers. I recently started to write some code in C,
+specifically trying out socket programming and some other stuff. I had a very
+basic problem about how to debug a variable (bytes) without using the
+`printf`. I have been using `printf` since always to debug softwares in C and
+Python, but lets see something new today.
+
+First, lets see a very simple socket program:
+
+<script src="https://gist.github.com/maxking/bd8ff3947ee8fe7d6352.js"></script>
+
+To compile this program with debugging symbols that gdb can use, try:
+
+```bash
+$ gcc -o server -f server.c
+```
+
+Then you can run your program:
+
+```bash
+$ ./server 2000
+```
+
+You can then also test that your server works using `telnet`:
+
+```bash
+$ telnet localhost 2000
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+hi
+I got your message
+```
+
+Great Work! Now, my next problem was trying to close the connection with the
+client if it sent an "exit". Not a problem, I just compared the read buffer
+against the string "exit" and expected it to work.
+
+```c
+n = strcmp(buffer, "exit");
+if (n == 0)
+	break;
+```
+
+But, unfortunately, this did not work for some reason. So, lets see how we can
+debug this using gdb. First of all you run your program using gdb after
+compiling it with debug symbols( option -g in `gcc`):
+
+```bash
+$ gdb ./server
+...
+...
+Reading symbols from server...done.
+(gdb)
+```
+
+Great, now you can start introducing breakpoints in your program like this:
+
+```bash
+(gdb) break server.c:78
+Breakpoint 1 at 0x400d00: file server.c, line 78.
+```
+
+This added a breakpoint at the line 78 in your program. Remember, this is the
+line no. in your source code and not in the compiled program. You can't make
+sense out of compiled binary anyway.
+
+So, what exactly is a breakpoint? It's simply a marker that you set where you
+want the execution of your program to pause, so that you can analyse the state
+and variables instead of priting all of them one by one using `print`
+statements. Now lets see how that exactly works:
+
+```bash
+(gdb) run 3000
+Starting program: <path_to>/server 3003
+```
+
+Now when the execution reaches line 78, we should see a gdb prompt and execution
+should pause.
+
+```bash
+$ telnet localhost 3000
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+hi
+I got your message
+```
+
+Wait, what happened? Why did the program not hault? A quick google search led me
+to the conclusion that gdb monitors the main parent process by default, even if
+you execute a `fork()` system call. This means, that the breakpoint should be
+introduced in the child process as the main parent process never runs the line
+78 we introduced break point on. Lets now change that and again run the server
+and try connecting from a client.
+
+
+```bash
+$ gdb ./server
+....
+....
+Reading symbols from server...done.
+(gdb) set follow-fork-mode child
+(gdb) break server.c:78
+(gdb) run 3000
+Starting program: /home/maxking/Documents/socket-prog/server 3000
+[New process 8940]
+
+Breakpoint 1, dostuff (newsockfd=4) at server.c:78
+78					n = strcmp(strtok(buffer, "\r\n"), exit);
+(gdb)print buffer
+$1 = "yo\r\n", '\000' <repeats 251 times>
+```
+
+Awesome! Now, I guess you already know why "exit" string does not match with
+`buffer`, because the client(telnet) added "\r\n" at the end of the message.
+
+We can easily remove that using `strtok()` method to strip them off:
+
+```c
+n = strcmp(strtok(buffer, "\r\n"), exit);
+if (n == 0)
+	break;
+```
+
+And, if you run this, you'd know that it does work! GDB is actually much more
+useful than just printing stuff. [Here][2] is a great tutorial that you can
+refer to learn more about how to use the advanced features of gdb.
+
+[1]: https://www.gnu.org/s/gdb/
+[2]: http://www.unknownroad.com/rtfm/gdbtut/
