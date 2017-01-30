@@ -80,6 +80,13 @@ $ git commit
 do some tasks. Basically some commands to add a swapfile in a VM. I use that for
 the digitalocean instance I have.
 
+## Add a user to a group
+
+TO add an existing user in Linux to an existing group:
+
+```bash
+sudo usermod -a -G groupName userName
+```
 
 
 [1]: http://stackoverflow.com/questions/3029321/troubleshooting-illegal-mix-of-collations-error-in-mysql
