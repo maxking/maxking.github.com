@@ -76,9 +76,18 @@ $ git commit
 
 ## Add a swap file
 
-[This][2] is an interesting work around for when you don't have enough memory to
+This is an interesting work around for when you don't have enough memory to
 do some tasks. Basically some commands to add a swapfile in a VM. I use that for
 the digitalocean instance I have.
+
+```bash
+sudo dd if=/dev/zero of=/swapfile bs=1024 count=524288
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+```
+
+
 
 ## Add a user to a group
 
@@ -90,4 +99,3 @@ sudo usermod -a -G groupName userName
 
 
 [1]: http://stackoverflow.com/questions/3029321/troubleshooting-illegal-mix-of-collations-error-in-mysql
-[2]: http://stackoverflow.com/questions/24455238/lxml-installation-error-ubuntu-14-04-internal-compiler-error
