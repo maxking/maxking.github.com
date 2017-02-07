@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Abhilash Raj writes here.">
+
+<base href="http://asychronous.in">
+<title>
+
+
+     maxking&#39;s blog - Connect the DOT 
+
+</title>
+<link rel="canonical" href="http://asychronous.in/2013/07/19/connect-the-dot/">
+
+
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+
+
+<link rel="stylesheet" href="http://asychronous.incss/reset.css">
+<link rel="stylesheet" href="http://asychronous.incss/main.css">
+
+
+
+
+<link rel="shortcut icon"
+
+    href="http://asychronous.inimg/favicon.ico"
+
+>
+
+
+
+</head>
+
+
+<body lang="en">
+
+
+<section class="header"> 
+
+    <div class="container">
+        <a href="http://asychronous.in"><img class="logo" src="http://asychronous.in/img/logo.png" /></a>
+        <div class="content">
+            <a href="http://asychronous.in"><div class="name"><h1>maxking&#39;s blog</h1></div></a>
+            <nav>
+                <ul>
+                    
+                        <a href="http://asychronous.inblog/"><li>Blog</li></a>
+                    
+                    
+                        
+                    
+                        
+                            
+                        
+                    
+                    
+                        
+                            <a href="http://asychronous.in/notes/"><li>Notes</li></a>
+                        
+                    
+                        
+                            <a href="http://asychronous.in/about/"><li>About</li></a>
+                        
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<section class="icons">
+    <div class="container">
+        <div class="content">
+
+        
+            <a href="https://github.com/maxking" target="_blank">
+                <i class="icon ion-social-github"></i>
+            </a>
+        
+        
+        
+            <a href="https://twitter.com/_maxking_" target="_blank">
+                <i class="icon ion-social-twitter"></i>
+            </a>
+        
+
+        
+
+        
+
+        
+            <a href="http://asychronous.in/index.xml">
+                <i class="icon ion-social-rss larger"></i>
+            </a>
+        
+        </div>
+    </div>
+</section>
+
+
+<section class="main post non-narrow zero-top-spacing">
+    <div class="container">
+        <div class="content">
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    Connect the DOT
+
+</div>
+
+                </div>
+                <div class="meta">
+                    <div class="date" title="Jul 19 2013 00:00">Jul 19 2013</div>
+                    <div class="reading-time"><div class="middot"></div>1 minute read</div>
+                </div>
+            </div>
+            <div class="markdown">
+                <p>This post talks about dot program from graphviz suite. If you read my last
+post you may have noticed the dot graph that I made using the dot program from
+graphviz suite. It is a very easy to use program whose details can be
+read <a href="http://www.graphviz.org/">here</a> at graphviz official website. I
+would like to share the code for the graph that I made for the last post:
+</p>
+
+<pre>
+digraph G {
+    IN -> approved;
+    approved -> emergency[label="No"];
+    emergency -> loop[label="No"];	
+    loop -> member_moderated[label="No"];
+    member_moderated -> administrivia["No"];
+    administrivia -> max_size;
+    max_size -> truth;
+    max_size -> MODERATION[label="exceeds"];
+    truth -> PIPELINE;
+    approved -> PIPELINE[label="Yes"];
+    member_moderated -> MODERATION[label="Yes"]; 
+    emergency -> HOLD[label="Yes"];
+    loop -> DISCARD[label="Yes"];
+}
+</pre>
+<p>The above code produces the graph below:
+
+<center>
+  <img src="/images/posting_chain.png" height="500px">
+</center>
+
+
+                <br>
+                <p><a href="blog">Back to posts</a></p>
+            </div>
+            <br>
+            <div class="disqus">
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+  
+
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
+
+
+
+</body>
+</html>
+

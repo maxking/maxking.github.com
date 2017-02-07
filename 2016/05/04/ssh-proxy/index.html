@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Abhilash Raj writes here.">
+
+<base href="http://asychronous.in">
+<title>
+
+
+     maxking&#39;s blog - SSH ProxyCommand 
+
+</title>
+<link rel="canonical" href="http://asychronous.in/2016/05/04/ssh-proxy/">
+
+
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+
+
+<link rel="stylesheet" href="http://asychronous.incss/reset.css">
+<link rel="stylesheet" href="http://asychronous.incss/main.css">
+
+
+
+
+<link rel="shortcut icon"
+
+    href="http://asychronous.inimg/favicon.ico"
+
+>
+
+
+
+</head>
+
+
+<body lang="en">
+
+
+<section class="header"> 
+
+    <div class="container">
+        <a href="http://asychronous.in"><img class="logo" src="http://asychronous.in/img/logo.png" /></a>
+        <div class="content">
+            <a href="http://asychronous.in"><div class="name"><h1>maxking&#39;s blog</h1></div></a>
+            <nav>
+                <ul>
+                    
+                        <a href="http://asychronous.inblog/"><li>Blog</li></a>
+                    
+                    
+                        
+                    
+                        
+                            
+                        
+                    
+                    
+                        
+                            <a href="http://asychronous.in/notes/"><li>Notes</li></a>
+                        
+                    
+                        
+                            <a href="http://asychronous.in/about/"><li>About</li></a>
+                        
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<section class="icons">
+    <div class="container">
+        <div class="content">
+
+        
+            <a href="https://github.com/maxking" target="_blank">
+                <i class="icon ion-social-github"></i>
+            </a>
+        
+        
+        
+            <a href="https://twitter.com/_maxking_" target="_blank">
+                <i class="icon ion-social-twitter"></i>
+            </a>
+        
+
+        
+
+        
+
+        
+            <a href="http://asychronous.in/index.xml">
+                <i class="icon ion-social-rss larger"></i>
+            </a>
+        
+        </div>
+    </div>
+</section>
+
+
+<section class="main post non-narrow zero-top-spacing">
+    <div class="container">
+        <div class="content">
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    SSH ProxyCommand
+
+</div>
+
+                </div>
+                <div class="meta">
+                    <div class="date" title="May 04 2016 11:40">May 04 2016</div>
+                    <div class="reading-time"><div class="middot"></div>1 minute read</div>
+                </div>
+            </div>
+            <div class="markdown">
+                <p><em>Problem</em> : Some servers in my university are beind firewall and it is difficult
+to ssh to those servers as I always use a VPN service on my primary laptop. To
+be able to ssh, one must be inside the university or use the university VPN.</p>
+
+<p>It is possible to ssh to a public facing server and go through that to any
+server inside of the unversity. It is almost like running a campus VPN, but it
+is a 2 step process. So in search for a better solution I found this:</p>
+
+<pre><code>Host &lt;host-alias&gt;
+        User &lt;username&gt;
+        Hostname &lt;hostname&gt;
+		ProxyCommand ssh &lt;hostname:port for public facing server&gt; exec nc %h %p
+        IdentityFile &lt;private-key&gt;
+        Port 22
+        Compression yes
+        CompressionLevel 6
+</code></pre>
+
+<p>This configuration allows you to run <code>nc</code> on the public facing server and ssh
+directly to the server behind the firewall. Note that the magic happend in the
+4th line of the configuratoin with <code>ProxyCommand</code>. Pretty neah eh?</p>
+
+                <br>
+                <p><a href="blog">Back to posts</a></p>
+            </div>
+            <br>
+            <div class="disqus">
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+  
+
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
+
+
+
+</body>
+</html>
+

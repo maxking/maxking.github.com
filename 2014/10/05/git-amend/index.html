@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Abhilash Raj writes here.">
+
+<base href="http://asychronous.in">
+<title>
+
+
+     maxking&#39;s blog - Git Undo 
+
+</title>
+<link rel="canonical" href="http://asychronous.in/2014/10/05/git-amend/">
+
+
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+
+
+<link rel="stylesheet" href="http://asychronous.incss/reset.css">
+<link rel="stylesheet" href="http://asychronous.incss/main.css">
+
+
+
+
+<link rel="shortcut icon"
+
+    href="http://asychronous.inimg/favicon.ico"
+
+>
+
+
+
+</head>
+
+
+<body lang="en">
+
+
+<section class="header"> 
+
+    <div class="container">
+        <a href="http://asychronous.in"><img class="logo" src="http://asychronous.in/img/logo.png" /></a>
+        <div class="content">
+            <a href="http://asychronous.in"><div class="name"><h1>maxking&#39;s blog</h1></div></a>
+            <nav>
+                <ul>
+                    
+                        <a href="http://asychronous.inblog/"><li>Blog</li></a>
+                    
+                    
+                        
+                    
+                        
+                            
+                        
+                    
+                    
+                        
+                            <a href="http://asychronous.in/notes/"><li>Notes</li></a>
+                        
+                    
+                        
+                            <a href="http://asychronous.in/about/"><li>About</li></a>
+                        
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<section class="icons">
+    <div class="container">
+        <div class="content">
+
+        
+            <a href="https://github.com/maxking" target="_blank">
+                <i class="icon ion-social-github"></i>
+            </a>
+        
+        
+        
+            <a href="https://twitter.com/_maxking_" target="_blank">
+                <i class="icon ion-social-twitter"></i>
+            </a>
+        
+
+        
+
+        
+
+        
+            <a href="http://asychronous.in/index.xml">
+                <i class="icon ion-social-rss larger"></i>
+            </a>
+        
+        </div>
+    </div>
+</section>
+
+
+<section class="main post non-narrow zero-top-spacing">
+    <div class="container">
+        <div class="content">
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    Git Undo
+
+</div>
+
+                </div>
+                <div class="meta">
+                    <div class="date" title="Oct 05 2014 00:00">Oct 05 2014</div>
+                    <div class="reading-time"><div class="middot"></div>2 minutes read</div>
+                </div>
+            </div>
+            <div class="markdown">
+                
+
+<p>Here are some useful git commands that helps to undo changes you knowingly
+or accidentally(my case) committed to a repo.</p>
+
+<h3 id="git-commit-ammend">git commit - -ammend</h3>
+
+<p>While this may be a very known feature of git, I still would add a note
+about it here for my own reference. Git has this awesome feature where
+you can amend you last commit. It comes pretty handy when you accidentally
+forgot to add something to you last commit.</p>
+
+<p>All you have to do is:</p>
+
+<pre><code>git add &lt;file&gt;
+git commit --amend
+</code></pre>
+
+<p>You can visit <a href="http://git-scm.com/book/en/Git-Basics-Undoing-Things">here</a> for more info about this command.</p>
+
+<h3 id="git-reset">git reset</h3>
+
+<p>This command as a very neat <a href="http://bazaar.canonical.com/en/">bzr</a> counterpart called <code>uncommit</code>. While
+reset can accomplish what <code>uncommit</code> did it has many more features. For
+simply undoing the last commit you can do:</p>
+
+<pre><code>git reset --soft HEAD^
+</code></pre>
+
+<p>To also remove the changes in the last commit you can do:</p>
+
+<pre><code>git reset --hard HEAD^
+</code></pre>
+
+<p>This made me wonder what this command does(I never used this command before)</p>
+
+<pre><code>git reset HEAD^
+</code></pre>
+
+<p>Apparently this command helps you undo your last commit and everything you&rsquo;d
+staged. Also if you had already pushed your code to some remote repository then
+you will have to force the next push because one of the commits was removed( and
+most probably one or more would have been added before push) which may lead the
+git to believe that the remote and local branches have diverged. Use <code>-f</code> (to
+force the push) flag with a little care, it may prove deleterious at times.</p>
+
+<p>More info about this command can be viewed <a href="http://git-scm.com/docs/git-reset">here</a></p>
+
+                <br>
+                <p><a href="blog">Back to posts</a></p>
+            </div>
+            <br>
+            <div class="disqus">
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+  
+
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
+
+
+
+</body>
+</html>
+

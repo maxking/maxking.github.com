@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Gsoc Mailman Email on maxking&#39;s blog</title>
+    <link>http://asychronous.in/tags/gsoc-mailman-email/index.xml</link>
+    <description>Recent content in Gsoc Mailman Email on maxking&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="http://asychronous.in/tags/gsoc-mailman-email/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Structure of Email</title>
+      <link>http://asychronous.in/2013/09/12/message-structure/</link>
+      <pubDate>Thu, 12 Sep 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2013/09/12/message-structure/</guid>
+      <description>&lt;p&gt; This week I was busy investigating which kind of email does MUAs accept and
+display nicely. Now wait! What does *kind of email* and *MUA* mean?&lt;/p&gt;
+
+&lt;p&gt;Emails that you use everyday are of various types, much more than you would
+have though before. There are emails which can remove styling depending on the
+mail client where you are viewing the email. The email clients are generally
+called as MUA(Mail User Agent). Now as per decided before we were planning to
+send out signed emails which had signature from both sender and mailman. The
+structure of a normal `pgp-signed` message is: 
+&lt;pre&gt;
+multipart/signed
+    text/plain
+    application/pgp-signature
+&lt;/pre&gt;
+But this structure as you can see can with-hold only one signature part,
+ofcourse if you strictly follow
+&lt;a href=&#34;https://tools.ietf.org/html/rfc3156&#34;&gt; rfc3156 &lt;/a&gt;. So we tried to
+deviate a bit from convention and tried out a few more structures like below:
+&lt;pre&gt;
+multipart/signed
+    text/plain
+    multipart/mixed
+       application/pgp-signature
+       application/pgp-signature
+&lt;/pre&gt;
+
+The above structure does not work with my MUA for the reason that my
+MUA(&lt;a href=&#34;http://www.djcbsoftware.nl/code/mu/mu4e.html&#34;&gt;mu4e&lt;/a&gt;) fails to
+find any signature part inside the email as it gets an &#39;multipart/mixed&#39; type
+instead of &#39;application/pgp-signature&#39;. 
+&lt;pre&gt;
+multipart/alternative
+    multipart/signed
+       text/plain
+       application/pgp-signature
+    multipart/signed
+       text/plain
+       application/pgp-signature
+&lt;/pre&gt;
+
+This part was recognized well by my MUA but it got confused to display which
+type. Usually &#39;multipart/alternative&#39; emails are made so that MUA selects the
+best suited type it supports and display that part, but here it gets confused as
+technically both parts have same type(only different signatures). So it
+displayed both the parts one-after-another.Bah.
+&lt;pre&gt;
+mutipart/signed
+   text/plain
+   application/pgp-signature
+   application/pgp-signature
+&lt;/pre&gt;
+
+This was one of the types where I inserted an extra signature part in the
+original message. My MUA was although able to show both signatures, I am trying
+to test all the three types with various other MUAs and then finally decide.
+&lt;/p&gt;
+
+&lt;b&gt;EDIT&lt;/b&gt;&lt;br&gt;
+&lt;p&gt; Finally we came up with another idea which was according to rfc as
+well got verified in some of the MUAs that we tried, it goes like following:&lt;/p&gt;
+
+&lt;pre&gt;
+multipart/signed
+    multipart/mixed
+       multipart/signed
+           text/plain
+           application/pgp-signature
+       text/plain
+    application/pgp-signature
+&lt;/pre&gt;
+&lt;p&gt; In the above structure we have a multipart/mixed part which is actually
+produces by mailman as of now, but from now(if my code is merged to the main
+trunk) on it will be further modified to created a multipart/signed message
+where whole multipart/mixed part is faltened and signature is calculate over the
+whole part.&lt;p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

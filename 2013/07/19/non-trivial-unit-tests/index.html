@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Abhilash Raj writes here.">
+
+<base href="http://asychronous.in">
+<title>
+
+
+     maxking&#39;s blog - Non-trivial unittests 
+
+</title>
+<link rel="canonical" href="http://asychronous.in/2013/07/19/non-trivial-unit-tests/">
+
+
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+
+
+<link rel="stylesheet" href="http://asychronous.incss/reset.css">
+<link rel="stylesheet" href="http://asychronous.incss/main.css">
+
+
+
+
+<link rel="shortcut icon"
+
+    href="http://asychronous.inimg/favicon.ico"
+
+>
+
+
+
+</head>
+
+
+<body lang="en">
+
+
+<section class="header"> 
+
+    <div class="container">
+        <a href="http://asychronous.in"><img class="logo" src="http://asychronous.in/img/logo.png" /></a>
+        <div class="content">
+            <a href="http://asychronous.in"><div class="name"><h1>maxking&#39;s blog</h1></div></a>
+            <nav>
+                <ul>
+                    
+                        <a href="http://asychronous.inblog/"><li>Blog</li></a>
+                    
+                    
+                        
+                    
+                        
+                            
+                        
+                    
+                    
+                        
+                            <a href="http://asychronous.in/notes/"><li>Notes</li></a>
+                        
+                    
+                        
+                            <a href="http://asychronous.in/about/"><li>About</li></a>
+                        
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<section class="icons">
+    <div class="container">
+        <div class="content">
+
+        
+            <a href="https://github.com/maxking" target="_blank">
+                <i class="icon ion-social-github"></i>
+            </a>
+        
+        
+        
+            <a href="https://twitter.com/_maxking_" target="_blank">
+                <i class="icon ion-social-twitter"></i>
+            </a>
+        
+
+        
+
+        
+
+        
+            <a href="http://asychronous.in/index.xml">
+                <i class="icon ion-social-rss larger"></i>
+            </a>
+        
+        </div>
+    </div>
+</section>
+
+
+<section class="main post non-narrow zero-top-spacing">
+    <div class="container">
+        <div class="content">
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    Non-trivial unittests
+
+</div>
+
+                </div>
+                <div class="meta">
+                    <div class="date" title="Jul 19 2013 00:00">Jul 19 2013</div>
+                    <div class="reading-time"><div class="middot"></div>2 minutes read</div>
+                </div>
+            </div>
+            <div class="markdown">
+                <p>Unit tests are mostly trivial to write with only those assert statements over
+the expected results of the function (which is to be tested) instances. But
+sometimes it gets difficult to test some functions which require test data and
+the place where you store the data is not accessible in the tests.</p>
+
+<p> was trying to test my <b>gpg</b> utility which uses a home directory where
+all the public and secret key rings are stored(or supposed to be stored by
+default) whose hard-coded-path in my project is
+"/home/maxking/mailman/mailman/var/gpg" . Usually I can point to
+"/home/maxking/mailman/mailman/var/" with the "config.VAR_DIR" variable which
+gets initialized when the config layer is initialized during tests. What is a
+layer? Mailman uses "zope.testing" framework for testing, it has a concept of
+layers which instantiates all the modules of the project so that they can be
+used in the tests. Occasionally you can use temporary directories and values for
+testing purposes in-case you don't want the tests to alter your actual data. So
+config layer creates a temp "var director" during test runtime. See the code
+below for the initialization of the gpg handler:
+
+
+class GPG:
+    def __init__(self, dir):
+        self._gpg = None
+        self._home = dir
+        self._gpg = gnupg.GPG(gnupghome=self._home)
+
+<p>And this module is used as:
+
+
+  from mailman.utilities.gpg import GPG
+  
+  gpg_dir = os.path.join(config.VAR_DIR, "gpg")
+  gpg = GPG(gpg_dir)
+
+
+
+<p>So the `config layer` creates a new temp var directory every time tests are
+run and thus my test data inside "/home/maxking/mailman/mailman/var/gpg" is
+never found during the test run. So the workaround that I was suggested by Barry
+to copy the test data to whatever temp var directory that is created the tests
+are now running smoothly. Below is a snippet of the code how it works:
+</p>
+
+  from mailman.testing.helpers import setup_keyrings, makedirs
+
+  class TestGPG(unittest.TestCase):
+    """Testing functions in the gpg utility"""
+    
+    layer = ConfigLayer
+    
+    def test_keyring(self):
+        """verify the keyrings"""
+
+        gpg_dir = os.path.join(config.VAR_DIR, 'gpg')
+        makedirs(gpg_dir)
+        setup_keyrings(gpg_dir)
+        gpg = GPG(gpg_dir)
+
+
+
+<p> And below are the helper functions that are used above.</p>
+
+
+  
+def test_data_path(filename):
+    return os.path.abspath(
+        resource_filename(
+            'mailman.utilities.tests.data', filename))
+
+def makedirs(dir):
+    try:
+        os.makedirs(dir)
+    except OSError as e:
+        pass
+
+def copy(filename, dst):
+    src = test_data_path(filename)
+    makedirs(dst)
+    try: 
+        shutil.copy(src, dst)
+    except IOError:
+        raise IOError('File {0} copy to {1} failed'.format(filename, dst))
+
+def setup_keyrings(dst):
+    """Copy the keyrings to the right place.
+    """
+    keyrings = ('pubring.gpg', 'secring.gpg')
+    
+    for keyring in keyrings:
+        # The local keyrings live in the .gpg file with the same keyring name
+        # in the temporary directory.
+        copy(keyring, dst)
+
+
+
+                <br>
+                <p><a href="blog">Back to posts</a></p>
+            </div>
+            <br>
+            <div class="disqus">
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+  
+
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
+
+
+
+</body>
+</html>
+

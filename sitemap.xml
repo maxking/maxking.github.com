@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>http://asychronous.in/2016/05/16/Prevent-Git-Push</loc>
+    <lastmod>2016-05-16T13:23:08+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2016/05/04/ssh-proxy/</loc>
+    <lastmod>2016-05-04T11:40:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2016/03/17/gdb-intro/</loc>
+    <lastmod>2016-03-17T02:50:24+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2015/12/10/part1-gil/</loc>
+    <lastmod>2015-12-10T04:30:24+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2015/07/14/gitlab-ci/</loc>
+    <lastmod>2015-07-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/notes/</loc>
+    <lastmod>2015-02-14T12:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2014/10/05/git-amend/</loc>
+    <lastmod>2014-10-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/about/</loc>
+    <lastmod>2014-03-28T12:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2014/03/28/vpn-sshuttle/</loc>
+    <lastmod>2014-03-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2013/09/24/gsoc-finale/</loc>
+    <lastmod>2013-09-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2013/09/12/message-structure/</loc>
+    <lastmod>2013-09-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2013/08/28/updates-gsoc/</loc>
+    <lastmod>2013-08-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2013/08/09/midterm-report/</loc>
+    <lastmod>2013-08-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2013/07/19/are-you-mocking-me/</loc>
+    <lastmod>2013-07-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2013/07/19/connect-the-dot/</loc>
+    <lastmod>2013-07-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2013/07/19/non-trivial-unit-tests/</loc>
+    <lastmod>2013-07-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2013/07/16/stuck-at-gnupg/</loc>
+    <lastmod>2013-07-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2013/06/30/rules-and-chains/</loc>
+    <lastmod>2013-06-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2013/06/12/gosc-into/</loc>
+    <lastmod>2013-06-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2012/01/12/ethical-hacking/</loc>
+    <lastmod>2012-01-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2012/01/07/plain-text-email/</loc>
+    <lastmod>2012-01-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/2011/12/02/first-commit/</loc>
+    <lastmod>2011-12-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/blog/</loc>
+    <lastmod>2016-05-16T13:23:08+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/tags/c-gdb/</loc>
+    <lastmod>2016-03-17T02:50:24+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/tags/ci-python-gitlab-gitlab-ci/</loc>
+    <lastmod>2015-07-14T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/tags/git/</loc>
+    <lastmod>2016-05-16T13:23:08+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/tags/gnupg/</loc>
+    <lastmod>2013-07-16T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/tags/gsoc/</loc>
+    <lastmod>2013-08-28T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/tags/gsoc-got-graph/</loc>
+    <lastmod>2013-07-19T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/tags/gsoc-mailman/</loc>
+    <lastmod>2013-09-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/tags/gsoc-mailman-email/</loc>
+    <lastmod>2013-09-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/tags/gsoc-mailman-python-unittest-testing/</loc>
+    <lastmod>2013-07-19T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/tags/hacking/</loc>
+    <lastmod>2012-01-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/tags/mailman/</loc>
+    <lastmod>2013-07-19T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/tags/mock/</loc>
+    <lastmod>2013-07-19T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/tags/python/</loc>
+    <lastmod>2013-07-19T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/tags/python-gil/</loc>
+    <lastmod>2015-12-10T04:30:24+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/tags/ssh/</loc>
+    <lastmod>2016-05-04T11:40:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/tags/testing/</loc>
+    <lastmod>2013-07-19T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/tags/vpn-sshuttle-proxy/</loc>
+    <lastmod>2014-03-28T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://asychronous.in/</loc>
+    <lastmod>2016-05-16T13:23:08+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

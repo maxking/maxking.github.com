@@ -1,0 +1,1024 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blogs on maxking&#39;s blog</title>
+    <link>http://asychronous.in/blog/index.xml</link>
+    <description>Recent content in Blogs on maxking&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 16 May 2016 13:23:08 +0000</lastBuildDate>
+    <atom:link href="http://asychronous.in/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Prevent Git Push</title>
+      <link>http://asychronous.in/2016/05/16/Prevent-Git-Push</link>
+      <pubDate>Mon, 16 May 2016 13:23:08 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2016/05/16/Prevent-Git-Push</guid>
+      <description>&lt;p&gt;It happens with me sometimes that I push to repositories that I must not push
+to. Being a &lt;a href=&#34;http://list.org&#34;&gt;GNU Mailman&lt;/a&gt; core-developer, I have push access to all the
+repositories. But, we always add changes to the master repo using
+merge-requests, even Barry does the same. But with my poor [Git] skills, I end
+up sometimes pushing to the wrong repository which might lead to bad code inside
+of the main repository. So a small nifty trick to avoid that is to make the
+repository read-only. This is how I did it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git config remote.upstream.pushurl &amp;quot;you really didn&#39;t want to do that&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>SSH ProxyCommand</title>
+      <link>http://asychronous.in/2016/05/04/ssh-proxy/</link>
+      <pubDate>Wed, 04 May 2016 11:40:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2016/05/04/ssh-proxy/</guid>
+      <description>&lt;p&gt;&lt;em&gt;Problem&lt;/em&gt; : Some servers in my university are beind firewall and it is difficult
+to ssh to those servers as I always use a VPN service on my primary laptop. To
+be able to ssh, one must be inside the university or use the university VPN.&lt;/p&gt;
+
+&lt;p&gt;It is possible to ssh to a public facing server and go through that to any
+server inside of the unversity. It is almost like running a campus VPN, but it
+is a 2 step process. So in search for a better solution I found this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Host &amp;lt;host-alias&amp;gt;
+        User &amp;lt;username&amp;gt;
+        Hostname &amp;lt;hostname&amp;gt;
+		ProxyCommand ssh &amp;lt;hostname:port for public facing server&amp;gt; exec nc %h %p
+        IdentityFile &amp;lt;private-key&amp;gt;
+        Port 22
+        Compression yes
+        CompressionLevel 6
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This configuration allows you to run &lt;code&gt;nc&lt;/code&gt; on the public facing server and ssh
+directly to the server behind the firewall. Note that the magic happend in the
+4th line of the configuratoin with &lt;code&gt;ProxyCommand&lt;/code&gt;. Pretty neah eh?&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Basic GDB</title>
+      <link>http://asychronous.in/2016/03/17/gdb-intro/</link>
+      <pubDate>Thu, 17 Mar 2016 02:50:24 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2016/03/17/gdb-intro/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://www.gnu.org/s/gdb/&#34;&gt;GDB&lt;/a&gt;(The GNU Project Debugger) is one of the most awesome softwares ever
+built for C programmers. I recently started to write some code in C,
+specifically trying out socket programming and some other stuff. I had a very
+basic problem about how to debug a variable (bytes) without using the
+&lt;code&gt;printf&lt;/code&gt;. I have been using &lt;code&gt;printf&lt;/code&gt; since always to debug softwares in C and
+Python, but lets see something new today.&lt;/p&gt;
+
+&lt;p&gt;First, lets see a very simple socket program:&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/maxking/bd8ff3947ee8fe7d6352.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;To compile this program with debugging symbols(-g) that gdb can use, try:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ gcc -o server -g server.c
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then you can run your program:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ./server 2000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can then also test that your server works using &lt;code&gt;telnet&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ telnet localhost 2000
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is &#39;^]&#39;.
+hi
+I got your message
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Great Work! Now, my next problem was trying to close the connection with the
+client if it sent an &amp;ldquo;exit&amp;rdquo;. Not a problem, I just compared the read buffer
+against the string &amp;ldquo;exit&amp;rdquo; and expected it to work.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;n = strcmp(buffer, &amp;quot;exit&amp;quot;);
+if (n == 0)
+	break;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But, unfortunately this did not work for some reason I could not reason
+about. So, lets see how we can debug this using gdb. First of all you run your
+program using gdb after compiling with debug symbols( option -g):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ gdb ./server
+...
+...
+Reading symbols from server...done.
+(gdb)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Great, now you can start introducing breakpoints in your program like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;(gdb) break server.c:78
+Breakpoint 1 at 0x400d00: file server.c, line 78.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This added a breakpoint at the line 78 in your program. Remember, this is your
+source code and not the compiled program. You can&amp;rsquo;t make sense out of your
+compiled program anyway.&lt;/p&gt;
+
+&lt;p&gt;So, what exactly is a breakpoint? It is simply a marker
+that you set where you want the execution of your program to halt, so that you
+can analyse the state and variables instead of priting all of them one by one in
+the source code.Now lets see how that exactly works:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;(gdb) run 3000
+Starting program: &amp;lt;path_to&amp;gt;/server 3003
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now when the execution reaches line 78, we should see a gdb prompt and program
+execution should pause.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ telnet localhost 3000
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is &#39;^]&#39;.
+hi
+I got your message
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Wait, what happened? Why did the program not hault? A quick google search led me
+to the conclusion that gdb monitors the main parent process by default, even if
+you execute a &lt;code&gt;fork()&lt;/code&gt; system call. This means, that the breakpoint should be
+introduced in the child process as the main parent process never runs the line
+78 we introduced break point on. Lets now change that and again run the server
+and try connecting from a client.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ gdb ./server
+....
+....
+Reading symbols from server...done.
+(gdb) set follow-fork-mode child
+(gdb) break server.c:78
+(gdb) run 3000
+Starting program: /home/maxking/Documents/socket-prog/server 3000
+[New process 8940]
+
+Breakpoint 1, dostuff (newsockfd=4) at server.c:78
+78					n = strcmp(strtok(buffer, &amp;quot;\r\n&amp;quot;), exit);
+(gdb)print buffer
+$1 = &amp;quot;yo\r\n&amp;quot;, &#39;\000&#39; &amp;lt;repeats 251 times&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Awesome! Now, I guess you already know why &amp;ldquo;exit&amp;rdquo; string does not match with
+&lt;code&gt;buffer&lt;/code&gt;, because the client(telnet) added &amp;ldquo;\r\n&amp;rdquo; at the end of the message.&lt;/p&gt;
+
+&lt;p&gt;We can easily remove that using &lt;code&gt;strtok()&lt;/code&gt; method to strip them off:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;n = strcmp(strtok(buffer, &amp;quot;\r\n&amp;quot;), exit);
+if (n == 0)
+	break;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And, if you run this, you&amp;rsquo;d know that it does work! GDB is actually much more
+useful than just printing stuff. &lt;a href=&#34;http://www.unknownroad.com/rtfm/gdbtut/&#34;&gt;Here&lt;/a&gt; is a great tutorial that you can
+refer to learn more about how to use the advanced features of gdb.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Python&#39;s GIL</title>
+      <link>http://asychronous.in/2015/12/10/part1-gil/</link>
+      <pubDate>Thu, 10 Dec 2015 04:30:24 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2015/12/10/part1-gil/</guid>
+      <description>&lt;p&gt;Recently I got very interested to explore about the GIL or the Global
+Interpreter Lock in Python that has been a topic of flame wars since
+forever. Global interpreter lock is a lock on the python interpreter, that a
+thread must acquire in order to run. Because of this, effectively any python
+program can have only one thread running at a time on one instance of python
+interpreter. However, it has been a common belief that threaded programming in
+Python doesn&amp;rsquo;t make any sense at all due to GIL, but that is not actually
+true. I might use process and thread in context of a single python interpreter
+instance interchangeably in this post.&lt;/p&gt;
+
+&lt;p&gt;Not all kind of processes are affected by GIL heavily. I/O bound process or in
+general any kind of Blocking process don&amp;rsquo;t always&lt;sup&gt;1&lt;/sup&gt; perform poorly,
+in-fact their performance can be as good as a C application. Since python
+threads are actual OS threads (Posix or pthreads in *nix based systems) and thus
+they are scheduled by the operating system (OS) scheduler. Depending on the OS
+scheduler, the performance can be good or bad in multi-threaded situations. In
+Linux, if more than one threads are waiting for a lock, there is no specific
+order in which those threads would be woken up when the lock becomes
+available. Usually, all the threads are allowed to wake up and then the
+scheduler randomly (probably? not sure about this on linux) picks up a process
+to run. It is possible, and very often happens, that the thread that just
+released the lock acquires it again increasing the wait time for other
+threads. This behavior is different on Mac or Windows or FreeBSD operating
+systems and is dependent on the scheduler. It looks like Mac OSX tries to do the
+fair scheduling and thus the max wait time for a thread would vary linearly
+depending on the number of threads running in Mac OSX. Windows and FreeBSD do
+have priority based scheduling, but how performance on these servers are
+affected when using a multi-threaded python application as compared to a
+sequential one is something I am not sure about. If they implement priority
+scheduling, it is possible they would fairly schedule the threads.&lt;/p&gt;
+
+&lt;p&gt;Before Python 3.2 the GIL was allowed to be retained with a thread for 100
+instructions, after that the thread had to give up the GIL. But, the point here
+is, they just had to give up the GIL, no one is stopping them from acquiring it
+again. Due to this, the threads had to wait to much longer time than 100
+instructions and would result in poor performance. Also, notice that instruction
+is not a fair unit of CPU time for processes, as time taken by each instruction
+might vary. Notice that I am talking about CPU time and not actual time taken by
+the thread, that depends on several other factors like the CPU load.&lt;/p&gt;
+
+&lt;p&gt;So, in Python 3.2, a new version of GIL was introduced which tried to fix some
+of the issues that I mentioned above. Firstly, the amount of time a process was
+allowed to hold the GIL was fixed to 5 ms. I am not sure if this was inspired by
+Ruby&amp;rsquo;s GIL which allows each thread to have the lock for 10ms. The choice of
+time for which a thread is allowed to hold the lock depends on performance and
+lock switching overhead. If the time is too less, the lock would be acquired and
+released so often that it would increase the overhead for switching and very
+less actual work would be done as the none of the process would get sufficient
+time to do any piece of work before they are preempted and forced to give up the
+GIL. If the lock is acquired by a single process for too long, other process
+would have to wait for longer and this would kill the performance. the choice of
+5 ms was probably based on some statistical experiment that would maximize the
+productivity with the minimum lock switching overhead.&lt;/p&gt;
+
+&lt;p&gt;Another thing that was added in the new GIL was how the locks are switched. If
+the threads don&amp;rsquo;t give up the GIL on their own before their time is up, they are
+forced to give up the GIL. Which threads gets the GIL next depends on the OS
+scheduler and is not controlled by Python. The way the process is forced to give
+up the lock is multi-step mechanism. However, a new concept of priority request
+was also introduced. Priority request would immediately force the running
+process to give up the GIL and would acquire it. This whole process makes sure
+the original thread can not acquire the lock again just after releasing
+it. While this might sound like the right thing to do (it did sound to me), in
+some cases this brings down productivity.&lt;/p&gt;
+
+&lt;p&gt;I am not going to get into the implementation specific details of GIL, probably
+in some another post. But, I would like to mention that it is a more complex
+than just a simple mutex lock from pthreads. It uses a combination of mutex and
+conditional variables.&lt;/p&gt;
+
+&lt;p&gt;Footnotes:&lt;/p&gt;
+
+&lt;p&gt;1: This is true only when there is no CPU bound process running at the same
+time on the same Python interpreter instance. It would cause the CPU bound
+process to run whenever the I/O bound process enters a wait state for an
+external I/O and then make them wait for longer time than they actually need to.&lt;/p&gt;
+
+&lt;p&gt;Useful Links:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://wiki.python.org/moin/GlobalInterpreterLock&#34;&gt;Python Wiki on GIL&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://jessenoller.com/blog/2009/02/01/python-threads-and-the-global-interpreter-lock&#34;&gt;Jesse Noller&amp;rsquo;s post on GIL&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;[http://dabeaz.com/GIL/]&#34;&gt;Python&amp;rsquo;s Einstein aka David Beazly&amp;rsquo;s Post on GIL&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Gitlab CI?</title>
+      <link>http://asychronous.in/2015/07/14/gitlab-ci/</link>
+      <pubDate>Tue, 14 Jul 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2015/07/14/gitlab-ci/</guid>
+      <description>&lt;p&gt;&lt;i&gt;Note: This post is now outdated. GNU Mailman now has a &lt;a href=&#34;http://hub.docker.com/u/maxking/mailman-ci-runner/&#34;&gt;new container image&lt;/a&gt;
+for running tests and this time it &lt;em&gt;just works&lt;/em&gt;.
+&lt;/i&gt;&lt;/p&gt;
+
+&lt;p&gt;Being one of the core developers of GNU Mailman, I took up the task to setup
+a Continuous Integration server for Mailman. While looking for a service using
+FOSS and was free to use I stumbled upon &lt;a href=&#34;https://ci.gitlab.com&#34;&gt;Gitlab CI&lt;/a&gt;. There were several
+other options to choose from, but none of them fulfilled our requirement of
+using FOSS. Gitlab is a FOSS and its source code is available on &lt;a href=&#34;https://gitlab.com/gitlab-org/gitlab-ci&#34;&gt;Gitlab&lt;/a&gt; as
+well as &lt;a href=&#34;https://github.com/gitlabhq/gitlab-ci&#34;&gt;Github&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now, the model of Gitlab CI is different from the others you would have
+encountered before like Travis-CI or Circle-CI. Gitlab CI only provides an
+interface to view the results of the tests associated with each commit or
+Pull Request. The actual tests are run using gitlab-ci&amp;rsquo;s runners which can
+be run on any other system &lt;sup&gt;&lt;a href=&#34;https://ci.gitlab.com&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. The latest &lt;a href=&#34;https://gitlab.com/gitlab-org/gitlab-ci-multi-runner&#34;&gt;gitlab-ci-multi-runner&lt;/a&gt;
+is written in Go and can run tests for multiple repositories &lt;sup&gt;2&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;p&gt;Gitlab CI can be used to run tests in a couple of ways:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;locally&lt;/li&gt;
+&lt;li&gt;using Docker container&lt;/li&gt;
+&lt;li&gt;using Docker container and executing job over SSH&lt;/li&gt;
+&lt;li&gt;connecting to remote SSH server&lt;/li&gt;
+&lt;li&gt;using a Parallels VM&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Since we wanted to build Pull Requests, considering the security implication
+of running a running un-trusted code inside a server/local-machine, I decided
+to go with the 3rd option. Docker running in unprilidged mode and with no root
+access, even inside the docker container ,could do much less harm. So, for this
+setup I needed the following things:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;A docker image inside which your tests are gonna run&lt;/li&gt;
+&lt;li&gt;The above image have ssh-access&lt;/li&gt;
+&lt;li&gt;A postgres database image linked to the above container&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I created a new docker image called &lt;a href=&#34;https://registry.hub.docker.com/u/maxking/mailman-runner/&#34;&gt;&amp;lsquo;mailman-runner&amp;rsquo;&lt;/a&gt; to run the tests. Its
+Dockerfile&lt;a href=&#34;https://github.com/maxking/docker-mailman-ci&#34;&gt;6&lt;/a&gt; is also available on Github if you would like to view to suggest
+edits.&lt;/p&gt;
+
+&lt;p&gt;Install Docker first&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	curl -sSL https://get.docker.com/ | sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We need to mount a data volume into our gitlab-ci-multi-runner container to be
+used for configs and other resources:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	docker run -d --name multi-runner --restart always \
+	-v /var/run/docker.sock:/var/run/docker.sock \
+	-v /PATH/TO/DATA/FOLDER:/data \
+	ayufan/gitlab-ci-multi-runner:latest
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;code&gt;-v&lt;/code&gt; option is used to add a data volume to the container. Here we add
+a data volumen and a docker-socker to the container so that it can spawn new
+containers to run tests in.&lt;/p&gt;
+
+&lt;p&gt;Now, register the runner:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker exec -it multi-runner gitlab-ci-multi-runner register
+
+Please enter the gitlab-ci coordinator URL (e.g. http://gitlab-ci.org:3000/ )
+https://ci.gitlab.com/
+Please enter the gitlab-ci token for this runner
+xxx
+Please enter the gitlab-ci description for this runner
+my-runner
+INFO[0034] fcf5c619 Registering runner... succeeded
+Please enter the executor: shell, docker, docker-ssh, ssh?
+docker-ssh
+Please enter the Docker image (eg. ruby:2.1):
+mailman-runner:latest
+If you want to enable mysql please enter version (X.Y) or enter latest?
+
+If you want to enable postgres please enter version (X.Y) or enter latest?
+
+If you want to enable redis please enter version (X.Y) or enter latest?
+
+If you want to enable mongo please enter version (X.Y) or enter latest?
+
+Please enter the SSH user (eg. root):
+runner
+Please enter the SSH password (eg. docker.io):
+runner
+
+INFO[0037] Runner registered successfully. Feel free to start it, but if it&#39;s
+running already the config should be automatically reloaded!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Note: The ssh user and password in the above configuration was created by
+default in the mailman-runner docker image.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;After this, the configuration file (config.toml) would look somewhat like
+this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;concurrent = 4
+
+[[runners]]
+  name = &amp;quot;second-runner&amp;quot;
+  url = &amp;quot;https://ci.gitlab.com&amp;quot;
+  token = &amp;quot;XXX&amp;quot;
+  executor = &amp;quot;docker-ssh&amp;quot;
+  [runners.ssh]
+    user = &amp;quot;runner&amp;quot;
+    password = &amp;quot;runner&amp;quot;
+  [runners.docker]
+    image = &amp;quot;mailman-runner&amp;quot;
+    privileged = false
+    volumes = [&amp;quot;/cache&amp;quot;]
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;PS:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Now, Gitlab CI has a concept of shared runners where you can use
+some public runners to run your tests. This update was added recently.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Previously, one runner could be used for only one repository. You
+needed to start another instance of the same runner to run tests for
+another reposiroty. However, now you can share runners across all your
+repositories even if they belong to a group.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Git Undo</title>
+      <link>http://asychronous.in/2014/10/05/git-amend/</link>
+      <pubDate>Sun, 05 Oct 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2014/10/05/git-amend/</guid>
+      <description>
+
+&lt;p&gt;Here are some useful git commands that helps to undo changes you knowingly
+or accidentally(my case) committed to a repo.&lt;/p&gt;
+
+&lt;h3 id=&#34;git-commit-ammend&#34;&gt;git commit - -ammend&lt;/h3&gt;
+
+&lt;p&gt;While this may be a very known feature of git, I still would add a note
+about it here for my own reference. Git has this awesome feature where
+you can amend you last commit. It comes pretty handy when you accidentally
+forgot to add something to you last commit.&lt;/p&gt;
+
+&lt;p&gt;All you have to do is:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git add &amp;lt;file&amp;gt;
+git commit --amend
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can visit &lt;a href=&#34;http://git-scm.com/book/en/Git-Basics-Undoing-Things&#34;&gt;here&lt;/a&gt; for more info about this command.&lt;/p&gt;
+
+&lt;h3 id=&#34;git-reset&#34;&gt;git reset&lt;/h3&gt;
+
+&lt;p&gt;This command as a very neat &lt;a href=&#34;http://bazaar.canonical.com/en/&#34;&gt;bzr&lt;/a&gt; counterpart called &lt;code&gt;uncommit&lt;/code&gt;. While
+reset can accomplish what &lt;code&gt;uncommit&lt;/code&gt; did it has many more features. For
+simply undoing the last commit you can do:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git reset --soft HEAD^
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To also remove the changes in the last commit you can do:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git reset --hard HEAD^
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This made me wonder what this command does(I never used this command before)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git reset HEAD^
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Apparently this command helps you undo your last commit and everything you&amp;rsquo;d
+staged. Also if you had already pushed your code to some remote repository then
+you will have to force the next push because one of the commits was removed( and
+most probably one or more would have been added before push) which may lead the
+git to believe that the remote and local branches have diverged. Use &lt;code&gt;-f&lt;/code&gt; (to
+force the push) flag with a little care, it may prove deleterious at times.&lt;/p&gt;
+
+&lt;p&gt;More info about this command can be viewed &lt;a href=&#34;http://git-scm.com/docs/git-reset&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Sshuttle VPN to bypass proxy</title>
+      <link>http://asychronous.in/2014/03/28/vpn-sshuttle/</link>
+      <pubDate>Fri, 28 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2014/03/28/vpn-sshuttle/</guid>
+      <description>&lt;p&gt;Proxy servers in my college has made my life like a living hell. Blocking IRC and
+SSH is the worst thing that you can do to a developer I suppose. For past few
+years I have been trying to totally eliminate the problems associated with proxy,
+but was never successful. My previous attempt was to create a ssh tunnel using
+a amazon-ec2 instance and create a socks proxy to be used by applications. The
+configuration was like below:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Host amazon
+ User ubuntu
+ HostName 54.214.39.19
+ Port 443
+ ProxyCommand corkscrew &amp;lt;proxy-address&amp;gt; &amp;lt;port&amp;gt; %h %p
+ IdentityFile /home/maxking/.ssh/my.pem
+ Localforward 6667 irc.freenode.net:6667
+ LocalForward 9930 imap.gmail.com:993
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above configuration coupled with &lt;code&gt;autossh&lt;/code&gt; creates a socks proxy tunneling
+all the data trough the ssh tunnel. A simple command that you can use is&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;autossh -f -N -g -D 9999 amazon
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This creates a socks proxy on localhost:9999 and tunnels all the request
+trough the ssh tunnel created. &lt;code&gt;Autossh&lt;/code&gt; helps to reconnect the ssh session
+as soon as it breaks( which is very often behind my college proxy ).&lt;/p&gt;
+
+&lt;p&gt;Recently I came across another solution for this which made my life more easier,
+&lt;a href=&#34;[https://github.com/apenwarr/sshuttle]&#34;&gt;sshuttle&lt;/a&gt;. It is a &amp;ldquo;Transparent proxy server that works as a poor man&amp;rsquo;s
+VPN. Forwards over ssh.  Doesn&amp;rsquo;t require admin. Works with Linux and
+MacOS. Supports DNS tunneling.&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;So with the above setup I just have to run&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo sshuttle -r amazon 0/0 --dns -x 144.0.0.0 -x 10.0.0.0 -D
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and all my requests without a proxy are forwarded over the tunnel and everything
+seems to &lt;strong&gt;just work&lt;/strong&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>GSoC Finale</title>
+      <link>http://asychronous.in/2013/09/24/gsoc-finale/</link>
+      <pubDate>Tue, 24 Sep 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2013/09/24/gsoc-finale/</guid>
+      <description>&lt;p&gt;So I have pushed my final commit for now for my GSoC project. I will try
+to be brief on all the accomplishments and mention concisely
+what-is-working.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt; Signature rule following strict rfc 3156 can now be verified, only
+pgp-mime messages are accepted and messages without a (valid) signature
+are held.&lt;/li&gt;
+
+&lt;li&gt;SignMessage handler creates multipart/signed message, first of whose
+part is the original message formed after all the processing(in
+default-posting-pipeline this handler is at last before the message is
+send out or copied to nntp or any other queue). It expects a
+`multipart/signed` or `multipart/mixeed` message. The signature is
+calculated on whole part using the list&#39;s secret key.
+&lt;/li&gt;
+
+&lt;li&gt;A List&#39;s key can be created from postorius and other signature
+parameters can also be changed from there( only &#39;signature_max_age for
+now).&lt;/li&gt;
+
+&lt;li&gt; A user can import his public key from public keyservers( defaults to
+ha.pool.sks-keyservers.net) by entering their public key id or they can
+copy paste their public key data to upload their public key.( Exceptions
+handling is not implemented yet in postorius, if works fine in perfect
+situations).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I will soon come up with post more detailed about how my project functions,
+but for now if anyone wants to have a look my code it
+is &lt;a href=&#34;https://code.launchpad.net/~raj-abhilash1&#34;&gt;here&lt;/a&gt;&lt;/p&gt;.
+</description>
+    </item>
+    
+    <item>
+      <title>Structure of Email</title>
+      <link>http://asychronous.in/2013/09/12/message-structure/</link>
+      <pubDate>Thu, 12 Sep 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2013/09/12/message-structure/</guid>
+      <description>&lt;p&gt; This week I was busy investigating which kind of email does MUAs accept and
+display nicely. Now wait! What does *kind of email* and *MUA* mean?&lt;/p&gt;
+
+&lt;p&gt;Emails that you use everyday are of various types, much more than you would
+have though before. There are emails which can remove styling depending on the
+mail client where you are viewing the email. The email clients are generally
+called as MUA(Mail User Agent). Now as per decided before we were planning to
+send out signed emails which had signature from both sender and mailman. The
+structure of a normal `pgp-signed` message is: 
+&lt;pre&gt;
+multipart/signed
+    text/plain
+    application/pgp-signature
+&lt;/pre&gt;
+But this structure as you can see can with-hold only one signature part,
+ofcourse if you strictly follow
+&lt;a href=&#34;https://tools.ietf.org/html/rfc3156&#34;&gt; rfc3156 &lt;/a&gt;. So we tried to
+deviate a bit from convention and tried out a few more structures like below:
+&lt;pre&gt;
+multipart/signed
+    text/plain
+    multipart/mixed
+       application/pgp-signature
+       application/pgp-signature
+&lt;/pre&gt;
+
+The above structure does not work with my MUA for the reason that my
+MUA(&lt;a href=&#34;http://www.djcbsoftware.nl/code/mu/mu4e.html&#34;&gt;mu4e&lt;/a&gt;) fails to
+find any signature part inside the email as it gets an &#39;multipart/mixed&#39; type
+instead of &#39;application/pgp-signature&#39;. 
+&lt;pre&gt;
+multipart/alternative
+    multipart/signed
+       text/plain
+       application/pgp-signature
+    multipart/signed
+       text/plain
+       application/pgp-signature
+&lt;/pre&gt;
+
+This part was recognized well by my MUA but it got confused to display which
+type. Usually &#39;multipart/alternative&#39; emails are made so that MUA selects the
+best suited type it supports and display that part, but here it gets confused as
+technically both parts have same type(only different signatures). So it
+displayed both the parts one-after-another.Bah.
+&lt;pre&gt;
+mutipart/signed
+   text/plain
+   application/pgp-signature
+   application/pgp-signature
+&lt;/pre&gt;
+
+This was one of the types where I inserted an extra signature part in the
+original message. My MUA was although able to show both signatures, I am trying
+to test all the three types with various other MUAs and then finally decide.
+&lt;/p&gt;
+
+&lt;b&gt;EDIT&lt;/b&gt;&lt;br&gt;
+&lt;p&gt; Finally we came up with another idea which was according to rfc as
+well got verified in some of the MUAs that we tried, it goes like following:&lt;/p&gt;
+
+&lt;pre&gt;
+multipart/signed
+    multipart/mixed
+       multipart/signed
+           text/plain
+           application/pgp-signature
+       text/plain
+    application/pgp-signature
+&lt;/pre&gt;
+&lt;p&gt; In the above structure we have a multipart/mixed part which is actually
+produces by mailman as of now, but from now(if my code is merged to the main
+trunk) on it will be further modified to created a multipart/signed message
+where whole multipart/mixed part is faltened and signature is calculate over the
+whole part.&lt;p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>GSoC Updates</title>
+      <link>http://asychronous.in/2013/08/28/updates-gsoc/</link>
+      <pubDate>Wed, 28 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2013/08/28/updates-gsoc/</guid>
+      <description>&lt;p&gt;This posts unlike previous posts is just a collection of all the updates
+from my gsoc project. Recently I have been working on setting up the
+infrastructure to contain public and private keys for the gpg process to use. A
+few problems that I encountered were:
+&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;How do list owner create keys? What parameters? Which address?&lt;/li&gt;
+
+&lt;p&gt;The solution to this came down to gpg defaults, i.e. (size=2048, type=RSA). I
+don&#39;t think it is wise to impose a limit to the hashing algorithms used in the
+generation of the keys, although md5 is considered to be quite less secure we
+could only ask admins to not to use md5.
+&lt;/p&gt;
+
+&lt;li&gt;How to manage paraphrase(or passwords) for keys?&lt;/li&gt;
+
+&lt;p&gt;Now this is one of the big issues in this project. Passphrase should be
+something that is not stored on the disk for the reasons of security but then
+making the list-owner enter every-time a mail arrives is like impossible. So we
+I came up with gnupg-agent which stores the passphrase in memory and the user
+does not need to enter it everytime a key needs to be used, but the catch is it
+is again not a very good policy to ask list-admins to keep entering passphrase
+after every reboot. So finally it was decided that we can let the key be without
+any passphrase for the moment and later on we can add this functionality when the
+major focus of the work is that itself unlike now.
+&lt;/p&gt;
+
+&lt;li&gt; How to securely upload keys?&lt;/li?&gt;
+
+&lt;p&gt;Well this question was later on replaced by whether upload the keys? Initially it
+was decided to ask the list admin to generate and upload keys to the server, but
+this process renders the secret key vulnerable to attacks which may effect the
+security of the list, so instead we decided to create the keys on the server
+itself by mailman so that the keys never have to be moved at all.&lt;/p&gt;
+
+&lt;/ol&gt;
+
+&lt;p&gt;During the course of coding I also realized since the basic structure of a
+default message that can pass through the default-posting-chain has changed and
+now is a multipart/signed message a few of the tests are failing. I talked to
+Barry about it and it seems that it is not my problem(for a while).&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Midterm Report</title>
+      <link>http://asychronous.in/2013/08/09/midterm-report/</link>
+      <pubDate>Fri, 09 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2013/08/09/midterm-report/</guid>
+      <description>&lt;p&gt;
+This is report of my GSoC project - OpenPG integration with GNU Mailman for
+midterm. The code is updated at
+my &lt;a href=&#34;https://code.launchpad.net/~raj-abhilash1/mailman/master&#34;&gt; launchpad
+branch&lt;/a&gt;.
+
+&lt;p&gt;
+  &lt;b&gt;Accomplishments:&lt;/b&gt; 
+&lt;ul&gt;
+  &lt;li&gt; A signature rule(src/mailman/rules/signature.py) to check for OpenPGP
+     signature in a message, incase the signature is found it tries to verify the
+     message using gpg utility.&lt;/li&gt;
+
+  &lt;li&gt; A gpg utility(src/mailman/utilities/gpg.py) to perform all the signature
+    related tasks using `python-gnupg`(v0.3.4). It signs and verifies the signature.&lt;/li&gt;
+    
+  &lt;li&gt; A signmessage handler(src/mailman/handlers/signmessage.py) to sign the
+    outgoing message using the gpg utility.(Signing a message is still incomplete in
+    the sense we do not have a way to store and use keys. For now it has a
+    pubring.gpg and secring.gpg inside (var/gpg/). It will be replaced with actual
+    keyrings in future.)&lt;/li&gt;
+
+  &lt;li&gt; Tests for each of the three modules above. Testing gpg.py was a small
+    challenge(for me).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  &lt;b&gt;Issues and Roadblocks:&lt;/b&gt;
+  &lt;ul&gt;
+    &lt;li&gt; Signature verification using `python-gnupg` was a PITA to me for
+      sometime. The way it accepts the string and signature for detached
+      signature is not documented at all and is converse of what I could think
+      of. It just occurred to me to try out the other possibility which turned
+      out to be the right way.&lt;/li&gt;
+  
+    &lt;li&gt; Version control was also a issue that I encountered. Initially I
+      started to work on git mirror of mailman. When I tried to port the code
+      back to bazaar and push to github it took me(and others) a lot of
+      brainstorming. Finally I did that using bzr-git.&lt;/li&gt;
+  
+    &lt;li&gt; Deciding the structure of the signed message that we were going to send
+      out. Initially it was decided to leave sender&#39;s signature intact so that
+      if someone wants to verify it he can do it, but there can-not be two
+      &#39;pgp-signature&#39; parts in a conventional multipart/signed message. I wrote
+      the code to follow
+      an &lt;a href=&#34;http://tools.ietf.org/html/draft-ietf-openpgp-multsig-02&#34;&gt;
+      internet-draft&lt;/a&gt; i discovered one-day. But then I commented out the code
+      and also added another format.&lt;/li&gt;
+    &lt;pre&gt;
+      mutipart/alternative {
+            multipart/signed { text/plain, application/pgp-signature }
+            multipart/signed { text/plain, application/pgp-signature }
+      }
+    &lt;/pre&gt;
+  &lt;/ul&gt;
+&lt;p&gt;
+  Some furthur assistance and research on which format do MUAs support the
+  most should be implemented.
+  
+  * python-gnupg does not provide any way to search for keys based on
+  key-data like email-address. I need some more work to get this working.
+
+&lt;p&gt;
+  &lt;b&gt;Future Plan:&lt;/b&gt;
+  The next plans for this project include testing all the above parts
+  thoroughly and then moving on to creating a PKI for the key. Also the
+  settings for the list-manager to adjust a few options related to signed
+  lists - like time limit(decided from date in signature) to consider a
+  message old, and also implementing this in code.
+</description>
+    </item>
+    
+    <item>
+      <title>Are you mocking me?</title>
+      <link>http://asychronous.in/2013/07/19/are-you-mocking-me/</link>
+      <pubDate>Fri, 19 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2013/07/19/are-you-mocking-me/</guid>
+      <description>&lt;p&gt;Unit testing is one of the most important parts of any project. TDD (test
+driven development) is a good habit to cultivate, in case you are not convinced,
+you don&#39;t know about TDD or you have never given it a try. I started using
+partial TDD recently, yes only partial for what I follow is that first I write a
+rough outline of the code, then I write tests and then I keep on re-factoring my
+code till all the tests are passing. Though there is a little flaw in this
+method according to me -- although writing tests are mostly trivial with those
+easy assert statements, sometimes you may write wrong tests which make you write
+wrong code too. So put more thought in writing tests than in writing
+code. Although many times you will agree with me that TDD is annoying, it does
+not let you do what you actually want to do (I mean the &#34;way&#34; you want to do it,
+the result may be same).&lt;/p&gt;
+&lt;p&gt;
+So in this post I am going to talk about mocks. What are mocks? There are some
+magical functions which do some abracadabra on your existing function and make
+them return anything that you want without actually even thinking what they are
+returning. Did I personify it a little too much? Let me explain in a little
+detail with the example of where I used mocking.&lt;/p&gt;
+
+&lt;p&gt;
+Unit tests should be independent of environment and any other module, so that
+each module can be developed separately without affecting the development of
+other modules. But many a times one module depends on others and in that case
+it gets messy to test those functions. In my case it was the &#34;signature&#34; rule
+which uses &#34;gpg&#34; utility to verify signature of messages. Here is a snippet of
+the code:&lt;/p&gt;
+
+
+from mailman.utilities.gpg import GPG
+ 
+@implementer(IRule)
+class Signature:
+    &#34;&#34;&#34;Look for pgp-signature.&#34;&#34;&#34;
+
+    name=&#39;signature&#39;
+    description=_(&#39;The message has pgp-signature as application/pgp-signature part&#39;)
+    record = True
+    def __init__(self):
+        self._gpg = None
+
+    def check(self, mlist, msg, msgdata):
+        &#34;&#34;&#34;See `IRule&#34;&#34;&#34;
+        gpg_dir = os.path.join(config.VAR_DIR, &#39;gpg&#39;)
+        self._gpg = GPG(gpg_dir)
+
+
+
+&lt;p&gt;So if you see in line 1 we import the GPG class from &lt;i&gt;gpg&lt;/i&gt; utility. But
+when we write tests we don&#39;t want this function to &#34;actually&#34; create an instance
+of GPG class and &#34;actually&#34; verify the signature because it is not a function of
+signature rule and any errors or breakpoints in gpg utility may cause our tests
+for the &#34;working&#34; signature rule to fail. So what do we do? We mock and then we
+rock ;-). We mock the GPG instance created in signature rule to return &#34;any
+specific value&#34; irrespective of the input. See the code below:&lt;/p&gt;
+
+
+
+import mock
+
+class TestSignatureMime(unittest.TestCase):
+    &#34;&#34;&#34;Test the signature handler.&#34;&#34;&#34;
+
+  class Dummy_GPG_True:    
+      def __init__(self, dir):
+          self._dir = dir
+        
+      def verify_inline_signature(self, data):
+          return True
+
+      def verify_detached_signature(self, data):
+          return True
+
+
+  @mock.patch(&#39;mailman.rules.signature.GPG&#39;, new=Dummy_GPG_True)
+  def test_good_signature(self):
+      result = self._rule.check(self._mlist, self._msg, {})
+      self.assertTrue(result)
+
+
+
+&lt;p&gt; &lt;/p&gt;
+
+</description>
+    </item>
+    
+    <item>
+      <title>Connect the DOT</title>
+      <link>http://asychronous.in/2013/07/19/connect-the-dot/</link>
+      <pubDate>Fri, 19 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2013/07/19/connect-the-dot/</guid>
+      <description>&lt;p&gt;This post talks about dot program from graphviz suite. If you read my last
+post you may have noticed the dot graph that I made using the dot program from
+graphviz suite. It is a very easy to use program whose details can be
+read &lt;a href=&#34;http://www.graphviz.org/&#34;&gt;here&lt;/a&gt; at graphviz official website. I
+would like to share the code for the graph that I made for the last post:
+&lt;/p&gt;
+
+&lt;pre&gt;
+digraph G {
+    IN -&gt; approved;
+    approved -&gt; emergency[label=&#34;No&#34;];
+    emergency -&gt; loop[label=&#34;No&#34;];	
+    loop -&gt; member_moderated[label=&#34;No&#34;];
+    member_moderated -&gt; administrivia[&#34;No&#34;];
+    administrivia -&gt; max_size;
+    max_size -&gt; truth;
+    max_size -&gt; MODERATION[label=&#34;exceeds&#34;];
+    truth -&gt; PIPELINE;
+    approved -&gt; PIPELINE[label=&#34;Yes&#34;];
+    member_moderated -&gt; MODERATION[label=&#34;Yes&#34;]; 
+    emergency -&gt; HOLD[label=&#34;Yes&#34;];
+    loop -&gt; DISCARD[label=&#34;Yes&#34;];
+}
+&lt;/pre&gt;
+&lt;p&gt;The above code produces the graph below:
+
+&lt;center&gt;
+  &lt;img src=&#34;http://asychronous.in/images/posting_chain.png&#34; height=&#34;500px&#34;&gt;
+&lt;/center&gt;
+
+</description>
+    </item>
+    
+    <item>
+      <title>Non-trivial unittests</title>
+      <link>http://asychronous.in/2013/07/19/non-trivial-unit-tests/</link>
+      <pubDate>Fri, 19 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2013/07/19/non-trivial-unit-tests/</guid>
+      <description>&lt;p&gt;Unit tests are mostly trivial to write with only those assert statements over
+the expected results of the function (which is to be tested) instances. But
+sometimes it gets difficult to test some functions which require test data and
+the place where you store the data is not accessible in the tests.&lt;/p&gt;
+
+&lt;p&gt; was trying to test my &lt;b&gt;gpg&lt;/b&gt; utility which uses a home directory where
+all the public and secret key rings are stored(or supposed to be stored by
+default) whose hard-coded-path in my project is
+&#34;/home/maxking/mailman/mailman/var/gpg&#34; . Usually I can point to
+&#34;/home/maxking/mailman/mailman/var/&#34; with the &#34;config.VAR_DIR&#34; variable which
+gets initialized when the config layer is initialized during tests. What is a
+layer? Mailman uses &#34;zope.testing&#34; framework for testing, it has a concept of
+layers which instantiates all the modules of the project so that they can be
+used in the tests. Occasionally you can use temporary directories and values for
+testing purposes in-case you don&#39;t want the tests to alter your actual data. So
+config layer creates a temp &#34;var director&#34; during test runtime. See the code
+below for the initialization of the gpg handler:
+
+
+class GPG:
+    def __init__(self, dir):
+        self._gpg = None
+        self._home = dir
+        self._gpg = gnupg.GPG(gnupghome=self._home)
+
+&lt;p&gt;And this module is used as:
+
+
+  from mailman.utilities.gpg import GPG
+  
+  gpg_dir = os.path.join(config.VAR_DIR, &#34;gpg&#34;)
+  gpg = GPG(gpg_dir)
+
+
+
+&lt;p&gt;So the `config layer` creates a new temp var directory every time tests are
+run and thus my test data inside &#34;/home/maxking/mailman/mailman/var/gpg&#34; is
+never found during the test run. So the workaround that I was suggested by Barry
+to copy the test data to whatever temp var directory that is created the tests
+are now running smoothly. Below is a snippet of the code how it works:
+&lt;/p&gt;
+
+  from mailman.testing.helpers import setup_keyrings, makedirs
+
+  class TestGPG(unittest.TestCase):
+    &#34;&#34;&#34;Testing functions in the gpg utility&#34;&#34;&#34;
+    
+    layer = ConfigLayer
+    
+    def test_keyring(self):
+        &#34;&#34;&#34;verify the keyrings&#34;&#34;&#34;
+
+        gpg_dir = os.path.join(config.VAR_DIR, &#39;gpg&#39;)
+        makedirs(gpg_dir)
+        setup_keyrings(gpg_dir)
+        gpg = GPG(gpg_dir)
+
+
+
+&lt;p&gt; And below are the helper functions that are used above.&lt;/p&gt;
+
+
+  
+def test_data_path(filename):
+    return os.path.abspath(
+        resource_filename(
+            &#39;mailman.utilities.tests.data&#39;, filename))
+
+def makedirs(dir):
+    try:
+        os.makedirs(dir)
+    except OSError as e:
+        pass
+
+def copy(filename, dst):
+    src = test_data_path(filename)
+    makedirs(dst)
+    try: 
+        shutil.copy(src, dst)
+    except IOError:
+        raise IOError(&#39;File {0} copy to {1} failed&#39;.format(filename, dst))
+
+def setup_keyrings(dst):
+    &#34;&#34;&#34;Copy the keyrings to the right place.
+    &#34;&#34;&#34;
+    keyrings = (&#39;pubring.gpg&#39;, &#39;secring.gpg&#39;)
+    
+    for keyring in keyrings:
+        # The local keyrings live in the .gpg file with the same keyring name
+        # in the temporary directory.
+        copy(keyring, dst)
+
+
+</description>
+    </item>
+    
+    <item>
+      <title>GNUPG and python</title>
+      <link>http://asychronous.in/2013/07/16/stuck-at-gnupg/</link>
+      <pubDate>Tue, 16 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2013/07/16/stuck-at-gnupg/</guid>
+      <description>&lt;p&gt;So this post talks about what gpg is, what are the various problems that can
+be solved using gpg and about python-gnupg library which can be used to sign a
+message or file using python&lt;/p&gt;
+
+&lt;p&gt; For now python-gnupg allows detached signatures from file type objects, but
+what if we want to verify some text with a detached signature in the form on
+string in out application? StringIO module has been of some help but I am up
+researching how to use it better. Once I am done with it I will resume to this
+post.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

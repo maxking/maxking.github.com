@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+
+
+<base href="http://asychronous.in">
+<title>
+
+
+     Prevent Git Push 
+
+</title>
+<link rel="canonical" href="http://asychronous.in/2016/05/16/git-prevent-push/">
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:500">
+
+
+
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/pygments.css">
+    <link rel="stylesheet" href="/css/main.css">
+    
+
+
+
+
+<link rel="shortcut icon"
+
+    href="/img/favicon.ico"
+
+>
+
+
+
+
+
+
+</head>
+
+
+<body lang="">
+
+<section class="header">
+    <div class="container">
+        <div class="content">
+            
+            <a href="/"><div class="name"></div></a>
+            
+            <nav>
+                <ul>
+                    <li><a href="/blog/">Blog</a></li>
+                    <li><a href="/about/">About</a></li>
+                    <li><a href="/code/">Code</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<section class="icons">
+    <div class="container">
+        <div class="content">
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+            <a href="http://asychronous.in/index.xml"><img class="icon" src="/img/rss.svg" alt="rss" /></a>
+        
+        </div>
+    </div>
+</section>
+
+
+<section class="main post non-narrow zero-top-spacing">
+    <div class="container">
+        <div class="content">
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    Prevent Git Push
+
+</div>
+
+                    <div class="initials"><a href="http://asychronous.in"></a></div>
+                </div>
+                <div class="meta">
+                    <div class="date" title="16 May 16056">16 May 16056</div>
+                    <div class="reading-time"><div class="middot"></div>1 minute read</div>
+                </div>
+            </div>
+            <div class="markdown">
+                <p>It happens with me sometimes that I push to repositories that I must not push
+to. Being a <a href="http://list.org">GNU Mailman</a> core-developer, I have push access to all the
+repositories. But, we always add changes to the master repo using
+merge-requests, even Barry does the same. But with my poor [Git] skills, I end
+up sometimes pushing to the wrong repository which might lead to bad code inside
+of the main repository. So a small nifty trick to avoid that is to make the
+repository read-only. This is how I did it:</p>
+
+<pre><code class="language-bash">$ git config remote.upstream.pushurl &quot;you really didn't want to do that&quot;
+</code></pre>
+
+                <br>
+                <p><a href="/blog/">Back to posts</a></p>
+            </div>
+            <br>
+            <div class="disqus">
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+</body>
+</html>
+

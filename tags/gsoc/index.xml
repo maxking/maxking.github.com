@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Gsoc on maxking&#39;s blog</title>
+    <link>http://asychronous.in/tags/gsoc/index.xml</link>
+    <description>Recent content in Gsoc on maxking&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="http://asychronous.in/tags/gsoc/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>GSoC Updates</title>
+      <link>http://asychronous.in/2013/08/28/updates-gsoc/</link>
+      <pubDate>Wed, 28 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2013/08/28/updates-gsoc/</guid>
+      <description>&lt;p&gt;This posts unlike previous posts is just a collection of all the updates
+from my gsoc project. Recently I have been working on setting up the
+infrastructure to contain public and private keys for the gpg process to use. A
+few problems that I encountered were:
+&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;How do list owner create keys? What parameters? Which address?&lt;/li&gt;
+
+&lt;p&gt;The solution to this came down to gpg defaults, i.e. (size=2048, type=RSA). I
+don&#39;t think it is wise to impose a limit to the hashing algorithms used in the
+generation of the keys, although md5 is considered to be quite less secure we
+could only ask admins to not to use md5.
+&lt;/p&gt;
+
+&lt;li&gt;How to manage paraphrase(or passwords) for keys?&lt;/li&gt;
+
+&lt;p&gt;Now this is one of the big issues in this project. Passphrase should be
+something that is not stored on the disk for the reasons of security but then
+making the list-owner enter every-time a mail arrives is like impossible. So we
+I came up with gnupg-agent which stores the passphrase in memory and the user
+does not need to enter it everytime a key needs to be used, but the catch is it
+is again not a very good policy to ask list-admins to keep entering passphrase
+after every reboot. So finally it was decided that we can let the key be without
+any passphrase for the moment and later on we can add this functionality when the
+major focus of the work is that itself unlike now.
+&lt;/p&gt;
+
+&lt;li&gt; How to securely upload keys?&lt;/li?&gt;
+
+&lt;p&gt;Well this question was later on replaced by whether upload the keys? Initially it
+was decided to ask the list admin to generate and upload keys to the server, but
+this process renders the secret key vulnerable to attacks which may effect the
+security of the list, so instead we decided to create the keys on the server
+itself by mailman so that the keys never have to be moved at all.&lt;/p&gt;
+
+&lt;/ol&gt;
+
+&lt;p&gt;During the course of coding I also realized since the basic structure of a
+default message that can pass through the default-posting-chain has changed and
+now is a multipart/signed message a few of the tests are failing. I talked to
+Barry about it and it seems that it is not my problem(for a while).&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Are you mocking me?</title>
+      <link>http://asychronous.in/2013/07/19/are-you-mocking-me/</link>
+      <pubDate>Fri, 19 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2013/07/19/are-you-mocking-me/</guid>
+      <description>&lt;p&gt;Unit testing is one of the most important parts of any project. TDD (test
+driven development) is a good habit to cultivate, in case you are not convinced,
+you don&#39;t know about TDD or you have never given it a try. I started using
+partial TDD recently, yes only partial for what I follow is that first I write a
+rough outline of the code, then I write tests and then I keep on re-factoring my
+code till all the tests are passing. Though there is a little flaw in this
+method according to me -- although writing tests are mostly trivial with those
+easy assert statements, sometimes you may write wrong tests which make you write
+wrong code too. So put more thought in writing tests than in writing
+code. Although many times you will agree with me that TDD is annoying, it does
+not let you do what you actually want to do (I mean the &#34;way&#34; you want to do it,
+the result may be same).&lt;/p&gt;
+&lt;p&gt;
+So in this post I am going to talk about mocks. What are mocks? There are some
+magical functions which do some abracadabra on your existing function and make
+them return anything that you want without actually even thinking what they are
+returning. Did I personify it a little too much? Let me explain in a little
+detail with the example of where I used mocking.&lt;/p&gt;
+
+&lt;p&gt;
+Unit tests should be independent of environment and any other module, so that
+each module can be developed separately without affecting the development of
+other modules. But many a times one module depends on others and in that case
+it gets messy to test those functions. In my case it was the &#34;signature&#34; rule
+which uses &#34;gpg&#34; utility to verify signature of messages. Here is a snippet of
+the code:&lt;/p&gt;
+
+
+from mailman.utilities.gpg import GPG
+ 
+@implementer(IRule)
+class Signature:
+    &#34;&#34;&#34;Look for pgp-signature.&#34;&#34;&#34;
+
+    name=&#39;signature&#39;
+    description=_(&#39;The message has pgp-signature as application/pgp-signature part&#39;)
+    record = True
+    def __init__(self):
+        self._gpg = None
+
+    def check(self, mlist, msg, msgdata):
+        &#34;&#34;&#34;See `IRule&#34;&#34;&#34;
+        gpg_dir = os.path.join(config.VAR_DIR, &#39;gpg&#39;)
+        self._gpg = GPG(gpg_dir)
+
+
+
+&lt;p&gt;So if you see in line 1 we import the GPG class from &lt;i&gt;gpg&lt;/i&gt; utility. But
+when we write tests we don&#39;t want this function to &#34;actually&#34; create an instance
+of GPG class and &#34;actually&#34; verify the signature because it is not a function of
+signature rule and any errors or breakpoints in gpg utility may cause our tests
+for the &#34;working&#34; signature rule to fail. So what do we do? We mock and then we
+rock ;-). We mock the GPG instance created in signature rule to return &#34;any
+specific value&#34; irrespective of the input. See the code below:&lt;/p&gt;
+
+
+
+import mock
+
+class TestSignatureMime(unittest.TestCase):
+    &#34;&#34;&#34;Test the signature handler.&#34;&#34;&#34;
+
+  class Dummy_GPG_True:    
+      def __init__(self, dir):
+          self._dir = dir
+        
+      def verify_inline_signature(self, data):
+          return True
+
+      def verify_detached_signature(self, data):
+          return True
+
+
+  @mock.patch(&#39;mailman.rules.signature.GPG&#39;, new=Dummy_GPG_True)
+  def test_good_signature(self):
+      result = self._rule.check(self._mlist, self._msg, {})
+      self.assertTrue(result)
+
+
+
+&lt;p&gt; &lt;/p&gt;
+
+</description>
+    </item>
+    
+    <item>
+      <title>GNUPG and python</title>
+      <link>http://asychronous.in/2013/07/16/stuck-at-gnupg/</link>
+      <pubDate>Tue, 16 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2013/07/16/stuck-at-gnupg/</guid>
+      <description>&lt;p&gt;So this post talks about what gpg is, what are the various problems that can
+be solved using gpg and about python-gnupg library which can be used to sign a
+message or file using python&lt;/p&gt;
+
+&lt;p&gt; For now python-gnupg allows detached signatures from file type objects, but
+what if we want to verify some text with a detached signature in the form on
+string in out application? StringIO module has been of some help but I am up
+researching how to use it better. Once I am done with it I will resume to this
+post.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Rules and Chains</title>
+      <link>http://asychronous.in/2013/06/30/rules-and-chains/</link>
+      <pubDate>Sun, 30 Jun 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2013/06/30/rules-and-chains/</guid>
+      <description>&lt;p&gt;This post talks about the basic messaging flow in mailman and then a little
+detail about what are rules and chains in Mailman. So a message can be injected
+in mailman system using a LMTP server via
+LMTP. &lt;a href=&#34;http://tools.ietf.org/html/rfc2033#section-4&#34;&gt;LMTP&lt;/a&gt;(Local Mail
+Transfer Protocol) is a derivative of ESMTP(Extended SMTP), which is a extension
+of well known SMTP(Simple Mail Transfer Protocol). LMTP runner parses the
+message into a tuple of type (mailing_list, message, message_data) and stores it
+in a serialized form
+called &lt;a href=&#34;http://docs.python.org/2/library/pickle.html&#34;&gt;python
+pickle(.pck)&lt;/a&gt; file, which is then queued in either one of &lt;i&gt;incoming queue,
+bounce queue or command processing queue&lt;/i&gt;. If the message parsing fails then
+it is discarded. Queues are nothing but a set of directories managed
+by &lt;i&gt;switchboards&lt;/i&gt;, where all the messages are stored till a &lt;i&gt;runner&lt;/i&gt;
+wakes up and sends them one by one for processing according to the queue that
+they were queued in, e.g. IN runner sends to file to pipeline queue where i
+Below is a graph is decided if the message will be accepted, discarded or held
+for moderation. Below is a graph depicting the message flow in mailman.&lt;/p&gt;
+&lt;center&gt;
+  &lt;img src=&#34;http://asychronous.in/images/mailman-messaging-flow.png&#34; height=&#34;400px&#34;&gt;
+&lt;/center&gt;
+&lt;p&gt;How is it decided if a message is &#39;fit&#39; for posting? This process is
+called &lt;i&gt;Moderation&lt;/i&gt; where a message is tested against a set of rules. Rules
+are simple checks which return True if the rule hits and False in-case it
+misses. Moderation does not change anything in message, but it may record the
+processing information(like rule hits and misses) information in a metadata
+dictionary. Each rule has the following structure:&lt;/p&gt;
+
+
+@implementer(IRule)
+class New_Rule:
+
+    def check(self, mlist, msg, msgdata):
+        if foo == foobar:
+            return True
+        else:
+            return False
+
+&lt;p&gt;
+You can write your own rules to check whatever criteria you want mailman to
+check before accepting the message. All the rules reside
+inside &lt;b&gt;/src/mailman/rules/&lt;/b&gt; in mailman source code. All of the rules are
+arranged in a sequential manner to create a &lt;b&gt;chain&lt;/b&gt;. Each list has two
+default start chains associated with it - first for normal postings and second
+one is for admin postings. The incoming runner checks who the message is
+addressed to and accordingly the moderation occurs for admin or normal postings.
+&lt;/p&gt;
+
+&lt;p&gt;The &lt;b&gt;default-builtin-chain&lt;/b&gt; has a predefined list of rules to check
+before the message is discarded, held or accepted. In mailman3 the list is as
+follows in the order in which they are called:&lt;/p&gt;
+
+
+
+    _link_descriptions = (
+        (&#39;approved&#39;, LinkAction.jump, &#39;accept&#39;),
+        (&#39;emergency&#39;, LinkAction.jump, &#39;hold&#39;),
+        (&#39;loop&#39;, LinkAction.jump, &#39;discard&#39;),
+        # Determine whether the member or nonmember has an action shortcut.
+        (&#39;member-moderation&#39;, LinkAction.jump, &#39;moderation&#39;),
+        # Do all of the following before deciding whether to hold the message.
+        (&#39;signature&#39;, LinkAction.jump, &#39;discard&#39;),
+        (&#39;administrivia&#39;, LinkAction.defer, None),
+        (&#39;implicit-dest&#39;, LinkAction.defer, None),
+        (&#39;max-recipients&#39;, LinkAction.defer, None),
+        (&#39;max-size&#39;, LinkAction.defer, None),
+        (&#39;news-moderation&#39;, LinkAction.defer, None),
+        (&#39;no-subject&#39;, LinkAction.defer, None),
+        (&#39;suspicious-header&#39;, LinkAction.defer, None),
+        # Now if any of the above hit, jump to the hold chain.
+        (&#39;any&#39;, LinkAction.jump, &#39;hold&#39;),
+        # Take a detour through the header matching chain, which we&#39;ll create
+        # later.
+        (&#39;truth&#39;, LinkAction.detour, &#39;header-match&#39;),
+        # Check for nonmember moderation.
+        (&#39;nonmember-moderation&#39;, LinkAction.jump, &#39;moderation&#39;),
+        # Finally, the builtin chain jumps to acceptance.
+        (&#39;truth&#39;, LinkAction.jump, &#39;accept&#39;),
+     )
+
+
+
+&lt;p&gt;In the above list each entry consists of a tuple of the
+form &lt;span class=&#34;inline-code&#34;&gt; (&#39;rule_name&#39;, LinkAction.action,
+&#39;target&#39;)&lt;/span&gt;. The first element ,as evident from the name, is the name of
+the rule that is to be called, the second element tell about what action is
+taken if the rule hits(or return True). The last part is the target queue to
+which the message is copied to if the rule hits(or you may customise it of course
+for when rule misses), it is `None` incase the rule does not have
+action. According to your convenience you can create your own chains. In the
+above list the &lt;b&gt;signature&lt;/b&gt; rule is the one I added to check for
+openpgp-signature.
+&lt;/p&gt;
+
+</description>
+    </item>
+    
+    <item>
+      <title>Gsoc 2013 - Pilot!</title>
+      <link>http://asychronous.in/2013/06/12/gosc-into/</link>
+      <pubDate>Wed, 12 Jun 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2013/06/12/gosc-into/</guid>
+      <description>&lt;p&gt;In this post I will first start with my introduction in brief and then move
+on to my gsoc project. I am a undergrad student
+at &lt;a href=&#34;http://iitkgp.ac.in&#34;&gt;Indian Institute of Technology, Kharagpur&lt;/a&gt;
+doing my majors in Department of Metallurgical and Materials Engineering
+expecting to pass out in 2015. This summer I will be working for GNU Mailman
+under Python Software Foundation for my gsoc project -
+&lt;i&gt;Implementation of OpenPGP with Mailman.&lt;/i&gt;&lt;p&gt;
+
+&lt;center&gt;
+&lt;img src=&#34;http://asychronous.in/images/mailman.png&#34; id=&#34;mailman_logo&#34;&gt;
+&lt;img src=&#34;http://asychronous.in/images/python-logo.gif&#34; id=&#34;python-logo&#34;&gt;
+&lt;/center&gt;
+
+&lt;p&gt;
+While many of you might be aware about what OpenPGP/GPG is, but for those of you
+who don&#39;t I will try to introduce it in brief. OpenPGP is the world&#39;s most
+widely used email encryption/signing standard. It was originally derived from
+PGP( Pretty Good Privacy ), first created
+by &lt;a href=&#34;https://www.philzimmermann.com/EN/background/index.html&#34;&gt;Phil
+Zimmermann&lt;/a&gt; in 1991. GPG( Gnu Privacy Guard ) is complete free implementation
+of OpenPGP and comes with most of linux distros today with a default command
+line and various other GUI tools. Although I have mentioned GPG in reference to
+emails, it can be used to sign/encrypt any text or file. You can encrypt files
+on your disk. If you see its actually analogous to email -- you are sending some
+encrypted data to future-you and want that the data remains same and protected
+when future-you receives it.
+&lt;/p&gt;
+&lt;p&gt;
+I remember when first time I asked Steve about how should OpenPGP be implemented
+in mailman? He answered &#34;&lt;i&gt;It depends on what OpenPGP means to you&lt;/i&gt;&#34;. There
+are a lot of things that you can do with OpenPGP but not all is of our interest
+here. A very brief description of my project is : You digitally sign your email;
+send it to mailman; mailman checks your signature(analogous to physical
+signatures); verifies that its you; mailman then signs the emails itself; sends
+it to all the subscribers. You want to know what &lt;i&gt;Mailman&lt;/i&gt;
+is? &lt;a href=&#34;http://www.list.org/&#34;&gt; Mailman &lt;/a&gt; is the GNU mailing list
+software which can be used for e-newsletters and few other purposes
+too. Currently Mailman3 is under &lt;a href=&#34;https://launchpad.net/mailman&#34;&gt;
+development &lt;/a&gt; along with its web interface(Postorius)and the
+archiver(Hyperkitty).&lt;/p&gt;
+&lt;p&gt;
+So coming back to my project, what do you actually mean by signing an email? A
+typical OpenPGP signed message looks like this:
+&lt;/p&gt;
+&lt;pre&gt;
+  -----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Kindly reply in a signed email only.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iQEcBAEBAgAGBQJRuU57AAoJEPVZtmCk10dURYUH/2FPPllsJcXhL3nXLkqT3Zc0
+v/vjc0AGgQPj7/Ir9ENxOjgzQ/Mvp5HAMTE1jk+0wsF0Ma8HAu8SxtuFSpgsa78Z
+FqkfHYtwvHsErdNOy6hfjEZG6h6I+Y1lKO6B/aQ2trEy1ZTUWyJx9bK0u0VR8JSc
+xaUw+YNAAWDzKPac9XLdUTbL4/2gPEeX/mqs0wkpn+2MXMp3Tj1Vf6E829C3NKKq
+VkUTtVzFoiEHdh1axmIBea/8dLxqoDVAuzUJyt9zxDjz/8p0ZweLUFk0XGbwpiqk
+qn7nw1UGgkDyLxk77o5QMorFB7B/zJjT3FJGnTSwT3GBLelrD6V+rIrYuq/BH0s=
+=psBF
+-----END PGP SIGNATURE-----
+
+&lt;/pre&gt;
+&lt;p&gt;
+The &lt;b&gt;Hash&lt;/b&gt; tells about the hashing algorithm used to create the signature,
+then there is the actual message followed by the signature. This is a ascii
+coded signature so that it can be attached in emails without problems of
+unsupported charset. The signature is actually a gibberish text created by
+processing your message, using your secret-key, which is very difficult to
+reproduce without your secret-key. Because of this reason it acts as your
+signature, a mark of your &lt;i&gt;ownership&lt;/i&gt; of the message. I will come up with a
+detailed post on OpenPGP signature types and application soon.
+&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Abhilash Raj writes here.">
+
+<base href="http://asychronous.in">
+<title>
+
+
+     maxking&#39;s blog - Rules and Chains 
+
+</title>
+<link rel="canonical" href="http://asychronous.in/2013/06/30/rules-and-chains/">
+
+
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+
+
+<link rel="stylesheet" href="http://asychronous.incss/reset.css">
+<link rel="stylesheet" href="http://asychronous.incss/main.css">
+
+
+
+
+<link rel="shortcut icon"
+
+    href="http://asychronous.inimg/favicon.ico"
+
+>
+
+
+
+</head>
+
+
+<body lang="en">
+
+
+<section class="header"> 
+
+    <div class="container">
+        <a href="http://asychronous.in"><img class="logo" src="http://asychronous.in/img/logo.png" /></a>
+        <div class="content">
+            <a href="http://asychronous.in"><div class="name"><h1>maxking&#39;s blog</h1></div></a>
+            <nav>
+                <ul>
+                    
+                        <a href="http://asychronous.inblog/"><li>Blog</li></a>
+                    
+                    
+                        
+                    
+                        
+                            
+                        
+                    
+                    
+                        
+                            <a href="http://asychronous.in/notes/"><li>Notes</li></a>
+                        
+                    
+                        
+                            <a href="http://asychronous.in/about/"><li>About</li></a>
+                        
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<section class="icons">
+    <div class="container">
+        <div class="content">
+
+        
+            <a href="https://github.com/maxking" target="_blank">
+                <i class="icon ion-social-github"></i>
+            </a>
+        
+        
+        
+            <a href="https://twitter.com/_maxking_" target="_blank">
+                <i class="icon ion-social-twitter"></i>
+            </a>
+        
+
+        
+
+        
+
+        
+            <a href="http://asychronous.in/index.xml">
+                <i class="icon ion-social-rss larger"></i>
+            </a>
+        
+        </div>
+    </div>
+</section>
+
+
+<section class="main post non-narrow zero-top-spacing">
+    <div class="container">
+        <div class="content">
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    Rules and Chains
+
+</div>
+
+                </div>
+                <div class="meta">
+                    <div class="date" title="Jun 30 2013 00:00">Jun 30 2013</div>
+                    <div class="reading-time"><div class="middot"></div>3 minutes read</div>
+                </div>
+            </div>
+            <div class="markdown">
+                <p>This post talks about the basic messaging flow in mailman and then a little
+detail about what are rules and chains in Mailman. So a message can be injected
+in mailman system using a LMTP server via
+LMTP. <a href="http://tools.ietf.org/html/rfc2033#section-4">LMTP</a>(Local Mail
+Transfer Protocol) is a derivative of ESMTP(Extended SMTP), which is a extension
+of well known SMTP(Simple Mail Transfer Protocol). LMTP runner parses the
+message into a tuple of type (mailing_list, message, message_data) and stores it
+in a serialized form
+called <a href="http://docs.python.org/2/library/pickle.html">python
+pickle(.pck)</a> file, which is then queued in either one of <i>incoming queue,
+bounce queue or command processing queue</i>. If the message parsing fails then
+it is discarded. Queues are nothing but a set of directories managed
+by <i>switchboards</i>, where all the messages are stored till a <i>runner</i>
+wakes up and sends them one by one for processing according to the queue that
+they were queued in, e.g. IN runner sends to file to pipeline queue where i
+Below is a graph is decided if the message will be accepted, discarded or held
+for moderation. Below is a graph depicting the message flow in mailman.</p>
+<center>
+  <img src="/images/mailman-messaging-flow.png" height="400px">
+</center>
+<p>How is it decided if a message is 'fit' for posting? This process is
+called <i>Moderation</i> where a message is tested against a set of rules. Rules
+are simple checks which return True if the rule hits and False in-case it
+misses. Moderation does not change anything in message, but it may record the
+processing information(like rule hits and misses) information in a metadata
+dictionary. Each rule has the following structure:</p>
+
+
+@implementer(IRule)
+class New_Rule:
+
+    def check(self, mlist, msg, msgdata):
+        if foo == foobar:
+            return True
+        else:
+            return False
+
+<p>
+You can write your own rules to check whatever criteria you want mailman to
+check before accepting the message. All the rules reside
+inside <b>/src/mailman/rules/</b> in mailman source code. All of the rules are
+arranged in a sequential manner to create a <b>chain</b>. Each list has two
+default start chains associated with it - first for normal postings and second
+one is for admin postings. The incoming runner checks who the message is
+addressed to and accordingly the moderation occurs for admin or normal postings.
+</p>
+
+<p>The <b>default-builtin-chain</b> has a predefined list of rules to check
+before the message is discarded, held or accepted. In mailman3 the list is as
+follows in the order in which they are called:</p>
+
+
+
+    _link_descriptions = (
+        ('approved', LinkAction.jump, 'accept'),
+        ('emergency', LinkAction.jump, 'hold'),
+        ('loop', LinkAction.jump, 'discard'),
+        # Determine whether the member or nonmember has an action shortcut.
+        ('member-moderation', LinkAction.jump, 'moderation'),
+        # Do all of the following before deciding whether to hold the message.
+        ('signature', LinkAction.jump, 'discard'),
+        ('administrivia', LinkAction.defer, None),
+        ('implicit-dest', LinkAction.defer, None),
+        ('max-recipients', LinkAction.defer, None),
+        ('max-size', LinkAction.defer, None),
+        ('news-moderation', LinkAction.defer, None),
+        ('no-subject', LinkAction.defer, None),
+        ('suspicious-header', LinkAction.defer, None),
+        # Now if any of the above hit, jump to the hold chain.
+        ('any', LinkAction.jump, 'hold'),
+        # Take a detour through the header matching chain, which we'll create
+        # later.
+        ('truth', LinkAction.detour, 'header-match'),
+        # Check for nonmember moderation.
+        ('nonmember-moderation', LinkAction.jump, 'moderation'),
+        # Finally, the builtin chain jumps to acceptance.
+        ('truth', LinkAction.jump, 'accept'),
+     )
+
+
+
+<p>In the above list each entry consists of a tuple of the
+form <span class="inline-code"> ('rule_name', LinkAction.action,
+'target')</span>. The first element ,as evident from the name, is the name of
+the rule that is to be called, the second element tell about what action is
+taken if the rule hits(or return True). The last part is the target queue to
+which the message is copied to if the rule hits(or you may customise it of course
+for when rule misses), it is `None` incase the rule does not have
+action. According to your convenience you can create your own chains. In the
+above list the <b>signature</b> rule is the one I added to check for
+openpgp-signature.
+</p>
+
+
+                <br>
+                <p><a href="blog">Back to posts</a></p>
+            </div>
+            <br>
+            <div class="disqus">
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+  
+
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
+
+
+
+</body>
+</html>
+

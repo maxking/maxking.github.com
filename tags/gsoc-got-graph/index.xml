@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Gsoc Got Graph on maxking&#39;s blog</title>
+    <link>http://asychronous.in/tags/gsoc-got-graph/index.xml</link>
+    <description>Recent content in Gsoc Got Graph on maxking&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="http://asychronous.in/tags/gsoc-got-graph/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Connect the DOT</title>
+      <link>http://asychronous.in/2013/07/19/connect-the-dot/</link>
+      <pubDate>Fri, 19 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2013/07/19/connect-the-dot/</guid>
+      <description>&lt;p&gt;This post talks about dot program from graphviz suite. If you read my last
+post you may have noticed the dot graph that I made using the dot program from
+graphviz suite. It is a very easy to use program whose details can be
+read &lt;a href=&#34;http://www.graphviz.org/&#34;&gt;here&lt;/a&gt; at graphviz official website. I
+would like to share the code for the graph that I made for the last post:
+&lt;/p&gt;
+
+&lt;pre&gt;
+digraph G {
+    IN -&gt; approved;
+    approved -&gt; emergency[label=&#34;No&#34;];
+    emergency -&gt; loop[label=&#34;No&#34;];	
+    loop -&gt; member_moderated[label=&#34;No&#34;];
+    member_moderated -&gt; administrivia[&#34;No&#34;];
+    administrivia -&gt; max_size;
+    max_size -&gt; truth;
+    max_size -&gt; MODERATION[label=&#34;exceeds&#34;];
+    truth -&gt; PIPELINE;
+    approved -&gt; PIPELINE[label=&#34;Yes&#34;];
+    member_moderated -&gt; MODERATION[label=&#34;Yes&#34;]; 
+    emergency -&gt; HOLD[label=&#34;Yes&#34;];
+    loop -&gt; DISCARD[label=&#34;Yes&#34;];
+}
+&lt;/pre&gt;
+&lt;p&gt;The above code produces the graph below:
+
+&lt;center&gt;
+  &lt;img src=&#34;http://asychronous.in/images/posting_chain.png&#34; height=&#34;500px&#34;&gt;
+&lt;/center&gt;
+
+</description>
+    </item>
+    
+  </channel>
+</rss>

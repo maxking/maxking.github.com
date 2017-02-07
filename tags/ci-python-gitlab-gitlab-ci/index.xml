@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ci Python Gitlab Gitlab Ci on maxking&#39;s blog</title>
+    <link>http://asychronous.in/tags/ci-python-gitlab-gitlab-ci/index.xml</link>
+    <description>Recent content in Ci Python Gitlab Gitlab Ci on maxking&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="http://asychronous.in/tags/ci-python-gitlab-gitlab-ci/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Gitlab CI?</title>
+      <link>http://asychronous.in/2015/07/14/gitlab-ci/</link>
+      <pubDate>Tue, 14 Jul 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2015/07/14/gitlab-ci/</guid>
+      <description>&lt;p&gt;&lt;i&gt;Note: This post is now outdated. GNU Mailman now has a &lt;a href=&#34;http://hub.docker.com/u/maxking/mailman-ci-runner/&#34;&gt;new container image&lt;/a&gt;
+for running tests and this time it &lt;em&gt;just works&lt;/em&gt;.
+&lt;/i&gt;&lt;/p&gt;
+
+&lt;p&gt;Being one of the core developers of GNU Mailman, I took up the task to setup
+a Continuous Integration server for Mailman. While looking for a service using
+FOSS and was free to use I stumbled upon &lt;a href=&#34;https://ci.gitlab.com&#34;&gt;Gitlab CI&lt;/a&gt;. There were several
+other options to choose from, but none of them fulfilled our requirement of
+using FOSS. Gitlab is a FOSS and its source code is available on &lt;a href=&#34;https://gitlab.com/gitlab-org/gitlab-ci&#34;&gt;Gitlab&lt;/a&gt; as
+well as &lt;a href=&#34;https://github.com/gitlabhq/gitlab-ci&#34;&gt;Github&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now, the model of Gitlab CI is different from the others you would have
+encountered before like Travis-CI or Circle-CI. Gitlab CI only provides an
+interface to view the results of the tests associated with each commit or
+Pull Request. The actual tests are run using gitlab-ci&amp;rsquo;s runners which can
+be run on any other system &lt;sup&gt;&lt;a href=&#34;https://ci.gitlab.com&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. The latest &lt;a href=&#34;https://gitlab.com/gitlab-org/gitlab-ci-multi-runner&#34;&gt;gitlab-ci-multi-runner&lt;/a&gt;
+is written in Go and can run tests for multiple repositories &lt;sup&gt;2&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;p&gt;Gitlab CI can be used to run tests in a couple of ways:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;locally&lt;/li&gt;
+&lt;li&gt;using Docker container&lt;/li&gt;
+&lt;li&gt;using Docker container and executing job over SSH&lt;/li&gt;
+&lt;li&gt;connecting to remote SSH server&lt;/li&gt;
+&lt;li&gt;using a Parallels VM&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Since we wanted to build Pull Requests, considering the security implication
+of running a running un-trusted code inside a server/local-machine, I decided
+to go with the 3rd option. Docker running in unprilidged mode and with no root
+access, even inside the docker container ,could do much less harm. So, for this
+setup I needed the following things:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;A docker image inside which your tests are gonna run&lt;/li&gt;
+&lt;li&gt;The above image have ssh-access&lt;/li&gt;
+&lt;li&gt;A postgres database image linked to the above container&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I created a new docker image called &lt;a href=&#34;https://registry.hub.docker.com/u/maxking/mailman-runner/&#34;&gt;&amp;lsquo;mailman-runner&amp;rsquo;&lt;/a&gt; to run the tests. Its
+Dockerfile&lt;a href=&#34;https://github.com/maxking/docker-mailman-ci&#34;&gt;6&lt;/a&gt; is also available on Github if you would like to view to suggest
+edits.&lt;/p&gt;
+
+&lt;p&gt;Install Docker first&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	curl -sSL https://get.docker.com/ | sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We need to mount a data volume into our gitlab-ci-multi-runner container to be
+used for configs and other resources:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	docker run -d --name multi-runner --restart always \
+	-v /var/run/docker.sock:/var/run/docker.sock \
+	-v /PATH/TO/DATA/FOLDER:/data \
+	ayufan/gitlab-ci-multi-runner:latest
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;code&gt;-v&lt;/code&gt; option is used to add a data volume to the container. Here we add
+a data volumen and a docker-socker to the container so that it can spawn new
+containers to run tests in.&lt;/p&gt;
+
+&lt;p&gt;Now, register the runner:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker exec -it multi-runner gitlab-ci-multi-runner register
+
+Please enter the gitlab-ci coordinator URL (e.g. http://gitlab-ci.org:3000/ )
+https://ci.gitlab.com/
+Please enter the gitlab-ci token for this runner
+xxx
+Please enter the gitlab-ci description for this runner
+my-runner
+INFO[0034] fcf5c619 Registering runner... succeeded
+Please enter the executor: shell, docker, docker-ssh, ssh?
+docker-ssh
+Please enter the Docker image (eg. ruby:2.1):
+mailman-runner:latest
+If you want to enable mysql please enter version (X.Y) or enter latest?
+
+If you want to enable postgres please enter version (X.Y) or enter latest?
+
+If you want to enable redis please enter version (X.Y) or enter latest?
+
+If you want to enable mongo please enter version (X.Y) or enter latest?
+
+Please enter the SSH user (eg. root):
+runner
+Please enter the SSH password (eg. docker.io):
+runner
+
+INFO[0037] Runner registered successfully. Feel free to start it, but if it&#39;s
+running already the config should be automatically reloaded!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Note: The ssh user and password in the above configuration was created by
+default in the mailman-runner docker image.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;After this, the configuration file (config.toml) would look somewhat like
+this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;concurrent = 4
+
+[[runners]]
+  name = &amp;quot;second-runner&amp;quot;
+  url = &amp;quot;https://ci.gitlab.com&amp;quot;
+  token = &amp;quot;XXX&amp;quot;
+  executor = &amp;quot;docker-ssh&amp;quot;
+  [runners.ssh]
+    user = &amp;quot;runner&amp;quot;
+    password = &amp;quot;runner&amp;quot;
+  [runners.docker]
+    image = &amp;quot;mailman-runner&amp;quot;
+    privileged = false
+    volumes = [&amp;quot;/cache&amp;quot;]
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;PS:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Now, Gitlab CI has a concept of shared runners where you can use
+some public runners to run your tests. This update was added recently.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Previously, one runner could be used for only one repository. You
+needed to start another instance of the same runner to run tests for
+another reposiroty. However, now you can share runners across all your
+repositories even if they belong to a group.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

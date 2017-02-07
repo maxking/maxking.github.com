@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Abhilash Raj writes here.">
+
+<base href="http://asychronous.in">
+<title>
+
+
+     maxking&#39;s blog - Python&#39;s GIL 
+
+</title>
+<link rel="canonical" href="http://asychronous.in/2015/12/10/part1-gil/">
+
+
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+
+
+<link rel="stylesheet" href="http://asychronous.incss/reset.css">
+<link rel="stylesheet" href="http://asychronous.incss/main.css">
+
+
+
+
+<link rel="shortcut icon"
+
+    href="http://asychronous.inimg/favicon.ico"
+
+>
+
+
+
+</head>
+
+
+<body lang="en">
+
+
+<section class="header"> 
+
+    <div class="container">
+        <a href="http://asychronous.in"><img class="logo" src="http://asychronous.in/img/logo.png" /></a>
+        <div class="content">
+            <a href="http://asychronous.in"><div class="name"><h1>maxking&#39;s blog</h1></div></a>
+            <nav>
+                <ul>
+                    
+                        <a href="http://asychronous.inblog/"><li>Blog</li></a>
+                    
+                    
+                        
+                    
+                        
+                            
+                        
+                    
+                    
+                        
+                            <a href="http://asychronous.in/notes/"><li>Notes</li></a>
+                        
+                    
+                        
+                            <a href="http://asychronous.in/about/"><li>About</li></a>
+                        
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<section class="icons">
+    <div class="container">
+        <div class="content">
+
+        
+            <a href="https://github.com/maxking" target="_blank">
+                <i class="icon ion-social-github"></i>
+            </a>
+        
+        
+        
+            <a href="https://twitter.com/_maxking_" target="_blank">
+                <i class="icon ion-social-twitter"></i>
+            </a>
+        
+
+        
+
+        
+
+        
+            <a href="http://asychronous.in/index.xml">
+                <i class="icon ion-social-rss larger"></i>
+            </a>
+        
+        </div>
+    </div>
+</section>
+
+
+<section class="main post non-narrow zero-top-spacing">
+    <div class="container">
+        <div class="content">
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    Python&#39;s GIL
+
+</div>
+
+                </div>
+                <div class="meta">
+                    <div class="date" title="Dec 10 2015 04:30">Dec 10 2015</div>
+                    <div class="reading-time"><div class="middot"></div>5 minutes read</div>
+                </div>
+            </div>
+            <div class="markdown">
+                <p>Recently I got very interested to explore about the GIL or the Global
+Interpreter Lock in Python that has been a topic of flame wars since
+forever. Global interpreter lock is a lock on the python interpreter, that a
+thread must acquire in order to run. Because of this, effectively any python
+program can have only one thread running at a time on one instance of python
+interpreter. However, it has been a common belief that threaded programming in
+Python doesn&rsquo;t make any sense at all due to GIL, but that is not actually
+true. I might use process and thread in context of a single python interpreter
+instance interchangeably in this post.</p>
+
+<p>Not all kind of processes are affected by GIL heavily. I/O bound process or in
+general any kind of Blocking process don&rsquo;t always<sup>1</sup> perform poorly,
+in-fact their performance can be as good as a C application. Since python
+threads are actual OS threads (Posix or pthreads in *nix based systems) and thus
+they are scheduled by the operating system (OS) scheduler. Depending on the OS
+scheduler, the performance can be good or bad in multi-threaded situations. In
+Linux, if more than one threads are waiting for a lock, there is no specific
+order in which those threads would be woken up when the lock becomes
+available. Usually, all the threads are allowed to wake up and then the
+scheduler randomly (probably? not sure about this on linux) picks up a process
+to run. It is possible, and very often happens, that the thread that just
+released the lock acquires it again increasing the wait time for other
+threads. This behavior is different on Mac or Windows or FreeBSD operating
+systems and is dependent on the scheduler. It looks like Mac OSX tries to do the
+fair scheduling and thus the max wait time for a thread would vary linearly
+depending on the number of threads running in Mac OSX. Windows and FreeBSD do
+have priority based scheduling, but how performance on these servers are
+affected when using a multi-threaded python application as compared to a
+sequential one is something I am not sure about. If they implement priority
+scheduling, it is possible they would fairly schedule the threads.</p>
+
+<p>Before Python 3.2 the GIL was allowed to be retained with a thread for 100
+instructions, after that the thread had to give up the GIL. But, the point here
+is, they just had to give up the GIL, no one is stopping them from acquiring it
+again. Due to this, the threads had to wait to much longer time than 100
+instructions and would result in poor performance. Also, notice that instruction
+is not a fair unit of CPU time for processes, as time taken by each instruction
+might vary. Notice that I am talking about CPU time and not actual time taken by
+the thread, that depends on several other factors like the CPU load.</p>
+
+<p>So, in Python 3.2, a new version of GIL was introduced which tried to fix some
+of the issues that I mentioned above. Firstly, the amount of time a process was
+allowed to hold the GIL was fixed to 5 ms. I am not sure if this was inspired by
+Ruby&rsquo;s GIL which allows each thread to have the lock for 10ms. The choice of
+time for which a thread is allowed to hold the lock depends on performance and
+lock switching overhead. If the time is too less, the lock would be acquired and
+released so often that it would increase the overhead for switching and very
+less actual work would be done as the none of the process would get sufficient
+time to do any piece of work before they are preempted and forced to give up the
+GIL. If the lock is acquired by a single process for too long, other process
+would have to wait for longer and this would kill the performance. the choice of
+5 ms was probably based on some statistical experiment that would maximize the
+productivity with the minimum lock switching overhead.</p>
+
+<p>Another thing that was added in the new GIL was how the locks are switched. If
+the threads don&rsquo;t give up the GIL on their own before their time is up, they are
+forced to give up the GIL. Which threads gets the GIL next depends on the OS
+scheduler and is not controlled by Python. The way the process is forced to give
+up the lock is multi-step mechanism. However, a new concept of priority request
+was also introduced. Priority request would immediately force the running
+process to give up the GIL and would acquire it. This whole process makes sure
+the original thread can not acquire the lock again just after releasing
+it. While this might sound like the right thing to do (it did sound to me), in
+some cases this brings down productivity.</p>
+
+<p>I am not going to get into the implementation specific details of GIL, probably
+in some another post. But, I would like to mention that it is a more complex
+than just a simple mutex lock from pthreads. It uses a combination of mutex and
+conditional variables.</p>
+
+<p>Footnotes:</p>
+
+<p>1: This is true only when there is no CPU bound process running at the same
+time on the same Python interpreter instance. It would cause the CPU bound
+process to run whenever the I/O bound process enters a wait state for an
+external I/O and then make them wait for longer time than they actually need to.</p>
+
+<p>Useful Links:</p>
+
+<ul>
+<li><a href="https://wiki.python.org/moin/GlobalInterpreterLock">Python Wiki on GIL</a></li>
+<li><a href="http://jessenoller.com/blog/2009/02/01/python-threads-and-the-global-interpreter-lock">Jesse Noller&rsquo;s post on GIL</a></li>
+<li><a href="[http://dabeaz.com/GIL/]">Python&rsquo;s Einstein aka David Beazly&rsquo;s Post on GIL</a></li>
+</ul>
+
+                <br>
+                <p><a href="blog">Back to posts</a></p>
+            </div>
+            <br>
+            <div class="disqus">
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+  
+
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
+
+
+
+</body>
+</html>
+

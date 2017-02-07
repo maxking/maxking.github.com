@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mock on maxking&#39;s blog</title>
+    <link>http://asychronous.in/tags/mock/index.xml</link>
+    <description>Recent content in Mock on maxking&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="http://asychronous.in/tags/mock/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Are you mocking me?</title>
+      <link>http://asychronous.in/2013/07/19/are-you-mocking-me/</link>
+      <pubDate>Fri, 19 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://asychronous.in/2013/07/19/are-you-mocking-me/</guid>
+      <description>&lt;p&gt;Unit testing is one of the most important parts of any project. TDD (test
+driven development) is a good habit to cultivate, in case you are not convinced,
+you don&#39;t know about TDD or you have never given it a try. I started using
+partial TDD recently, yes only partial for what I follow is that first I write a
+rough outline of the code, then I write tests and then I keep on re-factoring my
+code till all the tests are passing. Though there is a little flaw in this
+method according to me -- although writing tests are mostly trivial with those
+easy assert statements, sometimes you may write wrong tests which make you write
+wrong code too. So put more thought in writing tests than in writing
+code. Although many times you will agree with me that TDD is annoying, it does
+not let you do what you actually want to do (I mean the &#34;way&#34; you want to do it,
+the result may be same).&lt;/p&gt;
+&lt;p&gt;
+So in this post I am going to talk about mocks. What are mocks? There are some
+magical functions which do some abracadabra on your existing function and make
+them return anything that you want without actually even thinking what they are
+returning. Did I personify it a little too much? Let me explain in a little
+detail with the example of where I used mocking.&lt;/p&gt;
+
+&lt;p&gt;
+Unit tests should be independent of environment and any other module, so that
+each module can be developed separately without affecting the development of
+other modules. But many a times one module depends on others and in that case
+it gets messy to test those functions. In my case it was the &#34;signature&#34; rule
+which uses &#34;gpg&#34; utility to verify signature of messages. Here is a snippet of
+the code:&lt;/p&gt;
+
+
+from mailman.utilities.gpg import GPG
+ 
+@implementer(IRule)
+class Signature:
+    &#34;&#34;&#34;Look for pgp-signature.&#34;&#34;&#34;
+
+    name=&#39;signature&#39;
+    description=_(&#39;The message has pgp-signature as application/pgp-signature part&#39;)
+    record = True
+    def __init__(self):
+        self._gpg = None
+
+    def check(self, mlist, msg, msgdata):
+        &#34;&#34;&#34;See `IRule&#34;&#34;&#34;
+        gpg_dir = os.path.join(config.VAR_DIR, &#39;gpg&#39;)
+        self._gpg = GPG(gpg_dir)
+
+
+
+&lt;p&gt;So if you see in line 1 we import the GPG class from &lt;i&gt;gpg&lt;/i&gt; utility. But
+when we write tests we don&#39;t want this function to &#34;actually&#34; create an instance
+of GPG class and &#34;actually&#34; verify the signature because it is not a function of
+signature rule and any errors or breakpoints in gpg utility may cause our tests
+for the &#34;working&#34; signature rule to fail. So what do we do? We mock and then we
+rock ;-). We mock the GPG instance created in signature rule to return &#34;any
+specific value&#34; irrespective of the input. See the code below:&lt;/p&gt;
+
+
+
+import mock
+
+class TestSignatureMime(unittest.TestCase):
+    &#34;&#34;&#34;Test the signature handler.&#34;&#34;&#34;
+
+  class Dummy_GPG_True:    
+      def __init__(self, dir):
+          self._dir = dir
+        
+      def verify_inline_signature(self, data):
+          return True
+
+      def verify_detached_signature(self, data):
+          return True
+
+
+  @mock.patch(&#39;mailman.rules.signature.GPG&#39;, new=Dummy_GPG_True)
+  def test_good_signature(self):
+      result = self._rule.check(self._mlist, self._msg, {})
+      self.assertTrue(result)
+
+
+
+&lt;p&gt; &lt;/p&gt;
+
+</description>
+    </item>
+    
+  </channel>
+</rss>

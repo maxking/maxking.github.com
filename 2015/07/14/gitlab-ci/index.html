@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Abhilash Raj writes here.">
+
+<base href="http://asychronous.in">
+<title>
+
+
+     maxking&#39;s blog - Gitlab CI? 
+
+</title>
+<link rel="canonical" href="http://asychronous.in/2015/07/14/gitlab-ci/">
+
+
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+
+
+<link rel="stylesheet" href="http://asychronous.incss/reset.css">
+<link rel="stylesheet" href="http://asychronous.incss/main.css">
+
+
+
+
+<link rel="shortcut icon"
+
+    href="http://asychronous.inimg/favicon.ico"
+
+>
+
+
+
+</head>
+
+
+<body lang="en">
+
+
+<section class="header"> 
+
+    <div class="container">
+        <a href="http://asychronous.in"><img class="logo" src="http://asychronous.in/img/logo.png" /></a>
+        <div class="content">
+            <a href="http://asychronous.in"><div class="name"><h1>maxking&#39;s blog</h1></div></a>
+            <nav>
+                <ul>
+                    
+                        <a href="http://asychronous.inblog/"><li>Blog</li></a>
+                    
+                    
+                        
+                    
+                        
+                            
+                        
+                    
+                    
+                        
+                            <a href="http://asychronous.in/notes/"><li>Notes</li></a>
+                        
+                    
+                        
+                            <a href="http://asychronous.in/about/"><li>About</li></a>
+                        
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<section class="icons">
+    <div class="container">
+        <div class="content">
+
+        
+            <a href="https://github.com/maxking" target="_blank">
+                <i class="icon ion-social-github"></i>
+            </a>
+        
+        
+        
+            <a href="https://twitter.com/_maxking_" target="_blank">
+                <i class="icon ion-social-twitter"></i>
+            </a>
+        
+
+        
+
+        
+
+        
+            <a href="http://asychronous.in/index.xml">
+                <i class="icon ion-social-rss larger"></i>
+            </a>
+        
+        </div>
+    </div>
+</section>
+
+
+<section class="main post non-narrow zero-top-spacing">
+    <div class="container">
+        <div class="content">
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    Gitlab CI?
+
+</div>
+
+                </div>
+                <div class="meta">
+                    <div class="date" title="Jul 14 2015 00:00">Jul 14 2015</div>
+                    <div class="reading-time"><div class="middot"></div>4 minutes read</div>
+                </div>
+            </div>
+            <div class="markdown">
+                <p><i>Note: This post is now outdated. GNU Mailman now has a <a href="http://hub.docker.com/u/maxking/mailman-ci-runner/">new container image</a>
+for running tests and this time it <em>just works</em>.
+</i></p>
+
+<p>Being one of the core developers of GNU Mailman, I took up the task to setup
+a Continuous Integration server for Mailman. While looking for a service using
+FOSS and was free to use I stumbled upon <a href="https://ci.gitlab.com">Gitlab CI</a>. There were several
+other options to choose from, but none of them fulfilled our requirement of
+using FOSS. Gitlab is a FOSS and its source code is available on <a href="https://gitlab.com/gitlab-org/gitlab-ci">Gitlab</a> as
+well as <a href="https://github.com/gitlabhq/gitlab-ci">Github</a>.</p>
+
+<p>Now, the model of Gitlab CI is different from the others you would have
+encountered before like Travis-CI or Circle-CI. Gitlab CI only provides an
+interface to view the results of the tests associated with each commit or
+Pull Request. The actual tests are run using gitlab-ci&rsquo;s runners which can
+be run on any other system <sup><a href="https://ci.gitlab.com">1</a></sup>. The latest <a href="https://gitlab.com/gitlab-org/gitlab-ci-multi-runner">gitlab-ci-multi-runner</a>
+is written in Go and can run tests for multiple repositories <sup>2</sup>.</p>
+
+<p>Gitlab CI can be used to run tests in a couple of ways:</p>
+
+<ul>
+<li>locally</li>
+<li>using Docker container</li>
+<li>using Docker container and executing job over SSH</li>
+<li>connecting to remote SSH server</li>
+<li>using a Parallels VM</li>
+</ul>
+
+<p>Since we wanted to build Pull Requests, considering the security implication
+of running a running un-trusted code inside a server/local-machine, I decided
+to go with the 3rd option. Docker running in unprilidged mode and with no root
+access, even inside the docker container ,could do much less harm. So, for this
+setup I needed the following things:</p>
+
+<ul>
+<li>A docker image inside which your tests are gonna run</li>
+<li>The above image have ssh-access</li>
+<li>A postgres database image linked to the above container</li>
+</ul>
+
+<p>I created a new docker image called <a href="https://registry.hub.docker.com/u/maxking/mailman-runner/">&lsquo;mailman-runner&rsquo;</a> to run the tests. Its
+Dockerfile<a href="https://github.com/maxking/docker-mailman-ci">6</a> is also available on Github if you would like to view to suggest
+edits.</p>
+
+<p>Install Docker first</p>
+
+<pre><code>	curl -sSL https://get.docker.com/ | sh
+</code></pre>
+
+<p>We need to mount a data volume into our gitlab-ci-multi-runner container to be
+used for configs and other resources:</p>
+
+<pre><code>	docker run -d --name multi-runner --restart always \
+	-v /var/run/docker.sock:/var/run/docker.sock \
+	-v /PATH/TO/DATA/FOLDER:/data \
+	ayufan/gitlab-ci-multi-runner:latest
+</code></pre>
+
+<p>The <code>-v</code> option is used to add a data volume to the container. Here we add
+a data volumen and a docker-socker to the container so that it can spawn new
+containers to run tests in.</p>
+
+<p>Now, register the runner:</p>
+
+<pre><code class="language-bash">docker exec -it multi-runner gitlab-ci-multi-runner register
+
+Please enter the gitlab-ci coordinator URL (e.g. http://gitlab-ci.org:3000/ )
+https://ci.gitlab.com/
+Please enter the gitlab-ci token for this runner
+xxx
+Please enter the gitlab-ci description for this runner
+my-runner
+INFO[0034] fcf5c619 Registering runner... succeeded
+Please enter the executor: shell, docker, docker-ssh, ssh?
+docker-ssh
+Please enter the Docker image (eg. ruby:2.1):
+mailman-runner:latest
+If you want to enable mysql please enter version (X.Y) or enter latest?
+
+If you want to enable postgres please enter version (X.Y) or enter latest?
+
+If you want to enable redis please enter version (X.Y) or enter latest?
+
+If you want to enable mongo please enter version (X.Y) or enter latest?
+
+Please enter the SSH user (eg. root):
+runner
+Please enter the SSH password (eg. docker.io):
+runner
+
+INFO[0037] Runner registered successfully. Feel free to start it, but if it's
+running already the config should be automatically reloaded!
+</code></pre>
+
+<p><em>Note: The ssh user and password in the above configuration was created by
+default in the mailman-runner docker image.</em></p>
+
+<p>After this, the configuration file (config.toml) would look somewhat like
+this:</p>
+
+<pre><code>concurrent = 4
+
+[[runners]]
+  name = &quot;second-runner&quot;
+  url = &quot;https://ci.gitlab.com&quot;
+  token = &quot;XXX&quot;
+  executor = &quot;docker-ssh&quot;
+  [runners.ssh]
+    user = &quot;runner&quot;
+    password = &quot;runner&quot;
+  [runners.docker]
+    image = &quot;mailman-runner&quot;
+    privileged = false
+    volumes = [&quot;/cache&quot;]
+
+</code></pre>
+
+<p>PS:</p>
+
+<ol>
+<li><p>Now, Gitlab CI has a concept of shared runners where you can use
+some public runners to run your tests. This update was added recently.</p></li>
+
+<li><p>Previously, one runner could be used for only one repository. You
+needed to start another instance of the same runner to run tests for
+another reposiroty. However, now you can share runners across all your
+repositories even if they belong to a group.</p></li>
+</ol>
+
+                <br>
+                <p><a href="blog">Back to posts</a></p>
+            </div>
+            <br>
+            <div class="disqus">
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+  
+
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Abhilash Raj writes here.">
+
+<base href="http://asychronous.in">
+<title>
+
+
+     maxking&#39;s blog - Are you mocking me? 
+
+</title>
+<link rel="canonical" href="http://asychronous.in/2013/07/19/are-you-mocking-me/">
+
+
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+
+
+<link rel="stylesheet" href="http://asychronous.incss/reset.css">
+<link rel="stylesheet" href="http://asychronous.incss/main.css">
+
+
+
+
+<link rel="shortcut icon"
+
+    href="http://asychronous.inimg/favicon.ico"
+
+>
+
+
+
+</head>
+
+
+<body lang="en">
+
+
+<section class="header"> 
+
+    <div class="container">
+        <a href="http://asychronous.in"><img class="logo" src="http://asychronous.in/img/logo.png" /></a>
+        <div class="content">
+            <a href="http://asychronous.in"><div class="name"><h1>maxking&#39;s blog</h1></div></a>
+            <nav>
+                <ul>
+                    
+                        <a href="http://asychronous.inblog/"><li>Blog</li></a>
+                    
+                    
+                        
+                    
+                        
+                            
+                        
+                    
+                    
+                        
+                            <a href="http://asychronous.in/notes/"><li>Notes</li></a>
+                        
+                    
+                        
+                            <a href="http://asychronous.in/about/"><li>About</li></a>
+                        
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<section class="icons">
+    <div class="container">
+        <div class="content">
+
+        
+            <a href="https://github.com/maxking" target="_blank">
+                <i class="icon ion-social-github"></i>
+            </a>
+        
+        
+        
+            <a href="https://twitter.com/_maxking_" target="_blank">
+                <i class="icon ion-social-twitter"></i>
+            </a>
+        
+
+        
+
+        
+
+        
+            <a href="http://asychronous.in/index.xml">
+                <i class="icon ion-social-rss larger"></i>
+            </a>
+        
+        </div>
+    </div>
+</section>
+
+
+<section class="main post non-narrow zero-top-spacing">
+    <div class="container">
+        <div class="content">
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    Are you mocking me?
+
+</div>
+
+                </div>
+                <div class="meta">
+                    <div class="date" title="Jul 19 2013 00:00">Jul 19 2013</div>
+                    <div class="reading-time"><div class="middot"></div>3 minutes read</div>
+                </div>
+            </div>
+            <div class="markdown">
+                <p>Unit testing is one of the most important parts of any project. TDD (test
+driven development) is a good habit to cultivate, in case you are not convinced,
+you don't know about TDD or you have never given it a try. I started using
+partial TDD recently, yes only partial for what I follow is that first I write a
+rough outline of the code, then I write tests and then I keep on re-factoring my
+code till all the tests are passing. Though there is a little flaw in this
+method according to me -- although writing tests are mostly trivial with those
+easy assert statements, sometimes you may write wrong tests which make you write
+wrong code too. So put more thought in writing tests than in writing
+code. Although many times you will agree with me that TDD is annoying, it does
+not let you do what you actually want to do (I mean the "way" you want to do it,
+the result may be same).</p>
+<p>
+So in this post I am going to talk about mocks. What are mocks? There are some
+magical functions which do some abracadabra on your existing function and make
+them return anything that you want without actually even thinking what they are
+returning. Did I personify it a little too much? Let me explain in a little
+detail with the example of where I used mocking.</p>
+
+<p>
+Unit tests should be independent of environment and any other module, so that
+each module can be developed separately without affecting the development of
+other modules. But many a times one module depends on others and in that case
+it gets messy to test those functions. In my case it was the "signature" rule
+which uses "gpg" utility to verify signature of messages. Here is a snippet of
+the code:</p>
+
+
+from mailman.utilities.gpg import GPG
+ 
+@implementer(IRule)
+class Signature:
+    """Look for pgp-signature."""
+
+    name='signature'
+    description=_('The message has pgp-signature as application/pgp-signature part')
+    record = True
+    def __init__(self):
+        self._gpg = None
+
+    def check(self, mlist, msg, msgdata):
+        """See `IRule"""
+        gpg_dir = os.path.join(config.VAR_DIR, 'gpg')
+        self._gpg = GPG(gpg_dir)
+
+
+
+<p>So if you see in line 1 we import the GPG class from <i>gpg</i> utility. But
+when we write tests we don't want this function to "actually" create an instance
+of GPG class and "actually" verify the signature because it is not a function of
+signature rule and any errors or breakpoints in gpg utility may cause our tests
+for the "working" signature rule to fail. So what do we do? We mock and then we
+rock ;-). We mock the GPG instance created in signature rule to return "any
+specific value" irrespective of the input. See the code below:</p>
+
+
+
+import mock
+
+class TestSignatureMime(unittest.TestCase):
+    """Test the signature handler."""
+
+  class Dummy_GPG_True:    
+      def __init__(self, dir):
+          self._dir = dir
+        
+      def verify_inline_signature(self, data):
+          return True
+
+      def verify_detached_signature(self, data):
+          return True
+
+
+  @mock.patch('mailman.rules.signature.GPG', new=Dummy_GPG_True)
+  def test_good_signature(self):
+      result = self._rule.check(self._mlist, self._msg, {})
+      self.assertTrue(result)
+
+
+
+<p> </p>
+
+
+                <br>
+                <p><a href="blog">Back to posts</a></p>
+            </div>
+            <br>
+            <div class="disqus">
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+  
+
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
+
+
+
+</body>
+</html>
+
