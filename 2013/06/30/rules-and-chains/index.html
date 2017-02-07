@@ -152,15 +152,15 @@ misses. Moderation does not change anything in message, but it may record the
 processing information(like rule hits and misses) information in a metadata
 dictionary. Each rule has the following structure:</p>
 
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #a6e22e">@implementer</span><span style="color: #f8f8f2">(IRule)</span>
+<span style="color: #66d9ef">class</span> <span style="color: #a6e22e">New_Rule</span><span style="color: #f8f8f2">:</span>
 
-@implementer(IRule)
-class New_Rule:
-
-    def check(self, mlist, msg, msgdata):
-        if foo == foobar:
-            return True
-        else:
-            return False
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">check</span><span style="color: #f8f8f2">(self,</span> <span style="color: #f8f8f2">mlist,</span> <span style="color: #f8f8f2">msg,</span> <span style="color: #f8f8f2">msgdata):</span>
+        <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">foo</span> <span style="color: #f92672">==</span> <span style="color: #f8f8f2">foobar:</span>
+            <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">True</span>
+        <span style="color: #66d9ef">else</span><span style="color: #f8f8f2">:</span>
+            <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">False</span>
+</pre></div>
 
 <p>
 You can write your own rules to check whatever criteria you want mailman to
@@ -176,34 +176,32 @@ addressed to and accordingly the moderation occurs for admin or normal postings.
 before the message is discarded, held or accepted. In mailman3 the list is as
 follows in the order in which they are called:</p>
 
-
-
-    _link_descriptions = (
-        ('approved', LinkAction.jump, 'accept'),
-        ('emergency', LinkAction.jump, 'hold'),
-        ('loop', LinkAction.jump, 'discard'),
-        # Determine whether the member or nonmember has an action shortcut.
-        ('member-moderation', LinkAction.jump, 'moderation'),
-        # Do all of the following before deciding whether to hold the message.
-        ('signature', LinkAction.jump, 'discard'),
-        ('administrivia', LinkAction.defer, None),
-        ('implicit-dest', LinkAction.defer, None),
-        ('max-recipients', LinkAction.defer, None),
-        ('max-size', LinkAction.defer, None),
-        ('news-moderation', LinkAction.defer, None),
-        ('no-subject', LinkAction.defer, None),
-        ('suspicious-header', LinkAction.defer, None),
-        # Now if any of the above hit, jump to the hold chain.
-        ('any', LinkAction.jump, 'hold'),
-        # Take a detour through the header matching chain, which we'll create
-        # later.
-        ('truth', LinkAction.detour, 'header-match'),
-        # Check for nonmember moderation.
-        ('nonmember-moderation', LinkAction.jump, 'moderation'),
-        # Finally, the builtin chain jumps to acceptance.
-        ('truth', LinkAction.jump, 'accept'),
-     )
-
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>    <span style="color: #f8f8f2">_link_descriptions</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">(</span>
+        <span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;approved&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">LinkAction</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">jump,</span> <span style="color: #e6db74">&#39;accept&#39;</span><span style="color: #f8f8f2">),</span>
+        <span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;emergency&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">LinkAction</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">jump,</span> <span style="color: #e6db74">&#39;hold&#39;</span><span style="color: #f8f8f2">),</span>
+        <span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;loop&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">LinkAction</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">jump,</span> <span style="color: #e6db74">&#39;discard&#39;</span><span style="color: #f8f8f2">),</span>
+        <span style="color: #75715e"># Determine whether the member or nonmember has an action shortcut.</span>
+        <span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;member-moderation&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">LinkAction</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">jump,</span> <span style="color: #e6db74">&#39;moderation&#39;</span><span style="color: #f8f8f2">),</span>
+        <span style="color: #75715e"># Do all of the following before deciding whether to hold the message.</span>
+        <span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;signature&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">LinkAction</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">jump,</span> <span style="color: #e6db74">&#39;discard&#39;</span><span style="color: #f8f8f2">),</span>
+        <span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;administrivia&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">LinkAction</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">defer,</span> <span style="color: #f8f8f2">None),</span>
+        <span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;implicit-dest&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">LinkAction</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">defer,</span> <span style="color: #f8f8f2">None),</span>
+        <span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;max-recipients&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">LinkAction</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">defer,</span> <span style="color: #f8f8f2">None),</span>
+        <span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;max-size&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">LinkAction</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">defer,</span> <span style="color: #f8f8f2">None),</span>
+        <span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;news-moderation&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">LinkAction</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">defer,</span> <span style="color: #f8f8f2">None),</span>
+        <span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;no-subject&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">LinkAction</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">defer,</span> <span style="color: #f8f8f2">None),</span>
+        <span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;suspicious-header&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">LinkAction</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">defer,</span> <span style="color: #f8f8f2">None),</span>
+        <span style="color: #75715e"># Now if any of the above hit, jump to the hold chain.</span>
+        <span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;any&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">LinkAction</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">jump,</span> <span style="color: #e6db74">&#39;hold&#39;</span><span style="color: #f8f8f2">),</span>
+        <span style="color: #75715e"># Take a detour through the header matching chain, which we&#39;ll create</span>
+        <span style="color: #75715e"># later.</span>
+        <span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;truth&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">LinkAction</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">detour,</span> <span style="color: #e6db74">&#39;header-match&#39;</span><span style="color: #f8f8f2">),</span>
+        <span style="color: #75715e"># Check for nonmember moderation.</span>
+        <span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;nonmember-moderation&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">LinkAction</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">jump,</span> <span style="color: #e6db74">&#39;moderation&#39;</span><span style="color: #f8f8f2">),</span>
+        <span style="color: #75715e"># Finally, the builtin chain jumps to acceptance.</span>
+        <span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;truth&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">LinkAction</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">jump,</span> <span style="color: #e6db74">&#39;accept&#39;</span><span style="color: #f8f8f2">),</span>
+     <span style="color: #f8f8f2">)</span>
+</pre></div>
 
 
 <p>In the above list each entry consists of a tuple of the

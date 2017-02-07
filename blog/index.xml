@@ -803,24 +803,23 @@ it gets messy to test those functions. In my case it was the &#34;signature&#34;
 which uses &#34;gpg&#34; utility to verify signature of messages. Here is a snippet of
 the code:&lt;/p&gt;
 
-
-from mailman.utilities.gpg import GPG
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;from&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;mailman.utilities.gpg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;GPG&lt;/span&gt;
  
-@implementer(IRule)
-class Signature:
-    &#34;&#34;&#34;Look for pgp-signature.&#34;&#34;&#34;
+&lt;span style=&#34;color: #a6e22e&#34;&gt;@implementer&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(IRule)&lt;/span&gt;
+&lt;span style=&#34;color: #66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;Signature&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;quot;&amp;quot;Look for pgp-signature.&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
 
-    name=&#39;signature&#39;
-    description=_(&#39;The message has pgp-signature as application/pgp-signature part&#39;)
-    record = True
-    def __init__(self):
-        self._gpg = None
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;signature&amp;#39;&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;description&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;The message has pgp-signature as application/pgp-signature part&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;record&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;True&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;__init__&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self):&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_gpg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;None&lt;/span&gt;
 
-    def check(self, mlist, msg, msgdata):
-        &#34;&#34;&#34;See `IRule&#34;&#34;&#34;
-        gpg_dir = os.path.join(config.VAR_DIR, &#39;gpg&#39;)
-        self._gpg = GPG(gpg_dir)
-
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;check&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;mlist,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;msgdata):&lt;/span&gt;
+        &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;quot;&amp;quot;See `IRule&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;gpg_dir&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;os&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;path&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;join(config&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;VAR_DIR,&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;gpg&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_gpg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;GPG(gpg_dir)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;So if you see in line 1 we import the GPG class from &lt;i&gt;gpg&lt;/i&gt; utility. But
@@ -832,28 +831,27 @@ rock ;-). We mock the GPG instance created in signature rule to return &#34;any
 specific value&#34; irrespective of the input. See the code below:&lt;/p&gt;
 
 
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;mock&lt;/span&gt;
 
-import mock
+&lt;span style=&#34;color: #66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TestSignatureMime&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(unittest&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;TestCase):&lt;/span&gt;
+    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;quot;&amp;quot;Test the signature handler.&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
 
-class TestSignatureMime(unittest.TestCase):
-    &#34;&#34;&#34;Test the signature handler.&#34;&#34;&#34;
-
-  class Dummy_GPG_True:    
-      def __init__(self, dir):
-          self._dir = dir
+  &lt;span style=&#34;color: #66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;Dummy_GPG_True&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;    
+      &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;__init__&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;dir):&lt;/span&gt;
+          &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_dir&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;dir&lt;/span&gt;
         
-      def verify_inline_signature(self, data):
-          return True
+      &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;verify_inline_signature&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;data):&lt;/span&gt;
+          &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;True&lt;/span&gt;
 
-      def verify_detached_signature(self, data):
-          return True
+      &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;verify_detached_signature&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;data):&lt;/span&gt;
+          &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;True&lt;/span&gt;
 
 
-  @mock.patch(&#39;mailman.rules.signature.GPG&#39;, new=Dummy_GPG_True)
-  def test_good_signature(self):
-      result = self._rule.check(self._mlist, self._msg, {})
-      self.assertTrue(result)
-
+  &lt;span style=&#34;color: #a6e22e&#34;&gt;@mock.patch&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;mailman.rules.signature.GPG&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;new&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;Dummy_GPG_True)&lt;/span&gt;
+  &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;test_good_signature&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self):&lt;/span&gt;
+      &lt;span style=&#34;color: #f8f8f2&#34;&gt;result&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_rule&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;check(self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_mlist,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_msg,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{})&lt;/span&gt;
+      &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;assertTrue(result)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt; &lt;/p&gt;
@@ -924,21 +922,20 @@ testing purposes in-case you don&#39;t want the tests to alter your actual data.
 config layer creates a temp &#34;var director&#34; during test runtime. See the code
 below for the initialization of the gpg handler:
 
-
-class GPG:
-    def __init__(self, dir):
-        self._gpg = None
-        self._home = dir
-        self._gpg = gnupg.GPG(gnupghome=self._home)
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;GPG&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;__init__&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;dir):&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_gpg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;None&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_home&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;dir&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_gpg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;gnupg&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;GPG(gnupghome&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_home)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;And this module is used as:
 
-
-  from mailman.utilities.gpg import GPG
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;  &lt;span style=&#34;color: #f92672&#34;&gt;from&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;mailman.utilities.gpg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;GPG&lt;/span&gt;
   
-  gpg_dir = os.path.join(config.VAR_DIR, &#34;gpg&#34;)
-  gpg = GPG(gpg_dir)
-
+  &lt;span style=&#34;color: #f8f8f2&#34;&gt;gpg_dir&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;os&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;path&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;join(config&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;VAR_DIR,&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;gpg&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+  &lt;span style=&#34;color: #f8f8f2&#34;&gt;gpg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;GPG(gpg_dir)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;So the `config layer` creates a new temp var directory every time tests are
@@ -947,57 +944,55 @@ never found during the test run. So the workaround that I was suggested by Barry
 to copy the test data to whatever temp var directory that is created the tests
 are now running smoothly. Below is a snippet of the code how it works:
 &lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;  &lt;span style=&#34;color: #f92672&#34;&gt;from&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;mailman.testing.helpers&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;setup_keyrings,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;makedirs&lt;/span&gt;
 
-  from mailman.testing.helpers import setup_keyrings, makedirs
-
-  class TestGPG(unittest.TestCase):
-    &#34;&#34;&#34;Testing functions in the gpg utility&#34;&#34;&#34;
+  &lt;span style=&#34;color: #66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TestGPG&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(unittest&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;TestCase):&lt;/span&gt;
+    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;quot;&amp;quot;Testing functions in the gpg utility&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
     
-    layer = ConfigLayer
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;layer&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;ConfigLayer&lt;/span&gt;
     
-    def test_keyring(self):
-        &#34;&#34;&#34;verify the keyrings&#34;&#34;&#34;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;test_keyring&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self):&lt;/span&gt;
+        &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;quot;&amp;quot;verify the keyrings&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
 
-        gpg_dir = os.path.join(config.VAR_DIR, &#39;gpg&#39;)
-        makedirs(gpg_dir)
-        setup_keyrings(gpg_dir)
-        gpg = GPG(gpg_dir)
-
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;gpg_dir&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;os&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;path&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;join(config&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;VAR_DIR,&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;gpg&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;makedirs(gpg_dir)&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;setup_keyrings(gpg_dir)&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;gpg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;GPG(gpg_dir)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt; And below are the helper functions that are used above.&lt;/p&gt;
 
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;  
+&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;test_data_path&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(filename):&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;os&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;path&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;abspath(&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;resource_filename(&lt;/span&gt;
+            &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;mailman.utilities.tests.data&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;filename))&lt;/span&gt;
 
-  
-def test_data_path(filename):
-    return os.path.abspath(
-        resource_filename(
-            &#39;mailman.utilities.tests.data&#39;, filename))
+&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;makedirs&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(dir):&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;try&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;os&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;makedirs(dir)&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;except&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;OSError&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;as&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;e:&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;pass&lt;/span&gt;
 
-def makedirs(dir):
-    try:
-        os.makedirs(dir)
-    except OSError as e:
-        pass
+&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;copy&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(filename,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;dst):&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;src&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;test_data_path(filename)&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;makedirs(dst)&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;try&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; 
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;shutil&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;copy(src,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;dst)&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;except&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;IOError&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;raise&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;IOError&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;File {0} copy to {1} failed&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;format(filename,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;dst))&lt;/span&gt;
 
-def copy(filename, dst):
-    src = test_data_path(filename)
-    makedirs(dst)
-    try: 
-        shutil.copy(src, dst)
-    except IOError:
-        raise IOError(&#39;File {0} copy to {1} failed&#39;.format(filename, dst))
-
-def setup_keyrings(dst):
-    &#34;&#34;&#34;Copy the keyrings to the right place.
-    &#34;&#34;&#34;
-    keyrings = (&#39;pubring.gpg&#39;, &#39;secring.gpg&#39;)
+&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;setup_keyrings&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(dst):&lt;/span&gt;
+    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;quot;&amp;quot;Copy the keyrings to the right place.&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;keyrings&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;pubring.gpg&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;secring.gpg&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
     
-    for keyring in keyrings:
-        # The local keyrings live in the .gpg file with the same keyring name
-        # in the temporary directory.
-        copy(keyring, dst)
-
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;keyring&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;keyrings:&lt;/span&gt;
+        &lt;span style=&#34;color: #75715e&#34;&gt;# The local keyrings live in the .gpg file with the same keyring name&lt;/span&gt;
+        &lt;span style=&#34;color: #75715e&#34;&gt;# in the temporary directory.&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;copy(keyring,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;dst)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 </description>
     </item>

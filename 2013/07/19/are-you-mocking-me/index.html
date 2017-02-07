@@ -152,24 +152,23 @@ it gets messy to test those functions. In my case it was the "signature" rule
 which uses "gpg" utility to verify signature of messages. Here is a snippet of
 the code:</p>
 
-
-from mailman.utilities.gpg import GPG
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #f92672">from</span> <span style="color: #f8f8f2">mailman.utilities.gpg</span> <span style="color: #f92672">import</span> <span style="color: #f8f8f2">GPG</span>
  
-@implementer(IRule)
-class Signature:
-    """Look for pgp-signature."""
+<span style="color: #a6e22e">@implementer</span><span style="color: #f8f8f2">(IRule)</span>
+<span style="color: #66d9ef">class</span> <span style="color: #a6e22e">Signature</span><span style="color: #f8f8f2">:</span>
+    <span style="color: #e6db74">&quot;&quot;&quot;Look for pgp-signature.&quot;&quot;&quot;</span>
 
-    name='signature'
-    description=_('The message has pgp-signature as application/pgp-signature part')
-    record = True
-    def __init__(self):
-        self._gpg = None
+    <span style="color: #f8f8f2">name</span><span style="color: #f92672">=</span><span style="color: #e6db74">&#39;signature&#39;</span>
+    <span style="color: #f8f8f2">description</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">_(</span><span style="color: #e6db74">&#39;The message has pgp-signature as application/pgp-signature part&#39;</span><span style="color: #f8f8f2">)</span>
+    <span style="color: #f8f8f2">record</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">True</span>
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">__init__</span><span style="color: #f8f8f2">(self):</span>
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">_gpg</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">None</span>
 
-    def check(self, mlist, msg, msgdata):
-        """See `IRule"""
-        gpg_dir = os.path.join(config.VAR_DIR, 'gpg')
-        self._gpg = GPG(gpg_dir)
-
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">check</span><span style="color: #f8f8f2">(self,</span> <span style="color: #f8f8f2">mlist,</span> <span style="color: #f8f8f2">msg,</span> <span style="color: #f8f8f2">msgdata):</span>
+        <span style="color: #e6db74">&quot;&quot;&quot;See `IRule&quot;&quot;&quot;</span>
+        <span style="color: #f8f8f2">gpg_dir</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">os</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">path</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">join(config</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">VAR_DIR,</span> <span style="color: #e6db74">&#39;gpg&#39;</span><span style="color: #f8f8f2">)</span>
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">_gpg</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">GPG(gpg_dir)</span>
+</pre></div>
 
 
 <p>So if you see in line 1 we import the GPG class from <i>gpg</i> utility. But
@@ -181,28 +180,27 @@ rock ;-). We mock the GPG instance created in signature rule to return "any
 specific value" irrespective of the input. See the code below:</p>
 
 
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #f92672">import</span> <span style="color: #f8f8f2">mock</span>
 
-import mock
+<span style="color: #66d9ef">class</span> <span style="color: #a6e22e">TestSignatureMime</span><span style="color: #f8f8f2">(unittest</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">TestCase):</span>
+    <span style="color: #e6db74">&quot;&quot;&quot;Test the signature handler.&quot;&quot;&quot;</span>
 
-class TestSignatureMime(unittest.TestCase):
-    """Test the signature handler."""
-
-  class Dummy_GPG_True:    
-      def __init__(self, dir):
-          self._dir = dir
+  <span style="color: #66d9ef">class</span> <span style="color: #a6e22e">Dummy_GPG_True</span><span style="color: #f8f8f2">:</span>    
+      <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">__init__</span><span style="color: #f8f8f2">(self,</span> <span style="color: #f8f8f2">dir):</span>
+          <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">_dir</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">dir</span>
         
-      def verify_inline_signature(self, data):
-          return True
+      <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">verify_inline_signature</span><span style="color: #f8f8f2">(self,</span> <span style="color: #f8f8f2">data):</span>
+          <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">True</span>
 
-      def verify_detached_signature(self, data):
-          return True
+      <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">verify_detached_signature</span><span style="color: #f8f8f2">(self,</span> <span style="color: #f8f8f2">data):</span>
+          <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">True</span>
 
 
-  @mock.patch('mailman.rules.signature.GPG', new=Dummy_GPG_True)
-  def test_good_signature(self):
-      result = self._rule.check(self._mlist, self._msg, {})
-      self.assertTrue(result)
-
+  <span style="color: #a6e22e">@mock.patch</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;mailman.rules.signature.GPG&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">new</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">Dummy_GPG_True)</span>
+  <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">test_good_signature</span><span style="color: #f8f8f2">(self):</span>
+      <span style="color: #f8f8f2">result</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">_rule</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">check(self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">_mlist,</span> <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">_msg,</span> <span style="color: #f8f8f2">{})</span>
+      <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">assertTrue(result)</span>
+</pre></div>
 
 
 <p> </p>

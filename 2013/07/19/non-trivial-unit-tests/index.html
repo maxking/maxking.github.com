@@ -143,21 +143,20 @@ testing purposes in-case you don't want the tests to alter your actual data. So
 config layer creates a temp "var director" during test runtime. See the code
 below for the initialization of the gpg handler:
 
-
-class GPG:
-    def __init__(self, dir):
-        self._gpg = None
-        self._home = dir
-        self._gpg = gnupg.GPG(gnupghome=self._home)
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">class</span> <span style="color: #a6e22e">GPG</span><span style="color: #f8f8f2">:</span>
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">__init__</span><span style="color: #f8f8f2">(self,</span> <span style="color: #f8f8f2">dir):</span>
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">_gpg</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">None</span>
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">_home</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">dir</span>
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">_gpg</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">gnupg</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">GPG(gnupghome</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">_home)</span>
+</pre></div>
 
 <p>And this module is used as:
 
-
-  from mailman.utilities.gpg import GPG
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>  <span style="color: #f92672">from</span> <span style="color: #f8f8f2">mailman.utilities.gpg</span> <span style="color: #f92672">import</span> <span style="color: #f8f8f2">GPG</span>
   
-  gpg_dir = os.path.join(config.VAR_DIR, "gpg")
-  gpg = GPG(gpg_dir)
-
+  <span style="color: #f8f8f2">gpg_dir</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">os</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">path</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">join(config</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">VAR_DIR,</span> <span style="color: #e6db74">&quot;gpg&quot;</span><span style="color: #f8f8f2">)</span>
+  <span style="color: #f8f8f2">gpg</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">GPG(gpg_dir)</span>
+</pre></div>
 
 
 <p>So the `config layer` creates a new temp var directory every time tests are
@@ -166,57 +165,55 @@ never found during the test run. So the workaround that I was suggested by Barry
 to copy the test data to whatever temp var directory that is created the tests
 are now running smoothly. Below is a snippet of the code how it works:
 </p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>  <span style="color: #f92672">from</span> <span style="color: #f8f8f2">mailman.testing.helpers</span> <span style="color: #f92672">import</span> <span style="color: #f8f8f2">setup_keyrings,</span> <span style="color: #f8f8f2">makedirs</span>
 
-  from mailman.testing.helpers import setup_keyrings, makedirs
-
-  class TestGPG(unittest.TestCase):
-    """Testing functions in the gpg utility"""
+  <span style="color: #66d9ef">class</span> <span style="color: #a6e22e">TestGPG</span><span style="color: #f8f8f2">(unittest</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">TestCase):</span>
+    <span style="color: #e6db74">&quot;&quot;&quot;Testing functions in the gpg utility&quot;&quot;&quot;</span>
     
-    layer = ConfigLayer
+    <span style="color: #f8f8f2">layer</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">ConfigLayer</span>
     
-    def test_keyring(self):
-        """verify the keyrings"""
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">test_keyring</span><span style="color: #f8f8f2">(self):</span>
+        <span style="color: #e6db74">&quot;&quot;&quot;verify the keyrings&quot;&quot;&quot;</span>
 
-        gpg_dir = os.path.join(config.VAR_DIR, 'gpg')
-        makedirs(gpg_dir)
-        setup_keyrings(gpg_dir)
-        gpg = GPG(gpg_dir)
-
+        <span style="color: #f8f8f2">gpg_dir</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">os</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">path</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">join(config</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">VAR_DIR,</span> <span style="color: #e6db74">&#39;gpg&#39;</span><span style="color: #f8f8f2">)</span>
+        <span style="color: #f8f8f2">makedirs(gpg_dir)</span>
+        <span style="color: #f8f8f2">setup_keyrings(gpg_dir)</span>
+        <span style="color: #f8f8f2">gpg</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">GPG(gpg_dir)</span>
+</pre></div>
 
 
 <p> And below are the helper functions that are used above.</p>
 
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>  
+<span style="color: #66d9ef">def</span> <span style="color: #a6e22e">test_data_path</span><span style="color: #f8f8f2">(filename):</span>
+    <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">os</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">path</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">abspath(</span>
+        <span style="color: #f8f8f2">resource_filename(</span>
+            <span style="color: #e6db74">&#39;mailman.utilities.tests.data&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">filename))</span>
 
-  
-def test_data_path(filename):
-    return os.path.abspath(
-        resource_filename(
-            'mailman.utilities.tests.data', filename))
+<span style="color: #66d9ef">def</span> <span style="color: #a6e22e">makedirs</span><span style="color: #f8f8f2">(dir):</span>
+    <span style="color: #66d9ef">try</span><span style="color: #f8f8f2">:</span>
+        <span style="color: #f8f8f2">os</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">makedirs(dir)</span>
+    <span style="color: #66d9ef">except</span> <span style="color: #a6e22e">OSError</span> <span style="color: #66d9ef">as</span> <span style="color: #f8f8f2">e:</span>
+        <span style="color: #66d9ef">pass</span>
 
-def makedirs(dir):
-    try:
-        os.makedirs(dir)
-    except OSError as e:
-        pass
+<span style="color: #66d9ef">def</span> <span style="color: #a6e22e">copy</span><span style="color: #f8f8f2">(filename,</span> <span style="color: #f8f8f2">dst):</span>
+    <span style="color: #f8f8f2">src</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">test_data_path(filename)</span>
+    <span style="color: #f8f8f2">makedirs(dst)</span>
+    <span style="color: #66d9ef">try</span><span style="color: #f8f8f2">:</span> 
+        <span style="color: #f8f8f2">shutil</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">copy(src,</span> <span style="color: #f8f8f2">dst)</span>
+    <span style="color: #66d9ef">except</span> <span style="color: #a6e22e">IOError</span><span style="color: #f8f8f2">:</span>
+        <span style="color: #66d9ef">raise</span> <span style="color: #a6e22e">IOError</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;File {0} copy to {1} failed&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(filename,</span> <span style="color: #f8f8f2">dst))</span>
 
-def copy(filename, dst):
-    src = test_data_path(filename)
-    makedirs(dst)
-    try: 
-        shutil.copy(src, dst)
-    except IOError:
-        raise IOError('File {0} copy to {1} failed'.format(filename, dst))
-
-def setup_keyrings(dst):
-    """Copy the keyrings to the right place.
-    """
-    keyrings = ('pubring.gpg', 'secring.gpg')
+<span style="color: #66d9ef">def</span> <span style="color: #a6e22e">setup_keyrings</span><span style="color: #f8f8f2">(dst):</span>
+    <span style="color: #e6db74">&quot;&quot;&quot;Copy the keyrings to the right place.</span>
+<span style="color: #e6db74">    &quot;&quot;&quot;</span>
+    <span style="color: #f8f8f2">keyrings</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;pubring.gpg&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;secring.gpg&#39;</span><span style="color: #f8f8f2">)</span>
     
-    for keyring in keyrings:
-        # The local keyrings live in the .gpg file with the same keyring name
-        # in the temporary directory.
-        copy(keyring, dst)
-
+    <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">keyring</span> <span style="color: #f92672">in</span> <span style="color: #f8f8f2">keyrings:</span>
+        <span style="color: #75715e"># The local keyrings live in the .gpg file with the same keyring name</span>
+        <span style="color: #75715e"># in the temporary directory.</span>
+        <span style="color: #f8f8f2">copy(keyring,</span> <span style="color: #f8f8f2">dst)</span>
+</pre></div>
 
 
                 <br>
