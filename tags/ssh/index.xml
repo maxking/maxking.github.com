@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ssh on maxking&#39;s blog</title>
-    <link>http://asychronous.in/tags/ssh/index.xml</link>
+    <link>http://asynchronous.in/tags/ssh/index.xml</link>
     <description>Recent content in Ssh on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://asychronous.in/tags/ssh/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://asynchronous.in/tags/ssh/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>SSH ProxyCommand</title>
-      <link>http://asychronous.in/2016/05/04/ssh-proxy/</link>
+      <link>http://asynchronous.in/2016/05/04/ssh-proxy/</link>
       <pubDate>Wed, 04 May 2016 11:40:00 +0000</pubDate>
       
-      <guid>http://asychronous.in/2016/05/04/ssh-proxy/</guid>
+      <guid>http://asynchronous.in/2016/05/04/ssh-proxy/</guid>
       <description>&lt;p&gt;&lt;em&gt;Problem&lt;/em&gt; : Some servers in my university are beind firewall and it is difficult
 to ssh to those servers as I always use a VPN service on my primary laptop. To
 be able to ssh, one must be inside the university or use the university VPN.&lt;/p&gt;

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>C Gdb on maxking&#39;s blog</title>
-    <link>http://asychronous.in/tags/c-gdb/index.xml</link>
+    <link>http://asynchronous.in/tags/c-gdb/index.xml</link>
     <description>Recent content in C Gdb on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://asychronous.in/tags/c-gdb/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://asynchronous.in/tags/c-gdb/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Basic GDB</title>
-      <link>http://asychronous.in/2016/03/17/gdb-intro/</link>
+      <link>http://asynchronous.in/2016/03/17/gdb-intro/</link>
       <pubDate>Thu, 17 Mar 2016 02:50:24 +0000</pubDate>
       
-      <guid>http://asychronous.in/2016/03/17/gdb-intro/</guid>
+      <guid>http://asynchronous.in/2016/03/17/gdb-intro/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://www.gnu.org/s/gdb/&#34;&gt;GDB&lt;/a&gt;(The GNU Project Debugger) is one of the most awesome softwares ever
 built for C programmers. I recently started to write some code in C,
 specifically trying out socket programming and some other stuff. I had a very

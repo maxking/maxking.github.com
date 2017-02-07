@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Hacking on maxking&#39;s blog</title>
-    <link>http://asychronous.in/tags/hacking/index.xml</link>
+    <link>http://asynchronous.in/tags/hacking/index.xml</link>
     <description>Recent content in Hacking on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://asychronous.in/tags/hacking/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://asynchronous.in/tags/hacking/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>What is ethical hacking?</title>
-      <link>http://asychronous.in/2012/01/12/ethical-hacking/</link>
+      <link>http://asynchronous.in/2012/01/12/ethical-hacking/</link>
       <pubDate>Thu, 12 Jan 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://asychronous.in/2012/01/12/ethical-hacking/</guid>
+      <guid>http://asynchronous.in/2012/01/12/ethical-hacking/</guid>
       <description>&lt;P&gt;Wondering what is ethical hacking? The term hacking has been so much
 misinterpreted in common day language that people had to coin a new term called
 &#39;ethical hacking&#39;, just to be clear that all hackers do not rob-the-bank. So

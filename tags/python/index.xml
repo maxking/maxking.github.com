@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Python on maxking&#39;s blog</title>
-    <link>http://asychronous.in/tags/python/index.xml</link>
+    <link>http://asynchronous.in/tags/python/index.xml</link>
     <description>Recent content in Python on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://asychronous.in/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://asynchronous.in/tags/python/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Are you mocking me?</title>
-      <link>http://asychronous.in/2013/07/19/are-you-mocking-me/</link>
+      <link>http://asynchronous.in/2013/07/19/are-you-mocking-me/</link>
       <pubDate>Fri, 19 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://asychronous.in/2013/07/19/are-you-mocking-me/</guid>
+      <guid>http://asynchronous.in/2013/07/19/are-you-mocking-me/</guid>
       <description>&lt;p&gt;Unit testing is one of the most important parts of any project. TDD (test
 driven development) is a good habit to cultivate, in case you are not convinced,
 you don&#39;t know about TDD or you have never given it a try. I started using
@@ -101,10 +101,10 @@ class TestSignatureMime(unittest.TestCase):
     
     <item>
       <title>GNUPG and python</title>
-      <link>http://asychronous.in/2013/07/16/stuck-at-gnupg/</link>
+      <link>http://asynchronous.in/2013/07/16/stuck-at-gnupg/</link>
       <pubDate>Tue, 16 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://asychronous.in/2013/07/16/stuck-at-gnupg/</guid>
+      <guid>http://asynchronous.in/2013/07/16/stuck-at-gnupg/</guid>
       <description>&lt;p&gt;So this post talks about what gpg is, what are the various problems that can
 be solved using gpg and about python-gnupg library which can be used to sign a
 message or file using python&lt;/p&gt;

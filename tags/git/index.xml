@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Git on maxking&#39;s blog</title>
-    <link>http://asychronous.in/tags/git/index.xml</link>
+    <link>http://asynchronous.in/tags/git/index.xml</link>
     <description>Recent content in Git on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://asychronous.in/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://asynchronous.in/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Prevent Git Push</title>
-      <link>http://asychronous.in/2016/05/16/Prevent-Git-Push</link>
+      <link>http://asynchronous.in/2016/05/16/Prevent-Git-Push</link>
       <pubDate>Mon, 16 May 2016 13:23:08 +0000</pubDate>
       
-      <guid>http://asychronous.in/2016/05/16/Prevent-Git-Push</guid>
+      <guid>http://asynchronous.in/2016/05/16/Prevent-Git-Push</guid>
       <description>&lt;p&gt;It happens with me sometimes that I push to repositories that I must not push
 to. Being a &lt;a href=&#34;http://list.org&#34;&gt;GNU Mailman&lt;/a&gt; core-developer, I have push access to all the
 repositories. But, we always add changes to the master repo using
@@ -29,10 +29,10 @@ repository read-only. This is how I did it:&lt;/p&gt;
     
     <item>
       <title>Git Undo</title>
-      <link>http://asychronous.in/2014/10/05/git-amend/</link>
+      <link>http://asynchronous.in/2014/10/05/git-amend/</link>
       <pubDate>Sun, 05 Oct 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://asychronous.in/2014/10/05/git-amend/</guid>
+      <guid>http://asynchronous.in/2014/10/05/git-amend/</guid>
       <description>
 
 &lt;p&gt;Here are some useful git commands that helps to undo changes you knowingly
