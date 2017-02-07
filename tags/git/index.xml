@@ -10,10 +10,10 @@
     
     <item>
       <title>Prevent Git Push</title>
-      <link>http://asynchronous.in/2016/05/16/Prevent-Git-Push</link>
+      <link>http://asynchronous.in/2016/05/16/Prevent-Git-Push/</link>
       <pubDate>Mon, 16 May 2016 13:23:08 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2016/05/16/Prevent-Git-Push</guid>
+      <guid>http://asynchronous.in/2016/05/16/Prevent-Git-Push/</guid>
       <description>&lt;p&gt;It happens with me sometimes that I push to repositories that I must not push
 to. Being a &lt;a href=&#34;http://list.org&#34;&gt;GNU Mailman&lt;/a&gt; core-developer, I have push access to all the
 repositories. But, we always add changes to the master repo using
