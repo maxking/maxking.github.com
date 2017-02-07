@@ -494,6 +494,13 @@ $ git commit
 &lt;p&gt;&lt;a href=&#34;http://stackoverflow.com/questions/24455238/lxml-installation-error-ubuntu-14-04-internal-compiler-error&#34;&gt;This&lt;/a&gt; is an interesting work around for when you don&amp;rsquo;t have enough memory to
 do some tasks. Basically some commands to add a swapfile in a VM. I use that for
 the digitalocean instance I have.&lt;/p&gt;
+
+&lt;h2 id=&#34;add-a-user-to-a-group&#34;&gt;Add a user to a group&lt;/h2&gt;
+
+&lt;p&gt;TO add an existing user in Linux to an existing group:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo usermod -a -G groupName userName
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
@@ -561,7 +568,9 @@ force the push) flag with a little care, it may prove deleterious at times.&lt;/
       <guid>http://asynchronous.in/about/</guid>
       <description>
 
-&lt;h1 id=&#34;image-abhilash-abhilash-image-abhilash-raj&#34;&gt;&lt;img src=&#34;img/author.png&#34; alt=&#34;Image Abhilash&#34; title=&#34;Abhilash Raj (maxking)&#34; /&gt;Abhilash Raj&lt;/h1&gt;
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;img/author.png&#34; alt=&#34;Image Abhilash&#34; title=&#34;Abhilash Raj (maxking)&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;abhilash-raj&#34;&gt;Abhilash Raj&lt;/h1&gt;
 
 &lt;p&gt;I am a Graduate Student working my way through a Computer Science major at
   Oregon State University. I am also a Core Developer
