@@ -136,7 +136,7 @@ is a 2 step process. So in search for a better solution I found this:</p>
 <pre><code>Host &lt;host-alias&gt;
         User &lt;username&gt;
         Hostname &lt;hostname&gt;
-		ProxyCommand ssh &lt;hostname:port for public facing server&gt; exec nc %h %p
+        ProxyCommand ssh &lt;hostname:port for public facing server&gt; exec nc %h %p
         IdentityFile &lt;private-key&gt;
         Port 22
         Compression yes

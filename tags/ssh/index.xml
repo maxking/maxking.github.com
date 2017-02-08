@@ -25,7 +25,7 @@ is a 2 step process. So in search for a better solution I found this:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;Host &amp;lt;host-alias&amp;gt;
         User &amp;lt;username&amp;gt;
         Hostname &amp;lt;hostname&amp;gt;
-		ProxyCommand ssh &amp;lt;hostname:port for public facing server&amp;gt; exec nc %h %p
+        ProxyCommand ssh &amp;lt;hostname:port for public facing server&amp;gt; exec nc %h %p
         IdentityFile &amp;lt;private-key&amp;gt;
         Port 22
         Compression yes
