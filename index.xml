@@ -6,8 +6,67 @@
     <description>Recent content on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 16 May 2016 13:23:08 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 08 Feb 2017 13:02:38 -0800</lastBuildDate>
     <atom:link href="http://asynchronous.in/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Move to Hugo</title>
+      <link>http://asynchronous.in/2017/02/08/Move-to-Hugo/</link>
+      <pubDate>Wed, 08 Feb 2017 13:02:38 -0800</pubDate>
+      
+      <guid>http://asynchronous.in/2017/02/08/Move-to-Hugo/</guid>
+      <description>&lt;p&gt;I have been planning to rejuvenate this blog with a new design and hopefully
+some good posts! Before this, I used to publish this blog using &lt;a href=&#34;https://jekyllrb.com/&#34;&gt;Jekyll&lt;/a&gt;
+which is a great tool if you want to serve static website using &lt;a href=&#34;https://pages.github.com/&#34;&gt;Github
+Pages&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Jekyll is written in Ruby, which is one of the reasons I was planning to move
+away from it. I don&amp;rsquo;t have anything against the language, but if you want to
+install Jekyll locally to test out your pages, you have to install the whole
+Ruby toolchain on your machine. This was extremely painful. In my experience,
+dealing with version conflicts in Ruby is so much more difficult than I want to
+deal with for my blog.&lt;/p&gt;
+
+&lt;p&gt;So, I moved my blog to a new static site generator called &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;, which is
+written in Golang. It is extremely fast and pretty easy to install and use on my
+Ubuntu 16.10 machine. There is a &lt;a href=&#34;http://themes.gohugo.io/&#34;&gt;theme showcase&lt;/a&gt; for Hugo that you can use
+to get started. Also, Hugo has a nifty little trick to import your blog posts
+from Jekyll, see &lt;a href=&#34;https://gohugo.io/tutorials/migrate-from-jekyll/&#34;&gt;&lt;code&gt;hugo import jekyll&lt;/code&gt;&lt;/a&gt; command.&lt;/p&gt;
+
+&lt;p&gt;The only problem with using Hugo with Github Pages is that you have to manually
+generate the webpages and push to your &lt;code&gt;username.github.io&lt;/code&gt; repository. So, I
+automated this process with a &lt;code&gt;Makefile&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;HUGO=/usr/bin/hugo
+PUBLISH_DIR=public/
+GIT=git --git-dir=$(PUBLISH_DIR).git --work-tree=$(PUBLISH_DIR)
+
+all: run
+
+run:
+	echo &amp;quot;Building your website now...&amp;quot;
+	$(HUGO)
+
+serve:
+	# Run a hugo server that restarts whenever changes are made to files.
+	$(HUGO) serve
+
+publish:
+	# First, run hugo to compile all the files.
+	$(HUGO)
+	# Second, add and commit all the changes in the static directory.
+	echo &amp;quot;Committing changes...&amp;quot;
+	$(GIT) add . &amp;amp;&amp;amp; \
+	$(GIT) commit -am &#39;&#39; --allow-empty-message --quiet
+	# Push the changes to the remote server to publish them.
+	$(GIT) push origin master
+	echo &amp;quot;Done publishing your website.&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This way, you will have to create two repos, in one you keep your code and posts
+and the 2nd one &lt;code&gt;username.github.io&lt;/code&gt; keeps your statically generated files.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Prevent Git Push</title>
@@ -999,45 +1058,6 @@ specific value&#34; irrespective of the input. See the code below:&lt;/p&gt;
 
 
 &lt;p&gt; &lt;/p&gt;
-
-</description>
-    </item>
-    
-    <item>
-      <title>Connect the DOT</title>
-      <link>http://asynchronous.in/2013/07/19/connect-the-dot/</link>
-      <pubDate>Fri, 19 Jul 2013 00:00:00 +0000</pubDate>
-      
-      <guid>http://asynchronous.in/2013/07/19/connect-the-dot/</guid>
-      <description>&lt;p&gt;This post talks about dot program from graphviz suite. If you read my last
-post you may have noticed the dot graph that I made using the dot program from
-graphviz suite. It is a very easy to use program whose details can be
-read &lt;a href=&#34;http://www.graphviz.org/&#34;&gt;here&lt;/a&gt; at graphviz official website. I
-would like to share the code for the graph that I made for the last post:
-&lt;/p&gt;
-
-&lt;pre&gt;
-digraph G {
-    IN -&gt; approved;
-    approved -&gt; emergency[label=&#34;No&#34;];
-    emergency -&gt; loop[label=&#34;No&#34;];	
-    loop -&gt; member_moderated[label=&#34;No&#34;];
-    member_moderated -&gt; administrivia[&#34;No&#34;];
-    administrivia -&gt; max_size;
-    max_size -&gt; truth;
-    max_size -&gt; MODERATION[label=&#34;exceeds&#34;];
-    truth -&gt; PIPELINE;
-    approved -&gt; PIPELINE[label=&#34;Yes&#34;];
-    member_moderated -&gt; MODERATION[label=&#34;Yes&#34;]; 
-    emergency -&gt; HOLD[label=&#34;Yes&#34;];
-    loop -&gt; DISCARD[label=&#34;Yes&#34;];
-}
-&lt;/pre&gt;
-&lt;p&gt;The above code produces the graph below:
-
-&lt;center&gt;
-  &lt;img src=&#34;http://asynchronous.in/images/posting_chain.png&#34; height=&#34;500px&#34;&gt;
-&lt;/center&gt;
 
 </description>
     </item>

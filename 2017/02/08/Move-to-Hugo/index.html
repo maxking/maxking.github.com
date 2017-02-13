@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Abhilash Raj writes here.">
+
+<base href="http://asynchronous.in/">
+<title>
+
+
+     maxking&#39;s blog - Move to Hugo 
+
+</title>
+<link rel="canonical" href="http://asynchronous.in/2017/02/08/Move-to-Hugo/">
+
+
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+
+
+<link rel="stylesheet" href="http://asynchronous.in/css/reset.css">
+<link rel="stylesheet" href="http://asynchronous.in/css/main.css">
+
+
+
+
+<link rel="shortcut icon"
+
+    href="http://asynchronous.in/img/favicon.ico"
+
+>
+
+
+
+</head>
+
+
+<body lang="en">
+
+
+<section class="header"> 
+
+    <div class="container">
+        <a href="http://asynchronous.in/"><img class="logo" src="http://asynchronous.in/img/logo.png" /></a>
+        <div class="content">
+            <a href="http://asynchronous.in/"><div class="name"><h1>maxking&#39;s blog</h1></div></a>
+            <nav>
+                <ul>
+                    
+                        <a href="http://asynchronous.in/blog/"><li>Blog</li></a>
+                    
+                    
+                        
+                    
+                        
+                            
+                        
+                    
+                    
+                        
+                            <a href="http://asynchronous.in/notes/"><li>Notes</li></a>
+                        
+                    
+                        
+                            <a href="http://asynchronous.in/about/"><li>About</li></a>
+                        
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<section class="icons">
+    <div class="container">
+        <div class="content">
+
+        
+            <a href="https://github.com/maxking" target="_blank">
+                <i class="icon ion-social-github"></i>
+            </a>
+        
+        
+        
+            <a href="https://twitter.com/_maxking_" target="_blank">
+                <i class="icon ion-social-twitter"></i>
+            </a>
+        
+
+        
+
+        
+
+        
+            <a href="http://asynchronous.in/index.xml">
+                <i class="icon ion-social-rss larger"></i>
+            </a>
+        
+        </div>
+    </div>
+</section>
+
+
+<section class="main post non-narrow zero-top-spacing">
+    <div class="container">
+        <div class="content">
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    Move to Hugo
+
+</div>
+
+                </div>
+                <div class="meta">
+                    <div class="date" title="Feb 08 2017 13:02">Feb 08 2017</div>
+                    <div class="reading-time"><div class="middot"></div>2 minutes read</div>
+                </div>
+            </div>
+            <div class="markdown">
+                <p>I have been planning to rejuvenate this blog with a new design and hopefully
+some good posts! Before this, I used to publish this blog using <a href="https://jekyllrb.com/">Jekyll</a>
+which is a great tool if you want to serve static website using <a href="https://pages.github.com/">Github
+Pages</a>.</p>
+
+<p>Jekyll is written in Ruby, which is one of the reasons I was planning to move
+away from it. I don&rsquo;t have anything against the language, but if you want to
+install Jekyll locally to test out your pages, you have to install the whole
+Ruby toolchain on your machine. This was extremely painful. In my experience,
+dealing with version conflicts in Ruby is so much more difficult than I want to
+deal with for my blog.</p>
+
+<p>So, I moved my blog to a new static site generator called <a href="https://gohugo.io/">Hugo</a>, which is
+written in Golang. It is extremely fast and pretty easy to install and use on my
+Ubuntu 16.10 machine. There is a <a href="http://themes.gohugo.io/">theme showcase</a> for Hugo that you can use
+to get started. Also, Hugo has a nifty little trick to import your blog posts
+from Jekyll, see <a href="https://gohugo.io/tutorials/migrate-from-jekyll/"><code>hugo import jekyll</code></a> command.</p>
+
+<p>The only problem with using Hugo with Github Pages is that you have to manually
+generate the webpages and push to your <code>username.github.io</code> repository. So, I
+automated this process with a <code>Makefile</code>:</p>
+
+<pre><code>HUGO=/usr/bin/hugo
+PUBLISH_DIR=public/
+GIT=git --git-dir=$(PUBLISH_DIR).git --work-tree=$(PUBLISH_DIR)
+
+all: run
+
+run:
+	echo &quot;Building your website now...&quot;
+	$(HUGO)
+
+serve:
+	# Run a hugo server that restarts whenever changes are made to files.
+	$(HUGO) serve
+
+publish:
+	# First, run hugo to compile all the files.
+	$(HUGO)
+	# Second, add and commit all the changes in the static directory.
+	echo &quot;Committing changes...&quot;
+	$(GIT) add . &amp;&amp; \
+	$(GIT) commit -am '' --allow-empty-message --quiet
+	# Push the changes to the remote server to publish them.
+	$(GIT) push origin master
+	echo &quot;Done publishing your website.&quot;
+</code></pre>
+
+<p>This way, you will have to create two repos, in one you keep your code and posts
+and the 2nd one <code>username.github.io</code> keeps your statically generated files.</p>
+
+                <br>
+                <p><a href="blog">Back to posts</a></p>
+            </div>
+            <br>
+            <div class="disqus">
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+  
+
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
+
+
+
+</body>
+</html>
+
