@@ -47,14 +47,14 @@ HTTPS.&lt;/p&gt;
 &lt;p&gt;Then later, IRCCloud came out of beta and started with a paid plan, with a
  basic free tier which would keep your connection persistent for only some time
  (7 days?). The paid model was $5/mo, which is what a small &lt;a href=&#34;https://www.digitalocean.com/&#34;&gt;Digital
- Ocean&lt;/a&gt; Droplet costs. Not, even
+ Ocean&lt;/a&gt; Droplet costs. Now, even
  &lt;a href=&#34;http://welcome.linode.com/features/?keyword=linode&amp;amp;utm_source=bing&amp;amp;utm_medium=cpc&amp;amp;utm_campaign=Linode%20-%20Brand%20-%20Search&amp;amp;utm_term=linode&amp;amp;utm_content=Linode&#34;&gt;Linode&lt;/a&gt;
- and &lt;a href=&#34;https://aws.amazon.com/&#34;&gt;AWS&lt;/a&gt; have similar cost servers. It might make
- sense to someone who doesn’t want to manage their own service to use the paid
- plan, but I decided to instead get a small VPS and try something new. Also,
- &lt;a href=&#34;http://education.github.com&#34;&gt;Github’s Education Pack&lt;/a&gt; started offering $100 in
- Digital Ocean credits to first time users, which made the transition free for
- me.&lt;/p&gt;
+ and &lt;a href=&#34;https://aws.amazon.com/&#34;&gt;AWS&lt;/a&gt; have similar budget friendly servers. It
+ might make sense to someone who doesn’t want to manage their own service to use
+ the paid plan, but I decided to instead get a small VPS and try something
+ new. Also, &lt;a href=&#34;http://education.github.com&#34;&gt;Github’s Education Pack&lt;/a&gt; started
+ offering $100 in Digital Ocean credits to first time users, which made the
+ transition free for me.&lt;/p&gt;
 
 &lt;p&gt;Right now, there are several other options if you want to get a server for free for a small time (or longer).  Like:&lt;/p&gt;
 
