@@ -6,8 +6,99 @@
     <description>Recent content on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 08 Feb 2017 13:02:38 -0800</lastBuildDate>
+    <lastBuildDate>Wed, 15 Mar 2017 12:57:20 -0700</lastBuildDate>
     <atom:link href="http://asynchronous.in/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Persistant IRC Setup</title>
+      <link>http://asynchronous.in/2017/03/15/Persistant-IRC-Setup/</link>
+      <pubDate>Wed, 15 Mar 2017 12:57:20 -0700</pubDate>
+      
+      <guid>http://asynchronous.in/2017/03/15/Persistant-IRC-Setup/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Internet_Relay_Chat&#34;&gt;IRC&lt;/a&gt; stands for Internet
+Relay Chat, a text based chat network that is commonly used by programmers and
+open source community to collaborate over projects. You can read more about it
+in the above linked Wikipedia article.&lt;/p&gt;
+
+&lt;p&gt;IRC is very lightweight and really easy to use, although it has a few
+shortcomings when you compare it to other messaging apps/technologies that exist
+today, biggest of which is persistence. It is a synchronous chat. What that
+means is that you can send/receive messages only when you are actively connected
+to the IRC network.&lt;/p&gt;
+
+&lt;p&gt;There are several solutions to fix this problem that I have explored in the
+past. You can setup an IRC bouncer, that keeps running as a proxy on a computer
+that is always on, and relays the logs/messages to you when you connect it.
+&lt;a href=&#34;http://wiki.znc.in/ZNC&#34;&gt;ZNC&lt;/a&gt; seems to be the most popular choice but for some
+reason I was never &lt;em&gt;easily&lt;/em&gt; able to setup ZNC for my personal use. I don’t know
+many people in my personal circle that it use it either, but it does work if you
+want to give it a try.&lt;/p&gt;
+
+&lt;p&gt;Another solution that I have tried in the past is a web based service,
+&lt;a href=&#34;https://www.irccloud.com/&#34;&gt;IRCCloud&lt;/a&gt;. I used IRCCloud for quite some time back
+in my college. It was initially in beta, and so free to use. It allowed for
+persistent connections on 5 networks and has a neat interface. It also has a
+very neat nice android App so that you can chat over your smartphone too! The
+biggest benefit that IRCCloud offers is that it doesn’t need me to run/manage
+anything on my own. Also, it was easier for me to use as my university had a
+stupid proxy to use internet which blocked all outgoing ports except HTTP and
+HTTPS.&lt;/p&gt;
+
+&lt;p&gt;Then later, IRCCloud came out of beta and started with a paid plan, with a
+ basic free tier which would keep your connection persistent for only some time
+ (7 days?). The paid model was $5/mo, which is what a small &lt;a href=&#34;https://www.digitalocean.com/&#34;&gt;Digital
+ Ocean&lt;/a&gt; Droplet costs. Not, even
+ &lt;a href=&#34;http://welcome.linode.com/features/?keyword=linode&amp;amp;utm_source=bing&amp;amp;utm_medium=cpc&amp;amp;utm_campaign=Linode%20-%20Brand%20-%20Search&amp;amp;utm_term=linode&amp;amp;utm_content=Linode&#34;&gt;Linode&lt;/a&gt;
+ and &lt;a href=&#34;https://aws.amazon.com/&#34;&gt;AWS&lt;/a&gt; have similar cost servers. It might make
+ sense to someone who doesn’t want to manage their own service to use the paid
+ plan, but I decided to instead get a small VPS and try something new. Also,
+ &lt;a href=&#34;http://education.github.com&#34;&gt;Github’s Education Pack&lt;/a&gt; started offering $100 in
+ Digital Ocean credits to first time users, which made the transition free for
+ me.&lt;/p&gt;
+
+&lt;p&gt;Right now, there are several other options if you want to get a server for free for a small time (or longer).  Like:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Amazon Web Service (AWS) Free tier offers a micro instance free for 1 year for new users. I had some problems using it initially because I didn’t own a credit card at the time in India.&lt;/li&gt;
+&lt;li&gt;Digital Ocean offers $100 in free credits through Github education pack, which can run it’s smallest instace ($5/mo) for 20 months.&lt;/li&gt;
+&lt;li&gt;Google Cloud Platform (GCP) provides $300 in free credits to use for 12 months which I &lt;em&gt;think&lt;/em&gt; can also power a micro/small instance for an year. Recently at Google’s Next ’17 conference, they announced that GCP will have a &lt;a href=&#34;https://cloud.google.com/free/&#34;&gt;free tier&lt;/a&gt; that would remain free, that will remain free &lt;em&gt;forever&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So, we now have a plenty of options to have a small VPS online to run your
+persistent IRC. Let’s look at some of the software that I have explored to run
+on my server:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.quassel-irc.org/&#34;&gt;Quassel&lt;/a&gt; was recommended to my by one of my
+friends. It has a server client architecture where the client can be used to
+connect to an always running instance of server. Having used it for almost 2
+years, I can vouch that it is a &lt;em&gt;very&lt;/em&gt; stable piece of software. Setting it up
+is almost a breeze. Debian/Ubuntu also have packages for them in their
+repositories that you can easily install. On the first run, you can setup your
+configuration and then connect from clients from different places. It has one
+for Windows, Linux, Android (probably even Mac, never checked).&lt;/p&gt;
+
+&lt;p&gt;I had no good reason to switch from Quassel to anything else, except for the
+fact that I got bored of its client. There are no other alternatives that you
+can use to connect to. Also, it doesn’t have any support for
+plugins/scripts. So, I came to know about this new alternative that everyone
+used at my new University (OSU), Weechat.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://weechat.org/&#34;&gt;Weechat&lt;/a&gt; is an open source project that works similar to
+Quassel but has much more functionality to offer. It can act as an IRC proxy and
+so you can use your favorite client with it. Also, it has a custom protocol and
+clients that use that. I use an HTML5 based web frontend called &lt;a href=&#34;http://www.glowing-bear.org/&#34;&gt;Glowing
+Bear&lt;/a&gt;, which is also an android app. There is a Qt
+based client, an emacs client too! It supports scripting and has a &lt;a href=&#34;https://weechat.org/scripts/&#34;&gt;very good
+list of scripts&lt;/a&gt; already written for it. I still
+haven’t used this feature too much, but it is really awesome and easy to
+use. And did I mention that you can use Python to write scripts for it ?!
+Setting up WeeChat is a teeny bit more difficult that quassel if you want to use
+SSL, which I wanted to. Glowing Bear doesn’t allow self signed certificates, so
+I had to get one from &lt;a href=&#34;https://letsencrypt.org/&#34;&gt;Lets Encrypt&lt;/a&gt;, which btw is
+very easy to get.  I will write another blog post with details about how to
+setup WeeChat with SSL enabled on a VPS.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Move to Hugo</title>
@@ -970,95 +1061,6 @@ branch&lt;/a&gt;.
   settings for the list-manager to adjust a few options related to signed
   lists - like time limit(decided from date in signature) to consider a
   message old, and also implementing this in code.
-</description>
-    </item>
-    
-    <item>
-      <title>Are you mocking me?</title>
-      <link>http://asynchronous.in/2013/07/19/are-you-mocking-me/</link>
-      <pubDate>Fri, 19 Jul 2013 00:00:00 +0000</pubDate>
-      
-      <guid>http://asynchronous.in/2013/07/19/are-you-mocking-me/</guid>
-      <description>&lt;p&gt;Unit testing is one of the most important parts of any project. TDD (test
-driven development) is a good habit to cultivate, in case you are not convinced,
-you don&#39;t know about TDD or you have never given it a try. I started using
-partial TDD recently, yes only partial for what I follow is that first I write a
-rough outline of the code, then I write tests and then I keep on re-factoring my
-code till all the tests are passing. Though there is a little flaw in this
-method according to me -- although writing tests are mostly trivial with those
-easy assert statements, sometimes you may write wrong tests which make you write
-wrong code too. So put more thought in writing tests than in writing
-code. Although many times you will agree with me that TDD is annoying, it does
-not let you do what you actually want to do (I mean the &#34;way&#34; you want to do it,
-the result may be same).&lt;/p&gt;
-&lt;p&gt;
-So in this post I am going to talk about mocks. What are mocks? There are some
-magical functions which do some abracadabra on your existing function and make
-them return anything that you want without actually even thinking what they are
-returning. Did I personify it a little too much? Let me explain in a little
-detail with the example of where I used mocking.&lt;/p&gt;
-
-&lt;p&gt;
-Unit tests should be independent of environment and any other module, so that
-each module can be developed separately without affecting the development of
-other modules. But many a times one module depends on others and in that case
-it gets messy to test those functions. In my case it was the &#34;signature&#34; rule
-which uses &#34;gpg&#34; utility to verify signature of messages. Here is a snippet of
-the code:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;from&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;mailman.utilities.gpg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;GPG&lt;/span&gt;
- 
-&lt;span style=&#34;color: #a6e22e&#34;&gt;@implementer&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(IRule)&lt;/span&gt;
-&lt;span style=&#34;color: #66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;Signature&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
-    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;quot;&amp;quot;Look for pgp-signature.&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
-
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;signature&amp;#39;&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;description&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;The message has pgp-signature as application/pgp-signature part&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;record&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;True&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;__init__&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self):&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_gpg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;None&lt;/span&gt;
-
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;check&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;mlist,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;msgdata):&lt;/span&gt;
-        &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;quot;&amp;quot;See `IRule&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;gpg_dir&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;os&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;path&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;join(config&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;VAR_DIR,&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;gpg&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_gpg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;GPG(gpg_dir)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;So if you see in line 1 we import the GPG class from &lt;i&gt;gpg&lt;/i&gt; utility. But
-when we write tests we don&#39;t want this function to &#34;actually&#34; create an instance
-of GPG class and &#34;actually&#34; verify the signature because it is not a function of
-signature rule and any errors or breakpoints in gpg utility may cause our tests
-for the &#34;working&#34; signature rule to fail. So what do we do? We mock and then we
-rock ;-). We mock the GPG instance created in signature rule to return &#34;any
-specific value&#34; irrespective of the input. See the code below:&lt;/p&gt;
-
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;mock&lt;/span&gt;
-
-&lt;span style=&#34;color: #66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TestSignatureMime&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(unittest&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;TestCase):&lt;/span&gt;
-    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;quot;&amp;quot;Test the signature handler.&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
-
-  &lt;span style=&#34;color: #66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;Dummy_GPG_True&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;    
-      &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;__init__&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;dir):&lt;/span&gt;
-          &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_dir&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;dir&lt;/span&gt;
-        
-      &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;verify_inline_signature&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;data):&lt;/span&gt;
-          &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;True&lt;/span&gt;
-
-      &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;verify_detached_signature&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;data):&lt;/span&gt;
-          &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;True&lt;/span&gt;
-
-
-  &lt;span style=&#34;color: #a6e22e&#34;&gt;@mock.patch&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;mailman.rules.signature.GPG&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;new&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;Dummy_GPG_True)&lt;/span&gt;
-  &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;test_good_signature&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self):&lt;/span&gt;
-      &lt;span style=&#34;color: #f8f8f2&#34;&gt;result&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_rule&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;check(self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_mlist,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_msg,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{})&lt;/span&gt;
-      &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;assertTrue(result)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt; &lt;/p&gt;
-
 </description>
     </item>
     
