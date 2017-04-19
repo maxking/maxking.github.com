@@ -198,6 +198,19 @@ the digitalocean instance I have.</p>
 <pre><code class="language-bash">sudo usermod -a -G groupName userName
 </code></pre>
 
+<h2 id="make-emacs-looks-pretty-in-terminal">Make emacs looks pretty in terminal</h2>
+
+<p>I always had a problem where emacs theme wouldn&rsquo;t work properly in terminal
+mode. I initially gave up on it as I don&rsquo;t use emacs inside terminal much, but
+it became a problem when I started using a lot of servers and I would ssh there.</p>
+
+<p>The solution would be to add this to your <code>.bashrc</code> or <code>.zshrc</code> file:</p>
+
+<pre><code>export TERM=xterm-256color
+</code></pre>
+
+<p>Source: <a href="http://stackoverflow.com/a/34876150">Stackoverflow Question</a></p>
+
             </div>
         </div>
     </div>

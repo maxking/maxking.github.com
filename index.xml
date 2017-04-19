@@ -651,6 +651,19 @@ the digitalocean instance I have.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo usermod -a -G groupName userName
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;make-emacs-looks-pretty-in-terminal&#34;&gt;Make emacs looks pretty in terminal&lt;/h2&gt;
+
+&lt;p&gt;I always had a problem where emacs theme wouldn&amp;rsquo;t work properly in terminal
+mode. I initially gave up on it as I don&amp;rsquo;t use emacs inside terminal much, but
+it became a problem when I started using a lot of servers and I would ssh there.&lt;/p&gt;
+
+&lt;p&gt;The solution would be to add this to your &lt;code&gt;.bashrc&lt;/code&gt; or &lt;code&gt;.zshrc&lt;/code&gt; file:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;export TERM=xterm-256color
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Source: &lt;a href=&#34;http://stackoverflow.com/a/34876150&#34;&gt;Stackoverflow Question&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
