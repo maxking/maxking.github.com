@@ -6,8 +6,227 @@
     <description>Recent content in Blogs on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 15 Mar 2017 12:57:20 -0700</lastBuildDate>
+    <lastBuildDate>Fri, 21 Apr 2017 10:51:03 +0000</lastBuildDate>
     <atom:link href="http://asynchronous.in/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Email with notmuch and astroid</title>
+      <link>http://asynchronous.in/2017/04/21/Email-with-notmuch-and-astroid/</link>
+      <pubDate>Fri, 21 Apr 2017 10:51:03 +0000</pubDate>
+      
+      <guid>http://asynchronous.in/2017/04/21/Email-with-notmuch-and-astroid/</guid>
+      <description>&lt;p&gt;Email is an integral part of our everyday life. I have spent a large amount of time trying to experiment with different email clients available on Linux. I have tried &lt;a href=&#34;https://www.mozilla.org/en-US/thunderbird/&#34;&gt;Thunderbird&lt;/a&gt;, &lt;a href=&#34;https://wiki.gnome.org/Apps/Evolution/&#34;&gt;Evolution&lt;/a&gt;, &lt;a href=&#34;https://notmuchmail.org&#34;&gt;notmuch&lt;/a&gt; with emacs, &lt;a href=&#34;http://www.mutt.org/&#34;&gt;mutt&lt;/a&gt;, &lt;a href=&#34;https://www.emacswiki.org/emacs/mu4e&#34;&gt;mu4e&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Since I am a Linux user, the list above includes only the clients compatible with Linux, particularly Debian/Ubuntu ecosystem. You can classify most of the email clients in two broad workflow categories&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Folder based workflow - This kind of workflow means you have separate folders for all the kinds of emails you receive. It could be separate email accounts each with their own sub-folders. You keep on top of your emails and mostly look frequently at the emails on the top in each folder. Thunderbird, Evolution, Gmail Web is an example of such kind.&lt;/li&gt;
+&lt;li&gt;Search based - This kind of workflow is completely based on what you want to see. It usually doesn’t have a concept of folders at all. You work with tags and an indexer. Email indexers like &lt;a href=&#34;http://www.djcbsoftware.nl/code/mu/&#34;&gt;mu&lt;/a&gt; and &lt;a href=&#34;https://notmuchmail.org/&#34;&gt;notmuch&lt;/a&gt; are what powers this. All emails are indexed and tagged so that you can find the email you are looking for &lt;em&gt;very&lt;/em&gt; easily. If you are a terminal person or the one who loves keyboard more than mouse/trackpad (like me!), then you will fall in love with this workflow (like me!).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Thunderbird is like my fall-back email client. Usually, I always have a working thunderbird setup on my laptop, even when I am using something else. This is because I like to play around with different setups and often screw up loosing everything in my &lt;a href=&#34;https://en.wikipedia.org/wiki/Maildir&#34;&gt;maildir&lt;/a&gt;. Also, sometimes, I have small holes in my knowledge of the workflow to achieve specific things (mostly, keybindings ;-). A very important and absolutely necessary plugin is &lt;a href=&#34;https://www.enigmail.net/index.php/en/&#34;&gt;Enigmail&lt;/a&gt;. It powers the integration of gpg in thunderbird, which I feel should be baked in all modern email clients.&lt;/p&gt;
+
+&lt;p&gt;Notmuch and mu are, as I have mentioned before, email indexers. Both of them are &lt;em&gt;really&lt;/em&gt; good and r&lt;em&gt;eally&lt;/em&gt; fast. If you have ever searched anything in thunderbird/evolution/outlook, you will be amazed at how fast they are.&lt;/p&gt;
+
+&lt;p&gt;My current setup involves four major componenets. Offlineimap to fetch email, notmuch to index email, Astroid to view/search/read/write emails and msmtp to send emails.&lt;/p&gt;
+
+&lt;p&gt;First, &lt;a href=&#34;http://www.offlineimap.org/&#34;&gt;offlineimap&lt;/a&gt; fetches all my email from different email servers using IMAP protocol. It is written in python. The maintainer for this project has moved on to writing a more robust and new imap framework called &lt;a href=&#34;http://imapfw.offlineimap.org/&#34;&gt;imapfw&lt;/a&gt;. But offlineimap still remains the best and easiest way to sync emails between two different maildirs. Here is a copy of my &lt;code&gt;.offlineimaprc&lt;/code&gt;  , the configuration for offlineimap using Gmail.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[general]
+accounts = Gmail
+pythonfile = ~/.offlineimap.py
+
+[Account Gmail]
+localrepository = GmailLocal
+remoterepository = GmailRemote
+maxage = 100
+
+[Repository GmailLocal]
+type = Maildir
+localfolders = ~/.maildir/Gmail/
+
+[Repository GmailRemote]
+type = Gmail
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+remoteuser = username@gmail.com
+realdelete = no
+createfolders = false
+remotepasseval = get_password_emacs(&amp;quot;imap.gmail.com&amp;quot;,
+                                     &amp;quot;username@gmail.com&amp;quot;,
+                                     &amp;quot;993&amp;quot;)
+folderfilter = lambda foldername: foldername  not in [&#39;[Gmail]/All Mail&#39;,
+                            &#39;[Gmail]/Trash&#39;, &#39;[Gmail]/Bin&#39;,
+                            &#39;[Gmail]/Sent Mail&#39;, &#39;[Gmail]/Starred&#39;, 
+                            &#39;[Gmail]/Spam&#39;,&#39;SPAM&#39; ]
+holdconnectionopen = true
+keepalive = 60
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above settings required a python script to fetch the password   &lt;code&gt;~/.offlineimap.py&lt;/code&gt; :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/usr/bin/python
+import re, os
+
+def get_password_emacs(machine, login, port):
+    s = &amp;quot;machine %s login %s port %s password ([^ ]*)\n&amp;quot; % (machine, login, port)
+    p = re.compile(s)
+    authinfo = os.popen(&amp;quot;gpg -q --no-tty -d ~/.authinfo.gpg&amp;quot;).read()
+    return p.search(authinfo).group(1)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above script fetches the password for your account from the encrypted file &lt;code&gt;.authinfo.gpg&lt;/code&gt; which when decrypted looks like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;machine imap.gmail.com login username@gmail.com port 993 password mypassword
+machine smtp.gmail.com login username@gmail.com port 587 password mypassword
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To create the encrypted file, you put the above two lines in a file called &lt;code&gt;.authinfo&lt;/code&gt; and then encrypt it using &lt;code&gt;gpg&lt;/code&gt; using:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ gpg --output .authinfo.gpg --encrypt --recipient username@gmail.com .authinfo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You will also want to have &lt;a href=&#34;https://www.gnupg.org/documentation/manuals/gnupg/Invoking-GPG_002dAGENT.html&#34;&gt;gpg-agent&lt;/a&gt; setup so that gpg doesn’t prompt you for your passphrase every time it wants to check your email.&lt;/p&gt;
+
+&lt;p&gt;So, after this, now you have a working setup for fetching email. To test that you can fetch your emails try:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ offlineimap --dry-run
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next, we move on to notmuch. You can install it on Debian/Ubuntu systems using:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo apt-get install notmuch
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here is a simple configuration for notmuch, stored at &lt;code&gt;~/.notmuch-config&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# .notmuch-config - Configuration file for the notmuch mail system
+#
+# For more information about notmuch, see http://notmuchmail.org
+
+[database]
+path=~/.maildir
+
+[user]
+name=Abhilash Raj
+primary_email=username@gmail.com
+# If you have mutiple accuonts, uncomment the line below.
+# other_email=other_email@gmail.com
+
+[new]
+tags=unread;new;
+ignore=
+
+[search]
+exclude_tags=deleted;spam;
+
+[maildir]
+synchronize_flags=true
+
+[crypto]
+gpg_path=gpg2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After you have this, try &lt;code&gt;notmuch new&lt;/code&gt; command. It will index all your emails and tag them with rules that you have defined above. If everything went like expected, you should see an output like below if you run &lt;code&gt;notmuch&lt;/code&gt; without any arguments.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ notmuch
+Notmuch is configured and appears to have a database. Excellent!
+
+At this point you can start exploring the functionality of notmuch by
+using commands such as:
+
+        notmuch search tag:inbox
+
+        notmuch search to:&amp;quot;Your Name&amp;quot;
+
+        notmuch search from:&amp;quot;username@gmail.com&amp;quot;
+
+        notmuch search subject:&amp;quot;my favorite things&amp;quot;
+
+See &amp;quot;notmuch help search&amp;quot; for more details.
+
+You can also use &amp;quot;notmuch show&amp;quot; with any of the thread IDs resulting
+from a search. Finally, you may want to explore using a more sophisticated
+interface to notmuch such as the emacs interface implemented in notmuch.el
+or any other interface described at https://notmuchmail.org
+
+And don&#39;t forget to run &amp;quot;notmuch new&amp;quot; whenever new mail arrives.
+
+Have fun, and may your inbox never have much mail.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Notmuch is used by &lt;a href=&#34;https://notmuchmail.org/frontends/&#34;&gt;several different email clients&lt;/a&gt;. You can test and try which ones you like the best. There is an emacs client so that you don’t ever have to leave emacs for your email. I tried it for a little while but just didn’t feel the best to me.&lt;/p&gt;
+
+&lt;p&gt;Last week I stumbled upon another frontend to notmuch called &lt;a href=&#34;https://astroidmail.github.io/&#34;&gt;Astroid&lt;/a&gt;. It is a sleek interface written in C++ and renders emails using webkit. You write emails in your favorite text editor that can be spawn off or embeded inside of Astroid. I have embeded emacs in Astroid which is super freaking awesome!&lt;/p&gt;
+
+&lt;p&gt;I compiled and installed Astroid from the &lt;a href=&#34;https://github.com/astroidmail/astroid&#34;&gt;source&lt;/a&gt; that you can find on Github. The installation instructions are provided in the Readme. A default configuration is generated at &lt;code&gt;$XDG_CONFIG_HOME/astroid/config&lt;/code&gt;  (most commonly at ~/.config/astroid/config/)the first time you run astroid. Configuring astroid is super easy. You can view all the default keybindings by &lt;code&gt;?&lt;/code&gt; key in the default view. It also has a very nice &lt;a href=&#34;https://github.com/astroidmail/astroid/wiki&#34;&gt;wiki&lt;/a&gt; that can help you setup configure Astroid to your taste.&lt;/p&gt;
+
+&lt;p&gt;Astroid uses a script called &lt;code&gt;poll.sh&lt;/code&gt; at &lt;code&gt;~/.config/astroid/poll.sh&lt;/code&gt; to fetch your email if you want. You can write your own commands in the script which can do several other things than just fetching email, like indexing new emails, notifying you of new emails etc. Here is what mys script looks like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#! /bin/bash
+
+if ! ping -w 1 -W 1 -c 1 mail.google.com; then
+    echo &amp;quot;there is no internet connection&amp;quot;
+    exit
+fi
+
+echo &amp;quot;Checking new mail!&amp;quot;
+/usr/bin/offlineimap
+
+NEW_MAIL=false
+if ! (notmuch new | grep &amp;quot;No new mail.&amp;quot;); then
+    NEW_MAIL=true
+fi
+
+# Tag email etc. here
+notmuch tag --batch &amp;lt;&amp;lt;EOF
+    +urgent tag:new and subject:URGENT
+    +inbox tag:new and folder:Gmail/INBOX
+    +work tag:new and from:github or from:gitlab
+    +promo tag:new and folder:Gmail/Promotions
+    +social tag:new and folder:Gmail/Social
+    -new tag:new
+EOF
+notmuch tag -inbox tag:promo or tag:social
+
+if [ $NEW_MAIL = true ]; then
+    notify-send &amp;quot;New mail.&amp;quot;
+fi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The most important part of the script that you should change is the part starting with &lt;code&gt;notmuch tag --batch&lt;/code&gt;  . This is how notmuch tags all your emails based on some pre-defined rules. All the new emails are tagged with &lt;code&gt;new&lt;/code&gt; and &lt;code&gt;unread&lt;/code&gt; by default and then the rest of the processing can happen on the emails that have &lt;code&gt;new&lt;/code&gt; tag.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://notmuchmail.org/initial_tagging/&#34;&gt;Notmuch’s documentation&lt;/a&gt; mentions different ways in which you can tag your emails as they arrive. There are several different ways and you can choose whatever works the best for you. I encourage you to dive more into tagging and different robust ways to tag emails as this is going to be the central piece of your workflow. If you are smart, you will be able to automate a large part of filtering process and increase your productivity to a very high level. It is very easy to write scripts that can classify your emails to into certain categories based on the headers or content of the email. If you want to get all your Gmail tags in notmuch, you can do this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ notmuch tag +tag-name folder:Gmail/tag-name
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Since gmail’s tags are essentially treated as folders by offlineimap (and hence notmuch), you can very easily tag them using &lt;code&gt;folder:&lt;/code&gt; search query in notmuch. There are other more &lt;a href=&#34;https://notmuchmail.org/manpages/notmuch-search-terms-7/&#34;&gt;advanced ways to search&lt;/a&gt; in notmuch.&lt;/p&gt;
+
+&lt;p&gt;The final thing that you want to setup is how emails are sent. By default, Astroid doesn’t have any inbuilt mechanism to relay emails. It &lt;a href=&#34;https://github.com/astroidmail/astroid/wiki/Astroid-in-your-general-mail-setup&#34;&gt;recommends&lt;/a&gt; using &lt;a href=&#34;http://msmtp.sourceforge.net/&#34;&gt;msmtp&lt;/a&gt; for sending emails, although you don’t &lt;em&gt;have&lt;/em&gt; to. Any smtp software that has a sendmail like interface should work. Here is my configuration for msmtp stored in &lt;code&gt;~/.msmtprc&lt;/code&gt; :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;defaults
+port 587
+tls on
+auth on
+logfile ~/.msmtp.log
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+
+account gmail
+host smtp.gmail.com
+from username@gmail.com
+user username@gmail.com
+tls_starttls on
+tls on
+auth on
+port 587
+passwordeval gpg2 --no-tty -q -d ~/.msmtp-gmail.gpg
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Your gmail password is supposed to be stored encrypted in &lt;code&gt;~/.msmtp-gmail.gpg&lt;/code&gt; file. There are other ways that you can provide your password to msmtp, &lt;a href=&#34;http://msmtp.sourceforge.net/doc/msmtp.html#Examples&#34;&gt;have a look at the example&lt;/a&gt; configuration in the documentation.&lt;/p&gt;
+
+&lt;p&gt;Hope you have fun with emails!&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Persistant IRC Setup</title>
@@ -1005,45 +1224,6 @@ specific value&#34; irrespective of the input. See the code below:&lt;/p&gt;
 
 
 &lt;p&gt; &lt;/p&gt;
-
-</description>
-    </item>
-    
-    <item>
-      <title>Connect the DOT</title>
-      <link>http://asynchronous.in/2013/07/19/connect-the-dot/</link>
-      <pubDate>Fri, 19 Jul 2013 00:00:00 +0000</pubDate>
-      
-      <guid>http://asynchronous.in/2013/07/19/connect-the-dot/</guid>
-      <description>&lt;p&gt;This post talks about dot program from graphviz suite. If you read my last
-post you may have noticed the dot graph that I made using the dot program from
-graphviz suite. It is a very easy to use program whose details can be
-read &lt;a href=&#34;http://www.graphviz.org/&#34;&gt;here&lt;/a&gt; at graphviz official website. I
-would like to share the code for the graph that I made for the last post:
-&lt;/p&gt;
-
-&lt;pre&gt;
-digraph G {
-    IN -&gt; approved;
-    approved -&gt; emergency[label=&#34;No&#34;];
-    emergency -&gt; loop[label=&#34;No&#34;];	
-    loop -&gt; member_moderated[label=&#34;No&#34;];
-    member_moderated -&gt; administrivia[&#34;No&#34;];
-    administrivia -&gt; max_size;
-    max_size -&gt; truth;
-    max_size -&gt; MODERATION[label=&#34;exceeds&#34;];
-    truth -&gt; PIPELINE;
-    approved -&gt; PIPELINE[label=&#34;Yes&#34;];
-    member_moderated -&gt; MODERATION[label=&#34;Yes&#34;]; 
-    emergency -&gt; HOLD[label=&#34;Yes&#34;];
-    loop -&gt; DISCARD[label=&#34;Yes&#34;];
-}
-&lt;/pre&gt;
-&lt;p&gt;The above code produces the graph below:
-
-&lt;center&gt;
-  &lt;img src=&#34;http://asynchronous.in/images/posting_chain.png&#34; height=&#34;500px&#34;&gt;
-&lt;/center&gt;
 
 </description>
     </item>
