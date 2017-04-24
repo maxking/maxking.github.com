@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Gsoc on maxking&#39;s blog</title>
-    <link>http://asynchronous.in/tags/gsoc/index.xml</link>
+    <link>https://asynchronous.in/tags/gsoc/index.xml</link>
     <description>Recent content in Gsoc on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://asynchronous.in/tags/gsoc/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://asynchronous.in/tags/gsoc/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>GSoC Updates</title>
-      <link>http://asynchronous.in/2013/08/28/updates-gsoc/</link>
+      <link>https://asynchronous.in/2013/08/28/updates-gsoc/</link>
       <pubDate>Wed, 28 Aug 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2013/08/28/updates-gsoc/</guid>
+      <guid>https://asynchronous.in/2013/08/28/updates-gsoc/</guid>
       <description>&lt;p&gt;This posts unlike previous posts is just a collection of all the updates
 from my gsoc project. Recently I have been working on setting up the
 infrastructure to contain public and private keys for the gpg process to use. A
@@ -61,10 +61,10 @@ Barry about it and it seems that it is not my problem(for a while).&lt;/p&gt;
     
     <item>
       <title>Are you mocking me?</title>
-      <link>http://asynchronous.in/2013/07/19/are-you-mocking-me/</link>
+      <link>https://asynchronous.in/2013/07/19/are-you-mocking-me/</link>
       <pubDate>Fri, 19 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2013/07/19/are-you-mocking-me/</guid>
+      <guid>https://asynchronous.in/2013/07/19/are-you-mocking-me/</guid>
       <description>&lt;p&gt;Unit testing is one of the most important parts of any project. TDD (test
 driven development) is a good habit to cultivate, in case you are not convinced,
 you don&#39;t know about TDD or you have never given it a try. I started using
@@ -150,10 +150,10 @@ specific value&#34; irrespective of the input. See the code below:&lt;/p&gt;
     
     <item>
       <title>GNUPG and python</title>
-      <link>http://asynchronous.in/2013/07/16/stuck-at-gnupg/</link>
+      <link>https://asynchronous.in/2013/07/16/stuck-at-gnupg/</link>
       <pubDate>Tue, 16 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2013/07/16/stuck-at-gnupg/</guid>
+      <guid>https://asynchronous.in/2013/07/16/stuck-at-gnupg/</guid>
       <description>&lt;p&gt;So this post talks about what gpg is, what are the various problems that can
 be solved using gpg and about python-gnupg library which can be used to sign a
 message or file using python&lt;/p&gt;
@@ -168,10 +168,10 @@ post.&lt;/p&gt;
     
     <item>
       <title>Rules and Chains</title>
-      <link>http://asynchronous.in/2013/06/30/rules-and-chains/</link>
+      <link>https://asynchronous.in/2013/06/30/rules-and-chains/</link>
       <pubDate>Sun, 30 Jun 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2013/06/30/rules-and-chains/</guid>
+      <guid>https://asynchronous.in/2013/06/30/rules-and-chains/</guid>
       <description>&lt;p&gt;This post talks about the basic messaging flow in mailman and then a little
 detail about what are rules and chains in Mailman. So a message can be injected
 in mailman system using a LMTP server via
@@ -190,7 +190,7 @@ they were queued in, e.g. IN runner sends to file to pipeline queue where i
 Below is a graph is decided if the message will be accepted, discarded or held
 for moderation. Below is a graph depicting the message flow in mailman.&lt;/p&gt;
 &lt;center&gt;
-  &lt;img src=&#34;http://asynchronous.in/images/mailman-messaging-flow.png&#34; height=&#34;400px&#34;&gt;
+  &lt;img src=&#34;https://asynchronous.in/images/mailman-messaging-flow.png&#34; height=&#34;400px&#34;&gt;
 &lt;/center&gt;
 &lt;p&gt;How is it decided if a message is &#39;fit&#39; for posting? This process is
 called &lt;i&gt;Moderation&lt;/i&gt; where a message is tested against a set of rules. Rules
@@ -268,10 +268,10 @@ openpgp-signature.
     
     <item>
       <title>Gsoc 2013 - Pilot!</title>
-      <link>http://asynchronous.in/2013/06/12/gosc-into/</link>
+      <link>https://asynchronous.in/2013/06/12/gosc-into/</link>
       <pubDate>Wed, 12 Jun 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2013/06/12/gosc-into/</guid>
+      <guid>https://asynchronous.in/2013/06/12/gosc-into/</guid>
       <description>&lt;p&gt;In this post I will first start with my introduction in brief and then move
 on to my gsoc project. I am a undergrad student
 at &lt;a href=&#34;http://iitkgp.ac.in&#34;&gt;Indian Institute of Technology, Kharagpur&lt;/a&gt;
@@ -281,8 +281,8 @@ under Python Software Foundation for my gsoc project -
 &lt;i&gt;Implementation of OpenPGP with Mailman.&lt;/i&gt;&lt;p&gt;
 
 &lt;center&gt;
-&lt;img src=&#34;http://asynchronous.in/images/mailman.png&#34; id=&#34;mailman_logo&#34;&gt;
-&lt;img src=&#34;http://asynchronous.in/images/python-logo.gif&#34; id=&#34;python-logo&#34;&gt;
+&lt;img src=&#34;https://asynchronous.in/images/mailman.png&#34; id=&#34;mailman_logo&#34;&gt;
+&lt;img src=&#34;https://asynchronous.in/images/python-logo.gif&#34; id=&#34;python-logo&#34;&gt;
 &lt;/center&gt;
 
 &lt;p&gt;

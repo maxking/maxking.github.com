@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Gsoc Mailman Python Unittest Testing on maxking&#39;s blog</title>
-    <link>http://asynchronous.in/tags/gsoc-mailman-python-unittest-testing/index.xml</link>
+    <link>https://asynchronous.in/tags/gsoc-mailman-python-unittest-testing/index.xml</link>
     <description>Recent content in Gsoc Mailman Python Unittest Testing on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://asynchronous.in/tags/gsoc-mailman-python-unittest-testing/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://asynchronous.in/tags/gsoc-mailman-python-unittest-testing/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Non-trivial unittests</title>
-      <link>http://asynchronous.in/2013/07/19/non-trivial-unit-tests/</link>
+      <link>https://asynchronous.in/2013/07/19/non-trivial-unit-tests/</link>
       <pubDate>Fri, 19 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2013/07/19/non-trivial-unit-tests/</guid>
+      <guid>https://asynchronous.in/2013/07/19/non-trivial-unit-tests/</guid>
       <description>&lt;p&gt;Unit tests are mostly trivial to write with only those assert statements over
 the expected results of the function (which is to be tested) instances. But
 sometimes it gets difficult to test some functions which require test data and

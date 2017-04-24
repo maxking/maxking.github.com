@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>maxking&#39;s blog</title>
-    <link>http://asynchronous.in/index.xml</link>
+    <link>https://asynchronous.in/index.xml</link>
     <description>Recent content on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 21 Apr 2017 10:51:03 +0000</lastBuildDate>
-    <atom:link href="http://asynchronous.in/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://asynchronous.in/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Email with notmuch and astroid</title>
-      <link>http://asynchronous.in/2017/04/21/Email-with-notmuch-and-astroid/</link>
+      <link>https://asynchronous.in/2017/04/21/Email-with-notmuch-and-astroid/</link>
       <pubDate>Fri, 21 Apr 2017 10:51:03 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2017/04/21/Email-with-notmuch-and-astroid/</guid>
+      <guid>https://asynchronous.in/2017/04/21/Email-with-notmuch-and-astroid/</guid>
       <description>&lt;p&gt;Email is an integral part of our everyday life. I have spent a large amount of time trying to experiment with different email clients available on Linux. I have tried &lt;a href=&#34;https://www.mozilla.org/en-US/thunderbird/&#34;&gt;Thunderbird&lt;/a&gt;, &lt;a href=&#34;https://wiki.gnome.org/Apps/Evolution/&#34;&gt;Evolution&lt;/a&gt;, &lt;a href=&#34;https://notmuchmail.org&#34;&gt;notmuch&lt;/a&gt; with emacs, &lt;a href=&#34;http://www.mutt.org/&#34;&gt;mutt&lt;/a&gt;, &lt;a href=&#34;https://www.emacswiki.org/emacs/mu4e&#34;&gt;mu4e&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Since I am a Linux user, the list above includes only the clients compatible with Linux, particularly Debian/Ubuntu ecosystem. You can classify most of the email clients in two broad workflow categories&lt;/p&gt;
@@ -230,10 +230,10 @@ passwordeval gpg2 --no-tty -q -d ~/.msmtp-gmail.gpg
     
     <item>
       <title>Persistant IRC Setup</title>
-      <link>http://asynchronous.in/2017/03/15/Persistant-IRC-Setup/</link>
+      <link>https://asynchronous.in/2017/03/15/Persistant-IRC-Setup/</link>
       <pubDate>Wed, 15 Mar 2017 12:57:20 -0700</pubDate>
       
-      <guid>http://asynchronous.in/2017/03/15/Persistant-IRC-Setup/</guid>
+      <guid>https://asynchronous.in/2017/03/15/Persistant-IRC-Setup/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Internet_Relay_Chat&#34;&gt;IRC&lt;/a&gt; stands for Internet
 Relay Chat, a text based chat network that is commonly used by programmers and
 open source community to collaborate over projects. You can read more about it
@@ -321,10 +321,10 @@ setup WeeChat with SSL enabled on a VPS.&lt;/p&gt;
     
     <item>
       <title>Move to Hugo</title>
-      <link>http://asynchronous.in/2017/02/08/Move-to-Hugo/</link>
+      <link>https://asynchronous.in/2017/02/08/Move-to-Hugo/</link>
       <pubDate>Wed, 08 Feb 2017 13:02:38 -0800</pubDate>
       
-      <guid>http://asynchronous.in/2017/02/08/Move-to-Hugo/</guid>
+      <guid>https://asynchronous.in/2017/02/08/Move-to-Hugo/</guid>
       <description>&lt;p&gt;I have been planning to rejuvenate this blog with a new design and hopefully
 some good posts! Before this, I used to publish this blog using &lt;a href=&#34;https://jekyllrb.com/&#34;&gt;Jekyll&lt;/a&gt;
 which is a great tool if you want to serve static website using &lt;a href=&#34;https://pages.github.com/&#34;&gt;Github
@@ -380,10 +380,10 @@ and the 2nd one &lt;code&gt;username.github.io&lt;/code&gt; keeps your staticall
     
     <item>
       <title>Prevent Git Push</title>
-      <link>http://asynchronous.in/2016/05/16/Prevent-Git-Push/</link>
+      <link>https://asynchronous.in/2016/05/16/Prevent-Git-Push/</link>
       <pubDate>Mon, 16 May 2016 13:23:08 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2016/05/16/Prevent-Git-Push/</guid>
+      <guid>https://asynchronous.in/2016/05/16/Prevent-Git-Push/</guid>
       <description>&lt;p&gt;It happens with me sometimes that I push to repositories that I must not push
 to. Being a &lt;a href=&#34;http://list.org&#34;&gt;GNU Mailman&lt;/a&gt; core-developer, I have push access to all the
 repositories. But, we always add changes to the master repo using
@@ -399,10 +399,10 @@ repository read-only. This is how I did it:&lt;/p&gt;
     
     <item>
       <title>SSH ProxyCommand</title>
-      <link>http://asynchronous.in/2016/05/04/ssh-proxy/</link>
+      <link>https://asynchronous.in/2016/05/04/ssh-proxy/</link>
       <pubDate>Wed, 04 May 2016 11:40:00 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2016/05/04/ssh-proxy/</guid>
+      <guid>https://asynchronous.in/2016/05/04/ssh-proxy/</guid>
       <description>&lt;p&gt;&lt;em&gt;Problem&lt;/em&gt; : Some servers in my university are beind firewall and it is difficult
 to ssh to those servers as I always use a VPN service on my primary laptop. To
 be able to ssh, one must be inside the university or use the university VPN.&lt;/p&gt;
@@ -429,10 +429,10 @@ directly to the server behind the firewall. Note that the magic happend in the
     
     <item>
       <title>Basic GDB</title>
-      <link>http://asynchronous.in/2016/03/17/gdb-intro/</link>
+      <link>https://asynchronous.in/2016/03/17/gdb-intro/</link>
       <pubDate>Thu, 17 Mar 2016 02:50:24 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2016/03/17/gdb-intro/</guid>
+      <guid>https://asynchronous.in/2016/03/17/gdb-intro/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://www.gnu.org/s/gdb/&#34;&gt;GDB&lt;/a&gt;(The GNU Project Debugger) is one of the most awesome softwares ever
 built for C programmers. I recently started to write some code in C,
 specifically trying out socket programming and some other stuff. I had a very
@@ -555,10 +555,10 @@ refer to learn more about how to use the advanced features of gdb.&lt;/p&gt;
     
     <item>
       <title>Python&#39;s GIL</title>
-      <link>http://asynchronous.in/2015/12/10/part1-gil/</link>
+      <link>https://asynchronous.in/2015/12/10/part1-gil/</link>
       <pubDate>Thu, 10 Dec 2015 04:30:24 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2015/12/10/part1-gil/</guid>
+      <guid>https://asynchronous.in/2015/12/10/part1-gil/</guid>
       <description>&lt;p&gt;Recently I got very interested to explore about the GIL or the Global
 Interpreter Lock in Python that has been a topic of flame wars since
 forever. Global interpreter lock is a lock on the python interpreter, that a
@@ -648,10 +648,10 @@ external I/O and then make them wait for longer time than they actually need to.
     
     <item>
       <title>Gitlab CI?</title>
-      <link>http://asynchronous.in/2015/07/14/gitlab-ci/</link>
+      <link>https://asynchronous.in/2015/07/14/gitlab-ci/</link>
       <pubDate>Tue, 14 Jul 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2015/07/14/gitlab-ci/</guid>
+      <guid>https://asynchronous.in/2015/07/14/gitlab-ci/</guid>
       <description>&lt;p&gt;&lt;i&gt;Note: This post is now outdated. GNU Mailman now has a &lt;a href=&#34;http://hub.docker.com/u/maxking/mailman-ci-runner/&#34;&gt;new container image&lt;/a&gt;
 for running tests and this time it &lt;em&gt;just works&lt;/em&gt;.
 &lt;/i&gt;&lt;/p&gt;
@@ -785,10 +785,10 @@ repositories even if they belong to a group.&lt;/p&gt;&lt;/li&gt;
     
     <item>
       <title>Notes</title>
-      <link>http://asynchronous.in/notes/</link>
+      <link>https://asynchronous.in/notes/</link>
       <pubDate>Sat, 14 Feb 2015 12:00:00 +0000</pubDate>
       
-      <guid>http://asynchronous.in/notes/</guid>
+      <guid>https://asynchronous.in/notes/</guid>
       <description>
 
 &lt;p&gt;These are my notes that I make randomly. There can be code, links, documents or
@@ -888,10 +888,10 @@ it became a problem when I started using a lot of servers and I would ssh there.
     
     <item>
       <title>Git Undo</title>
-      <link>http://asynchronous.in/2014/10/05/git-amend/</link>
+      <link>https://asynchronous.in/2014/10/05/git-amend/</link>
       <pubDate>Sun, 05 Oct 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2014/10/05/git-amend/</guid>
+      <guid>https://asynchronous.in/2014/10/05/git-amend/</guid>
       <description>
 
 &lt;p&gt;Here are some useful git commands that helps to undo changes you knowingly
@@ -944,10 +944,10 @@ force the push) flag with a little care, it may prove deleterious at times.&lt;/
     
     <item>
       <title>About</title>
-      <link>http://asynchronous.in/about/</link>
+      <link>https://asynchronous.in/about/</link>
       <pubDate>Fri, 28 Mar 2014 12:00:00 +0000</pubDate>
       
-      <guid>http://asynchronous.in/about/</guid>
+      <guid>https://asynchronous.in/about/</guid>
       <description>
 
 &lt;p&gt;&lt;center&gt;&lt;img src=&#34;img/author.png&#34; alt=&#34;Image Abhilash&#34; title=&#34;Abhilash Raj (maxking)&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
@@ -992,16 +992,16 @@ around on IRC as &lt;em&gt;maxking&lt;/em&gt; on freenode.net.&lt;/p&gt;
 
 &lt;h1 id=&#34;gpg-key&#34;&gt;GPG Key&lt;/h1&gt;
 
-&lt;p&gt;You can download my public key &lt;a href=&#34;http://asynchronous.in/pubkey.txt&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;You can download my public key &lt;a href=&#34;https://asynchronous.in/pubkey.txt&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Sshuttle VPN to bypass proxy</title>
-      <link>http://asynchronous.in/2014/03/28/vpn-sshuttle/</link>
+      <link>https://asynchronous.in/2014/03/28/vpn-sshuttle/</link>
       <pubDate>Fri, 28 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2014/03/28/vpn-sshuttle/</guid>
+      <guid>https://asynchronous.in/2014/03/28/vpn-sshuttle/</guid>
       <description>&lt;p&gt;Proxy servers in my college has made my life like a living hell. Blocking IRC and
 SSH is the worst thing that you can do to a developer I suppose. For past few
 years I have been trying to totally eliminate the problems associated with proxy,
@@ -1046,10 +1046,10 @@ seems to &lt;strong&gt;just work&lt;/strong&gt;.&lt;/p&gt;
     
     <item>
       <title>GSoC Finale</title>
-      <link>http://asynchronous.in/2013/09/24/gsoc-finale/</link>
+      <link>https://asynchronous.in/2013/09/24/gsoc-finale/</link>
       <pubDate>Tue, 24 Sep 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2013/09/24/gsoc-finale/</guid>
+      <guid>https://asynchronous.in/2013/09/24/gsoc-finale/</guid>
       <description>&lt;p&gt;So I have pushed my final commit for now for my GSoC project. I will try
 to be brief on all the accomplishments and mention concisely
 what-is-working.&lt;/p&gt;
@@ -1086,10 +1086,10 @@ is &lt;a href=&#34;https://code.launchpad.net/~raj-abhilash1&#34;&gt;here&lt;/a&
     
     <item>
       <title>Structure of Email</title>
-      <link>http://asynchronous.in/2013/09/12/message-structure/</link>
+      <link>https://asynchronous.in/2013/09/12/message-structure/</link>
       <pubDate>Thu, 12 Sep 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2013/09/12/message-structure/</guid>
+      <guid>https://asynchronous.in/2013/09/12/message-structure/</guid>
       <description>&lt;p&gt; This week I was busy investigating which kind of email does MUAs accept and
 display nicely. Now wait! What does *kind of email* and *MUA* mean?&lt;/p&gt;
 
@@ -1170,10 +1170,10 @@ whole part.&lt;p&gt;
     
     <item>
       <title>GSoC Updates</title>
-      <link>http://asynchronous.in/2013/08/28/updates-gsoc/</link>
+      <link>https://asynchronous.in/2013/08/28/updates-gsoc/</link>
       <pubDate>Wed, 28 Aug 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2013/08/28/updates-gsoc/</guid>
+      <guid>https://asynchronous.in/2013/08/28/updates-gsoc/</guid>
       <description>&lt;p&gt;This posts unlike previous posts is just a collection of all the updates
 from my gsoc project. Recently I have been working on setting up the
 infrastructure to contain public and private keys for the gpg process to use. A

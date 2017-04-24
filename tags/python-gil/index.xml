@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Python Gil on maxking&#39;s blog</title>
-    <link>http://asynchronous.in/tags/python-gil/index.xml</link>
+    <link>https://asynchronous.in/tags/python-gil/index.xml</link>
     <description>Recent content in Python Gil on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://asynchronous.in/tags/python-gil/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://asynchronous.in/tags/python-gil/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Python&#39;s GIL</title>
-      <link>http://asynchronous.in/2015/12/10/part1-gil/</link>
+      <link>https://asynchronous.in/2015/12/10/part1-gil/</link>
       <pubDate>Thu, 10 Dec 2015 04:30:24 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2015/12/10/part1-gil/</guid>
+      <guid>https://asynchronous.in/2015/12/10/part1-gil/</guid>
       <description>&lt;p&gt;Recently I got very interested to explore about the GIL or the Global
 Interpreter Lock in Python that has been a topic of flame wars since
 forever. Global interpreter lock is a lock on the python interpreter, that a

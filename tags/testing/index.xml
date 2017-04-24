@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Testing on maxking&#39;s blog</title>
-    <link>http://asynchronous.in/tags/testing/index.xml</link>
+    <link>https://asynchronous.in/tags/testing/index.xml</link>
     <description>Recent content in Testing on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://asynchronous.in/tags/testing/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://asynchronous.in/tags/testing/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Are you mocking me?</title>
-      <link>http://asynchronous.in/2013/07/19/are-you-mocking-me/</link>
+      <link>https://asynchronous.in/2013/07/19/are-you-mocking-me/</link>
       <pubDate>Fri, 19 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2013/07/19/are-you-mocking-me/</guid>
+      <guid>https://asynchronous.in/2013/07/19/are-you-mocking-me/</guid>
       <description>&lt;p&gt;Unit testing is one of the most important parts of any project. TDD (test
 driven development) is a good habit to cultivate, in case you are not convinced,
 you don&#39;t know about TDD or you have never given it a try. I started using

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Gsoc Mailman Email on maxking&#39;s blog</title>
-    <link>http://asynchronous.in/tags/gsoc-mailman-email/index.xml</link>
+    <link>https://asynchronous.in/tags/gsoc-mailman-email/index.xml</link>
     <description>Recent content in Gsoc Mailman Email on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://asynchronous.in/tags/gsoc-mailman-email/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://asynchronous.in/tags/gsoc-mailman-email/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Structure of Email</title>
-      <link>http://asynchronous.in/2013/09/12/message-structure/</link>
+      <link>https://asynchronous.in/2013/09/12/message-structure/</link>
       <pubDate>Thu, 12 Sep 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2013/09/12/message-structure/</guid>
+      <guid>https://asynchronous.in/2013/09/12/message-structure/</guid>
       <description>&lt;p&gt; This week I was busy investigating which kind of email does MUAs accept and
 display nicely. Now wait! What does *kind of email* and *MUA* mean?&lt;/p&gt;
 

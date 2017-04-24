@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ci Python Gitlab Gitlab Ci on maxking&#39;s blog</title>
-    <link>http://asynchronous.in/tags/ci-python-gitlab-gitlab-ci/index.xml</link>
+    <link>https://asynchronous.in/tags/ci-python-gitlab-gitlab-ci/index.xml</link>
     <description>Recent content in Ci Python Gitlab Gitlab Ci on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://asynchronous.in/tags/ci-python-gitlab-gitlab-ci/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://asynchronous.in/tags/ci-python-gitlab-gitlab-ci/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Gitlab CI?</title>
-      <link>http://asynchronous.in/2015/07/14/gitlab-ci/</link>
+      <link>https://asynchronous.in/2015/07/14/gitlab-ci/</link>
       <pubDate>Tue, 14 Jul 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://asynchronous.in/2015/07/14/gitlab-ci/</guid>
+      <guid>https://asynchronous.in/2015/07/14/gitlab-ci/</guid>
       <description>&lt;p&gt;&lt;i&gt;Note: This post is now outdated. GNU Mailman now has a &lt;a href=&#34;http://hub.docker.com/u/maxking/mailman-ci-runner/&#34;&gt;new container image&lt;/a&gt;
 for running tests and this time it &lt;em&gt;just works&lt;/em&gt;.
 &lt;/i&gt;&lt;/p&gt;
