@@ -14,10 +14,10 @@
 <title>
 
 
-     maxking&#39;s blog - HOWTO: Release on PyPI 
+     maxking&#39;s blog - HOWTO: Create a .deb package 
 
 </title>
-<link rel="canonical" href="https://asynchronous.in/2017/07/02/HOWTO-Release-on-PyPI/">
+<link rel="canonical" href="https://asynchronous.in/2017/07/03/HOWTO-Create-a-.deb-package/">
 
 
 
@@ -112,61 +112,58 @@
                 <div class="title-container">
                     <div class="page-heading">
 
-    HOWTO: Release on PyPI
+    HOWTO: Create a .deb package
 
 </div>
 
                 </div>
                 <div class="meta">
-                    <div class="date" title="Jul 02 2017 23:06">Jul 02 2017</div>
+                    <div class="date" title="Jul 03 2017 20:17">Jul 03 2017</div>
                     <div class="reading-time"><div class="middot"></div>2 minutes read</div>
                 </div>
             </div>
             <div class="markdown">
                 
 
-<h1 id="howto-release-on-pypi">HOWTO: Release on PyPI</h1>
+<h1 id="howto-create-a-deb-package">HOWTO: Create a .deb package</h1>
 
-<p>These are some commands that is meant to keep a track of how to release a package on <a href="https://pypi.python.org">PyPI</a>, python packaging index.</p>
+<p>This is  <a href="https://wiki.debian.org/Packaging/Intro?action=show&amp;redirect=IntroDebianPackaging">basic tutorial</a> on how to get started with building debian packages. It mostly assumes that that the package you are trying to build is either using make or some other simple build system.</p>
 
-<p>Before you release, make sure that you have pull the updated version of the project from your source control website (Github/Gitlab) , removed all the debug statements, and updated the versions in documentation.</p>
+<p>To get some more details about options and other advanced methods and tooling to build .deb packages, see <a href="https://wiki.debian.org/BuildingTutorial#Edit_the_source_code">this post</a>. It is a tutorial to build a debian package.</p>
 
-<p>Then, the first step is to tag the release in version control, here are examples for git:</p>
+<p>I started off with building the package for a <a href="http://scons.org/">scons</a> based project, <a href="https://github.com/astroidmail/astroid/">astroid</a>. While scons works fine when you are manually trying to compile and install the project, it lacks some important functionality that makes packaging a project based off it difficult. Of the <a href="https://wiki.gentoo.org/wiki/SCons#Why_you_should_NOT_use_SCons_in_your_project">other problems</a> with this build system, the most prominent one is that it doesn’t honor some environment flags like <code>CFLAGS</code> and <code>CPPFLAGS</code> or <code>LD_FLAGS</code>, which means the package maintainer has to add more code to make the build system honor these.</p>
 
-<pre><code>$ git tag 3.1.0
-$ git push upstream master --tags
+<p>Also, scons doesn’t allow specifying a DESTINATION directory to install and installs by default only the directory specified by <code>--prefix</code> (e.g. —prefix=/usr will result in package installed at <code>/usr/bin</code>). This becomes a problem because when you try to create a .deb package, you need to install everything under <code>debian/projectname</code>.</p>
+
+<ul>
+<li><a href="https://askubuntu.com/questions/245008/what-is-the-right-way-to-debianize-software-that-uses-the-scons-build-system">This thread</a> was very helpful for me to get started on writing build script for ubuntu.</li>
+<li>There are options to make things work for other project by using this <a href="https://bitbucket.org/scons/scons/wiki/Installer">recipe</a>.</li>
+</ul>
+
+<p>The command I am using to build the package is <code>debuild -us -uc</code> . Here is a copy of the <code>debian/rules</code> script which is the most important one to build:</p>
+
+<pre><code>#!/usr/bin/make -f
+
+SCONS=scons
+DEB_SCONS_OPTIONS := --prefix=/usr --destdir=$(CURDIR)/debian/astroid/usr
+
+%:
+        dh $@
+
+override_dh_auto_build:
+        $(SCONS) $(DEB_SCONS_OPTIONS) -j 4 build
+
+override_dh_auto_clean:
+        dh_auto_clean
+        rm -rf .sconf_tem/ .sconsign.dblite config.log
+
+override_dh_auto_install:
+        $(SCONS) $(DEB_SCONS_OPTIONS) install
 </code></pre>
 
-<p><code>upstream</code> here is supposed to be main code repository for the project and not your fork, but if you are strict about Merge(or Pull) Request workflow, then you can push to your fork and send in a pull request and merge it manually.</p>
+<p>Note that this is a <code>Makefile</code> so everything in indented with a single <code>TAB</code> character.</p>
 
-<p>The next step is to create the tarball which will actually be uploaded to PyPI.</p>
-
-<pre><code># Clean the tree to remove all the files that are not required for the release.
-$ git clean -dxffi
-# Check there is nothing in staging/untracked/random dotfiles
-$ git status
-# Create the tarball.
-$ python setup.py sdist
-</code></pre>
-
-<p>The last command above will create a new tarball named <code>projectname-version.tar.gz</code> in <code>dist/</code> directory relative to your <code>setup.py</code>.</p>
-
-<p>To upload your project, you first need to register with PyPI. If you have already registered, you can proceed to authenticate your machine with PyPI.</p>
-
-<pre><code># Command below will log you in PyPI. It will ask you for youg login credentials.
-$ python setup.py register
-</code></pre>
-
-<p>It is no longer possible to upload the tarball to PyPI directly, like before using the command above. A python package called <code>[twine](https://pypi.python.org/pypi/twine)</code>  can be used to securely (over HTTPS) upload signed packages to PyPI.</p>
-
-<pre><code># Use sudo with the command below if you want it to be installed globally.
-$ pip install twine
-# The -s flag below will sign your package with the privatekey that belongs to the
-# email address registed with PyPI.
-$ twine upload -s dist/projectname-version.tar.gz
-</code></pre>
-
-<p>That is all. You can verify that your package is up on PyPI now and enjoy!</p>
+<p>I also had to modify the <code>SConstruct</code> file, which is nothing but a python file without any extensions and is sort of like a scons config file for the project.</p>
 
                 <br>
                 <p><a href="blog">Back to posts</a></p>
