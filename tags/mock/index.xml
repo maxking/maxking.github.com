@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Mock on maxking&#39;s blog</title>
-    <link>https://asynchronous.in/tags/mock/index.xml</link>
+    <link>https://asynchronous.in/tags/mock/</link>
     <description>Recent content in Mock on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="https://asynchronous.in/tags/mock/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 19 Jul 2013 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://asynchronous.in/tags/mock/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Are you mocking me?</title>
@@ -14,87 +17,7 @@
       <pubDate>Fri, 19 Jul 2013 00:00:00 +0000</pubDate>
       
       <guid>https://asynchronous.in/2013/07/19/are-you-mocking-me/</guid>
-      <description>&lt;p&gt;Unit testing is one of the most important parts of any project. TDD (test
-driven development) is a good habit to cultivate, in case you are not convinced,
-you don&#39;t know about TDD or you have never given it a try. I started using
-partial TDD recently, yes only partial for what I follow is that first I write a
-rough outline of the code, then I write tests and then I keep on re-factoring my
-code till all the tests are passing. Though there is a little flaw in this
-method according to me -- although writing tests are mostly trivial with those
-easy assert statements, sometimes you may write wrong tests which make you write
-wrong code too. So put more thought in writing tests than in writing
-code. Although many times you will agree with me that TDD is annoying, it does
-not let you do what you actually want to do (I mean the &#34;way&#34; you want to do it,
-the result may be same).&lt;/p&gt;
-&lt;p&gt;
-So in this post I am going to talk about mocks. What are mocks? There are some
-magical functions which do some abracadabra on your existing function and make
-them return anything that you want without actually even thinking what they are
-returning. Did I personify it a little too much? Let me explain in a little
-detail with the example of where I used mocking.&lt;/p&gt;
-
-&lt;p&gt;
-Unit tests should be independent of environment and any other module, so that
-each module can be developed separately without affecting the development of
-other modules. But many a times one module depends on others and in that case
-it gets messy to test those functions. In my case it was the &#34;signature&#34; rule
-which uses &#34;gpg&#34; utility to verify signature of messages. Here is a snippet of
-the code:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;from&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;mailman.utilities.gpg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;GPG&lt;/span&gt;
- 
-&lt;span style=&#34;color: #a6e22e&#34;&gt;@implementer&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(IRule)&lt;/span&gt;
-&lt;span style=&#34;color: #66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;Signature&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
-    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;quot;&amp;quot;Look for pgp-signature.&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
-
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;signature&amp;#39;&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;description&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;The message has pgp-signature as application/pgp-signature part&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;record&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;True&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;__init__&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self):&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_gpg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;None&lt;/span&gt;
-
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;check&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;mlist,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;msgdata):&lt;/span&gt;
-        &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;quot;&amp;quot;See `IRule&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;gpg_dir&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;os&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;path&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;join(config&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;VAR_DIR,&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;gpg&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_gpg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;GPG(gpg_dir)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;So if you see in line 1 we import the GPG class from &lt;i&gt;gpg&lt;/i&gt; utility. But
-when we write tests we don&#39;t want this function to &#34;actually&#34; create an instance
-of GPG class and &#34;actually&#34; verify the signature because it is not a function of
-signature rule and any errors or breakpoints in gpg utility may cause our tests
-for the &#34;working&#34; signature rule to fail. So what do we do? We mock and then we
-rock ;-). We mock the GPG instance created in signature rule to return &#34;any
-specific value&#34; irrespective of the input. See the code below:&lt;/p&gt;
-
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;mock&lt;/span&gt;
-
-&lt;span style=&#34;color: #66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TestSignatureMime&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(unittest&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;TestCase):&lt;/span&gt;
-    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;quot;&amp;quot;Test the signature handler.&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
-
-  &lt;span style=&#34;color: #66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;Dummy_GPG_True&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;    
-      &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;__init__&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;dir):&lt;/span&gt;
-          &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_dir&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;dir&lt;/span&gt;
-        
-      &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;verify_inline_signature&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;data):&lt;/span&gt;
-          &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;True&lt;/span&gt;
-
-      &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;verify_detached_signature&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;data):&lt;/span&gt;
-          &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;True&lt;/span&gt;
-
-
-  &lt;span style=&#34;color: #a6e22e&#34;&gt;@mock.patch&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;mailman.rules.signature.GPG&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;new&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;Dummy_GPG_True)&lt;/span&gt;
-  &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;test_good_signature&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(self):&lt;/span&gt;
-      &lt;span style=&#34;color: #f8f8f2&#34;&gt;result&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_rule&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;check(self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_mlist,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;_msg,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{})&lt;/span&gt;
-      &lt;span style=&#34;color: #f8f8f2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;assertTrue(result)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt; &lt;/p&gt;
-
-</description>
+      <description>Unit testing is one of the most important parts of any project. TDD (test driven development) is a good habit to cultivate, in case you are not convinced, you don&#39;t know about TDD or you have never given it a try. I started using partial TDD recently, yes only partial for what I follow is that first I write a rough outline of the code, then I write tests and then I keep on re-factoring my code till all the tests are passing.</description>
     </item>
     
   </channel>

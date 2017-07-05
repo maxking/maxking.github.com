@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://asynchronous.in/2017/07/02/HOWTO-Release-on-PyPI/</loc>
+    <lastmod>2017-07-02T23:06:47+00:00</lastmod>
+  </url>
   
   <url>
     <loc>https://asynchronous.in/2017/04/21/Email-with-notmuch-and-astroid/</loc>
@@ -128,25 +134,12 @@
   
   <url>
     <loc>https://asynchronous.in/blog/</loc>
-    <lastmod>2017-04-21T10:51:03+00:00</lastmod>
+    <lastmod>2017-07-02T23:06:47+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://asynchronous.in/tags/c-gdb/</loc>
-    <lastmod>2016-03-17T02:50:24+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://asynchronous.in/tags/ci-python-gitlab-gitlab-ci/</loc>
-    <lastmod>2015-07-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://asynchronous.in/tags/git/</loc>
-    <lastmod>2016-05-16T13:23:08+00:00</lastmod>
+    <loc>https://asynchronous.in/categories/</loc>
     <priority>0</priority>
   </url>
   
@@ -158,30 +151,6 @@
   
   <url>
     <loc>https://asynchronous.in/tags/gsoc/</loc>
-    <lastmod>2013-08-28T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://asynchronous.in/tags/gsoc-got-graph/</loc>
-    <lastmod>2013-07-19T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://asynchronous.in/tags/gsoc-mailman/</loc>
-    <lastmod>2013-09-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://asynchronous.in/tags/gsoc-mailman-email/</loc>
-    <lastmod>2013-09-12T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://asynchronous.in/tags/gsoc-mailman-python-unittest-testing/</loc>
     <lastmod>2013-07-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -211,19 +180,8 @@
   </url>
   
   <url>
-    <loc>https://asynchronous.in/tags/python-gil/</loc>
-    <lastmod>2015-12-10T04:30:24+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://asynchronous.in/tags/ssh/</loc>
-    <lastmod>2016-05-04T11:40:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://asynchronous.in/tags/</loc>
+    <lastmod>2013-07-16T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -234,14 +192,8 @@
   </url>
   
   <url>
-    <loc>https://asynchronous.in/tags/vpn-sshuttle-proxy/</loc>
-    <lastmod>2014-03-28T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://asynchronous.in/</loc>
-    <lastmod>2017-04-21T10:51:03+00:00</lastmod>
+    <lastmod>2017-07-02T23:06:47+00:00</lastmod>
     <priority>0</priority>
   </url>
   

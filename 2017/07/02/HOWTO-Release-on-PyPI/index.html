@@ -16,9 +16,9 @@
 <meta property="og:site_name" content="maxking&#39;s blog" />
 <meta property="og:locale" content="nn_NO" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://asynchronous.in/2017/02/08/Move-to-Hugo/" />
-<meta property="og:title" content="Move to Hugo" />
-<meta property="twitter:title" content="Move to Hugo">
+<meta property="og:url" content="https://asynchronous.in/2017/07/02/HOWTO-Release-on-PyPI/" />
+<meta property="og:title" content="HOWTO: Release on PyPI" />
+<meta property="twitter:title" content="HOWTO: Release on PyPI">
 
     <meta property="twitter:card" content="summary">
 
@@ -27,10 +27,10 @@
 <title>
 
 
-     maxking&#39;s blog - Move to Hugo 
+     maxking&#39;s blog - HOWTO: Release on PyPI 
 
 </title>
-<link rel="canonical" href="https://asynchronous.in/2017/02/08/Move-to-Hugo/">
+<link rel="canonical" href="https://asynchronous.in/2017/07/02/HOWTO-Release-on-PyPI/">
 
 
 <style media="screen">
@@ -972,13 +972,13 @@ margin-left: -4%;
                 <div class="title-container">
                     <div class="page-heading">
 
-    Move to Hugo
+    HOWTO: Release on PyPI
 
 </div>
 
                 </div>
                 <div class="meta">
-                    <div class="date" title="Feb 08 2017 13:02">Feb 08 2017</div>
+                    <div class="date" title="Jul 02 2017 23:06">Jul 02 2017</div>
                     
                         
                     
@@ -998,56 +998,50 @@ margin-left: -4%;
             </div>
             <div class="markdown">
                 
-    <p>I have been planning to rejuvenate this blog with a new design and hopefully
-some good posts! Before this, I used to publish this blog using <a href="https://jekyllrb.com/">Jekyll</a>
-which is a great tool if you want to serve static website using <a href="https://pages.github.com/">Github
-Pages</a>.</p>
+    
 
-<p>Jekyll is written in Ruby, which is one of the reasons I was planning to move
-away from it. I don&rsquo;t have anything against the language, but if you want to
-install Jekyll locally to test out your pages, you have to install the whole
-Ruby toolchain on your machine. This was extremely painful. In my experience,
-dealing with version conflicts in Ruby is so much more difficult than I want to
-deal with for my blog.</p>
+<h1 id="howto-release-on-pypi">HOWTO: Release on PyPI</h1>
 
-<p>So, I moved my blog to a new static site generator called <a href="https://gohugo.io/">Hugo</a>, which is
-written in Golang. It is extremely fast and pretty easy to install and use on my
-Ubuntu 16.10 machine. There is a <a href="http://themes.gohugo.io/">theme showcase</a> for Hugo that you can use
-to get started. Also, Hugo has a nifty little trick to import your blog posts
-from Jekyll, see <a href="https://gohugo.io/tutorials/migrate-from-jekyll/"><code>hugo import jekyll</code></a> command.</p>
+<p>These are some commands that is meant to keep a track of how to release a package on <a href="https://pypi.python.org">PyPI</a>, python packaging index.</p>
 
-<p>The only problem with using Hugo with Github Pages is that you have to manually
-generate the webpages and push to your <code>username.github.io</code> repository. So, I
-automated this process with a <code>Makefile</code>:</p>
+<p>Before you release, make sure that you have pull the updated version of the project from your source control website (Github/Gitlab) , removed all the debug statements, and updated the versions in documentation.</p>
 
-<pre><code>HUGO=/usr/bin/hugo
-PUBLISH_DIR=public/
-GIT=git --git-dir=$(PUBLISH_DIR).git --work-tree=$(PUBLISH_DIR)
+<p>Then, the first step is to tag the release in version control, here are examples for git:</p>
 
-all: run
-
-run:
-	echo &quot;Building your website now...&quot;
-	$(HUGO)
-
-serve:
-	# Run a hugo server that restarts whenever changes are made to files.
-	$(HUGO) serve
-
-publish:
-	# First, run hugo to compile all the files.
-	$(HUGO)
-	# Second, add and commit all the changes in the static directory.
-	echo &quot;Committing changes...&quot;
-	$(GIT) add . &amp;&amp; \
-	$(GIT) commit -am '' --allow-empty-message --quiet
-	# Push the changes to the remote server to publish them.
-	$(GIT) push origin master
-	echo &quot;Done publishing your website.&quot;
+<pre><code>$ git tag 3.1.0
+$ git push upstream master --tags
 </code></pre>
 
-<p>This way, you will have to create two repos, in one you keep your code and posts
-and the 2nd one <code>username.github.io</code> keeps your statically generated files.</p>
+<p><code>upstream</code> here is supposed to be main code repository for the project and not your fork, but if you are strict about Merge(or Pull) Request workflow, then you can push to your fork and send in a pull request and merge it manually.</p>
+
+<p>The next step is to create the tarball which will actually be uploaded to PyPI.</p>
+
+<pre><code># Clean the tree to remove all the files that are not required for the release.
+$ git clean -dxffi
+# Check there is nothing in staging/untracked/random dotfiles
+$ git status
+# Create the tarball.
+$ python setup.py sdist
+</code></pre>
+
+<p>The last command above will create a new tarball named <code>projectname-version.tar.gz</code> in <code>dist/</code> directory relative to your <code>setup.py</code>.</p>
+
+<p>To upload your project, you first need to register with PyPI. If you have already registered, you can proceed to authenticate your machine with PyPI.</p>
+
+<pre><code># Command below will log you in PyPI. It will ask you for youg login credentials.
+$ python setup.py register
+</code></pre>
+
+<p>It is no longer possible to upload the tarball to PyPI directly, like before using the command above. A python package called <code>[twine](https://pypi.python.org/pypi/twine)</code>  can be used to securely (over HTTPS) upload signed packages to PyPI.</p>
+
+<pre><code># Use sudo with the command below if you want it to be installed globally.
+$ pip install twine
+# The -s flag below will sign your package with the privatekey that belongs to the
+# email address registed with PyPI.
+$ twine upload -s dist/projectname-version.tar.gz
+</code></pre>
+
+<p>That is all. You can verify that your package is up on PyPI now and enjoy!</p>
 
 
                 <br>
@@ -1058,15 +1052,10 @@ and the 2nd one <code>username.github.io</code> keeps your statically generated 
                     
                     <div>
                         <img class="icon" src="/img/back.svg" alt="back" />
-                        <a href="https://asynchronous.in/2016/05/16/Prevent-Git-Push/">Prevent Git Push</a>
+                        <a href="https://asynchronous.in/2017/04/21/Email-with-notmuch-and-astroid/">Email with notmuch and astroid</a>
                     </div>
                     
                     <div style="width: 100%;"></div>
-                    
-                    <div>
-                        <a href="https://asynchronous.in/2017/03/15/Persistant-IRC-Setup/">Persistant IRC Setup</a>
-                        <img class="icon" src="/img/next.svg" alt="next" />
-                    </div>
                     
                 </div>
             
