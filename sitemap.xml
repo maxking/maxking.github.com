@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://asynchronous.in/2017/07/12/Sending-email-from-Django-in-Google-Cloud-using-Amazon-SES/</loc>
+    <lastmod>2017-07-12T15:30:35+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://asynchronous.in/2017/07/05/Articles/</loc>
     <lastmod>2017-07-05T12:57:34+00:00</lastmod>
   </url>
@@ -144,7 +149,7 @@
   
   <url>
     <loc>https://asynchronous.in/blog/</loc>
-    <lastmod>2017-07-05T12:57:34+00:00</lastmod>
+    <lastmod>2017-07-12T15:30:35+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -203,7 +208,7 @@
   
   <url>
     <loc>https://asynchronous.in/</loc>
-    <lastmod>2017-07-05T12:57:34+00:00</lastmod>
+    <lastmod>2017-07-12T15:30:35+00:00</lastmod>
     <priority>0</priority>
   </url>
   

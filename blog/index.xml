@@ -6,10 +6,21 @@
     <description>Recent content in Blogs on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 05 Jul 2017 12:57:34 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 12 Jul 2017 15:30:35 +0000</lastBuildDate>
     
 	<atom:link href="https://asynchronous.in/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Sending email from Django in Google Cloud using Amazon SES</title>
+      <link>https://asynchronous.in/2017/07/12/Sending-email-from-Django-in-Google-Cloud-using-Amazon-SES/</link>
+      <pubDate>Wed, 12 Jul 2017 15:30:35 +0000</pubDate>
+      
+      <guid>https://asynchronous.in/2017/07/12/Sending-email-from-Django-in-Google-Cloud-using-Amazon-SES/</guid>
+      <description>Sending email from Django in Google Cloud using Amazon SES First question to this from many people would be Why?
+The simple answer is that I have free credits in GCloud and SES is simple and cheap to send emails. I don’t want a full GApps account to to send emails.
+After you have signed up for Amazon SES and configured your domains and sending address, you need to configure your GCloud server to send emails via SES.</description>
+    </item>
     
     <item>
       <title>Articles</title>

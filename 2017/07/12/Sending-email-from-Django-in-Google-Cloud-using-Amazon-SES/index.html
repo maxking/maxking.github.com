@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Abhilash Raj writes here.">
+
+<base href="https://asynchronous.in/">
+<title>
+
+
+     maxking&#39;s blog - Sending email from Django in Google Cloud using Amazon SES 
+
+</title>
+<link rel="canonical" href="https://asynchronous.in/2017/07/12/Sending-email-from-Django-in-Google-Cloud-using-Amazon-SES/">
+
+
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+
+
+<link rel="stylesheet" href="https://asynchronous.in/css/reset.css">
+<link rel="stylesheet" href="https://asynchronous.in/css/main.css">
+
+
+
+
+<link rel="shortcut icon"
+
+    href="https://asynchronous.in/img/logo.png"
+
+>
+
+
+
+</head>
+
+
+<body lang="en">
+
+
+<section class="header"> 
+
+    <div class="container">
+        <a href="https://asynchronous.in/"><img class="logo" src="https://asynchronous.in/img/logo.png" /></a>
+        <div class="content">
+            <a href="https://asynchronous.in/"><div class="name"><h1>maxking&#39;s blog</h1></div></a>
+            <nav>
+                <ul>
+                    
+                        <a href="https://asynchronous.in/blog/"><li>Blog</li></a>
+                    
+                    
+                        
+                            
+                        
+                    
+                    
+                        
+                            <a href="https://asynchronous.in/notes/"><li>Notes</li></a>
+                        
+                    
+                        
+                            <a href="https://asynchronous.in/about/"><li>About</li></a>
+                        
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<section class="icons">
+    <div class="container">
+        <div class="content">
+
+        
+            <a href="https://github.com/maxking" target="_blank">
+                <i class="icon ion-social-github"></i>
+            </a>
+        
+        
+        
+            <a href="https://twitter.com/_maxking_" target="_blank">
+                <i class="icon ion-social-twitter"></i>
+            </a>
+        
+
+        
+
+        
+
+        
+            <a href="https://asynchronous.in/index.xml">
+                <i class="icon ion-social-rss larger"></i>
+            </a>
+        
+        </div>
+    </div>
+</section>
+
+
+<section class="main post non-narrow zero-top-spacing">
+    <div class="container">
+        <div class="content">
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    Sending email from Django in Google Cloud using Amazon SES
+
+</div>
+
+                </div>
+                <div class="meta">
+                    <div class="date" title="Jul 12 2017 15:30">Jul 12 2017</div>
+                    <div class="reading-time"><div class="middot"></div>2 minutes read</div>
+                </div>
+            </div>
+            <div class="markdown">
+                
+
+<h1 id="sending-email-from-django-in-google-cloud-using-amazon-ses">Sending email from Django in Google Cloud using Amazon SES</h1>
+
+<p>First question to this from many people would be Why?</p>
+
+<p>The simple answer is that I have free credits in GCloud and SES is simple and cheap to send emails. I don’t want a full GApps account to to send emails.</p>
+
+<p>After you have signed up for Amazon SES and configured your domains and sending address, you need to configure your GCloud server to send emails via SES. By default, you cannot use any standard SMTP port like 25, 587 or 465 from GCloud.</p>
+
+<p>Blocking outgoing connections on port 25 is not something uncommon today and most cloud providers do that to thwart spam coming from their server, but not many of them block 465 and 587 isn’t something I have seen often.</p>
+
+<p>But, SES allows you to use port 2587 to connect to using the SMTPS protocol (secure smtp over TLS). The following configuration works for me when using Django:</p>
+
+<pre><code>EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'email-smtp.us-west-2.amazonaws.com'
+EMAIL_PORT = 2587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = &lt;my-ses-smtp-username&gt;
+EMAIL_HOST_PASSWORD = &lt;my-ses-smtp-password&gt;
+</code></pre>
+
+<p>If you were confused how to receive emails (like me), you don’t need to worry as incoming connections on 25, 587 and 465 aren’t blocked. So, you can have postfix or whatever client you want listening to emails on any of these ports for email.</p>
+
+                <br>
+                <p><a href="blog">Back to posts</a></p>
+            </div>
+            <br>
+            <div class="disqus">
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+  
+
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
+
+
+
+</body>
+</html>
+
