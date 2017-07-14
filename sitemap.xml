@@ -18,6 +18,11 @@
   </url>
   
   <url>
+    <loc>https://asynchronous.in/2017/07/03/HOWTO-Release-a-signed-docker-image/</loc>
+    <lastmod>2017-07-03T20:17:23+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://asynchronous.in/2017/07/02/HOWTO-Release-on-PyPI/</loc>
     <lastmod>2017-07-02T23:06:47+00:00</lastmod>
   </url>
