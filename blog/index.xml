@@ -6,10 +6,20 @@
     <description>Recent content in Blogs on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 12 Jul 2017 15:30:35 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 19 Jul 2017 08:39:42 +0000</lastBuildDate>
     
 	<atom:link href="https://asynchronous.in/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>WeeChat &#43; Nginx</title>
+      <link>https://asynchronous.in/2017/07/19/WeeChat---Nginx/</link>
+      <pubDate>Wed, 19 Jul 2017 08:39:42 +0000</pubDate>
+      
+      <guid>https://asynchronous.in/2017/07/19/WeeChat---Nginx/</guid>
+      <description>WeeChat + Nginx I talked before about different solutions for persistent IRC and how I settled on using WeeChat. This post is about how I use the relay feature in WeeChat to interact with it remotely.
+WeeChat has a remote user protocol called as relay protocol that people can use to connect WeeChat clients to remote running instances of it. It is helpful when you want to run WeeChat on a remote server and connect using clients from various different places.</description>
+    </item>
     
     <item>
       <title>Sending email from Django in Google Cloud using Amazon SES</title>
