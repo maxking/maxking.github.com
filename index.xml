@@ -6,7 +6,7 @@
     <description>Recent content on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 19 Jul 2017 08:39:42 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 19 Jul 2017 08:43:12 +0000</lastBuildDate>
     
 	<atom:link href="https://asynchronous.in/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>WeeChat &#43; Nginx</title>
       <link>https://asynchronous.in/2017/07/19/WeeChat---Nginx/</link>
-      <pubDate>Wed, 19 Jul 2017 08:39:42 +0000</pubDate>
+      <pubDate>Wed, 19 Jul 2017 08:43:12 +0000</pubDate>
       
       <guid>https://asynchronous.in/2017/07/19/WeeChat---Nginx/</guid>
       <description>WeeChat + Nginx I talked before about different solutions for persistent IRC and how I settled on using WeeChat. This post is about how I use the relay feature in WeeChat to interact with it remotely.
