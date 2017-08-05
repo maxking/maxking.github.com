@@ -6,10 +6,21 @@
     <description>Recent content on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 19 Jul 2017 08:43:12 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 05 Aug 2017 11:04:58 +0000</lastBuildDate>
     
 	<atom:link href="https://asynchronous.in/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How does traceroute work?</title>
+      <link>https://asynchronous.in/2017/08/05/How-does-traceroute-work/</link>
+      <pubDate>Sat, 05 Aug 2017 11:04:58 +0000</pubDate>
+      
+      <guid>https://asynchronous.in/2017/08/05/How-does-traceroute-work/</guid>
+      <description>How does traceroute work? traceroute is a tool that people often use to determine the path of a packet as it starts from your machine to your destination server. On Ubuntu systems you can install it using the following command:
+$ sudo apt install traceroute  Then you can use it to trace the route back to let’s say this server (asynchronous.in) :
+$ traceroute asynchronous.in traceroute to asynchronous.in (104.</description>
+    </item>
     
     <item>
       <title>WeeChat &#43; Nginx</title>

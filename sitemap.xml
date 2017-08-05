@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://asynchronous.in/2017/08/05/How-does-traceroute-work/</loc>
+    <lastmod>2017-08-05T11:04:58+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://asynchronous.in/2017/07/19/WeeChat---Nginx/</loc>
     <lastmod>2017-07-19T08:43:12+00:00</lastmod>
   </url>
@@ -159,7 +164,7 @@
   
   <url>
     <loc>https://asynchronous.in/blog/</loc>
-    <lastmod>2017-07-19T08:43:12+00:00</lastmod>
+    <lastmod>2017-08-05T11:04:58+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -218,7 +223,7 @@
   
   <url>
     <loc>https://asynchronous.in/</loc>
-    <lastmod>2017-07-19T08:43:12+00:00</lastmod>
+    <lastmod>2017-08-05T11:04:58+00:00</lastmod>
     <priority>0</priority>
   </url>
   
