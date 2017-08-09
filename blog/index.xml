@@ -6,10 +6,20 @@
     <description>Recent content in Blogs on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 06 Aug 2017 09:40:53 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 09 Aug 2017 16:44:07 +0000</lastBuildDate>
     
 	<atom:link href="https://asynchronous.in/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>So I bought a Yubikey, now what?</title>
+      <link>https://asynchronous.in/2017/08/09/So-I-bought-a-Yubikey-now-what/</link>
+      <pubDate>Wed, 09 Aug 2017 16:44:07 +0000</pubDate>
+      
+      <guid>https://asynchronous.in/2017/08/09/So-I-bought-a-Yubikey-now-what/</guid>
+      <description>So I bought a Yubikey, now what? Yubikeys are small usb security keys that can be used in various ways to improve the day to day workflow from the security point of view. I recently got one and started exploring and everything you can do with Yubikey 4 on a Linux machine.
+First and most simple usage of Yubikeys are for 2nd factor authentication of several different websites like Github, Google etc.</description>
+    </item>
     
     <item>
       <title>How does traceroute work?</title>
