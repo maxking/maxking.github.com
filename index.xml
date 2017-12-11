@@ -6,7 +6,7 @@
     <description>Recent content on maxking&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 09 Aug 2017 16:44:07 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 09 Aug 2017 16:45:03 +0000</lastBuildDate>
     
 	<atom:link href="https://asynchronous.in/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>So I bought a Yubikey, now what?</title>
       <link>https://asynchronous.in/2017/08/09/So-I-bought-a-Yubikey-now-what/</link>
-      <pubDate>Wed, 09 Aug 2017 16:44:07 +0000</pubDate>
+      <pubDate>Wed, 09 Aug 2017 16:45:03 +0000</pubDate>
       
       <guid>https://asynchronous.in/2017/08/09/So-I-bought-a-Yubikey-now-what/</guid>
       <description>So I bought a Yubikey, now what? Yubikeys are small usb security keys that can be used in various ways to improve the day to day workflow from the security point of view. I recently got one and started exploring and everything you can do with Yubikey 4 on a Linux machine.
@@ -179,7 +179,7 @@ Being one of the core developers of GNU Mailman, I took up the task to setup a C
       
       <guid>https://asynchronous.in/notes/</guid>
       <description>These are my notes that I make randomly. There can be code, links, documents or anything else that I feel is important. It is just to keep a record of what I have been up to and remind me of stuff that I forget quite often.
-Sed Sed is a command line utility using which you can find and replace text inside files without even opening them. I find it very useful in many circumstances.</description>
+Editing PDF files in Linux To edit a pdf file in Linux, pdftk is a very nice utility. I recently used it to split the pdf from some point.</description>
     </item>
     
     <item>

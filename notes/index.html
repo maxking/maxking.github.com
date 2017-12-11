@@ -120,6 +120,18 @@
 anything else that I feel is important. It is just to keep a record of what I
 have been up to and remind me of stuff that I forget quite often.</p>
 
+<h2 id="editing-pdf-files-in-linux">Editing PDF files in Linux</h2>
+
+<p>To edit a pdf file in Linux, <code>pdftk</code> is a very nice utility. I recently used it
+to split the pdf from some point.</p>
+
+<pre><code> pdftk thesis.pdf cat 1-9 output pretext-pages-abhilash.pdf
+</code></pre>
+
+<p>The above command will cut pages from 1 to 9 from <code>thesis.pdf</code> and create a new
+pdf called <code>pretext-pages.abhilash.pdf</code>. You can do more stuff from it like
+generate images from pdfs or vice versa, re-arrange the pages in a pdf etc.</p>
+
 <h2 id="sed">Sed</h2>
 
 <p>Sed is a command line utility using which you can find and
