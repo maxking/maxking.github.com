@@ -1,0 +1,4 @@
+baseURL = 'https://asynchronous.in'
+languageCode = 'en-us'
+title = "maxking's blog"
+theme = "ananke"
