@@ -1,0 +1,62 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>HOWTO: Release a signed docker image | maxking's blog</title><meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="HOWTO: Release a signed docker image First, install notary from one of the released versions.
+Then, you need to build a new image with a specific tag, lets say you are building an image called maxking/mailman-web and you decide to sign the testing tag:
+$ docker build --disable-cotent-trust=false -t maxking/mailman-web:latest .  The above command will build the image and then ask you to initialize a few keys if you haven’t yet created the keys.">
+<meta name=generator content="Hugo 0.93.2">
+<meta name=robots content="noindex, nofollow">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="HOWTO: Release a signed docker image">
+<meta property="og:description" content="HOWTO: Release a signed docker image First, install notary from one of the released versions.
+Then, you need to build a new image with a specific tag, lets say you are building an image called maxking/mailman-web and you decide to sign the testing tag:
+$ docker build --disable-cotent-trust=false -t maxking/mailman-web:latest .  The above command will build the image and then ask you to initialize a few keys if you haven’t yet created the keys.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://maxking.github.io/posts/howto-release-a-signed-docker-image/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2017-07-03T20:17:23+00:00">
+<meta property="article:modified_time" content="2017-07-03T20:17:23+00:00">
+<meta itemprop=name content="HOWTO: Release a signed docker image">
+<meta itemprop=description content="HOWTO: Release a signed docker image First, install notary from one of the released versions.
+Then, you need to build a new image with a specific tag, lets say you are building an image called maxking/mailman-web and you decide to sign the testing tag:
+$ docker build --disable-cotent-trust=false -t maxking/mailman-web:latest .  The above command will build the image and then ask you to initialize a few keys if you haven’t yet created the keys."><meta itemprop=datePublished content="2017-07-03T20:17:23+00:00">
+<meta itemprop=dateModified content="2017-07-03T20:17:23+00:00">
+<meta itemprop=wordCount content="210">
+<meta itemprop=keywords content><meta name=twitter:card content="summary">
+<meta name=twitter:title content="HOWTO: Release a signed docker image">
+<meta name=twitter:description content="HOWTO: Release a signed docker image First, install notary from one of the released versions.
+Then, you need to build a new image with a specific tag, lets say you are building an image called maxking/mailman-web and you decide to sign the testing tag:
+$ docker build --disable-cotent-trust=false -t maxking/mailman-web:latest .  The above command will build the image and then ask you to initialize a few keys if you haven’t yet created the keys.">
+</head><body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+maxking's blog
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div></div></div></nav></div></header><main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside><div id=sharing class="mt3 ananke-socials">
+</div><h1 class="f1 athelas mt3 mb1">HOWTO: Release a signed docker image</h1><time class="f6 mv4 dib tracked" datetime=2017-07-03T20:17:23Z>July 3, 2017</time>
+</header><div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h1 id=howto-release-a-signed-docker-image>HOWTO: Release a signed docker image</h1><p>First, install notary from one of the released versions.</p><p>Then, you need to build a new image with a specific tag, lets say you are building an image called <code>maxking/mailman-web</code> and you decide to sign the <code>testing</code> tag:</p><pre><code>$ docker build --disable-cotent-trust=false -t maxking/mailman-web:latest . 
+</code></pre><p>The above command will build the image and then ask you to initialize a few keys if you haven’t yet created the keys. There will be in total three keys,</p><ul>
+<li>one root key which will be kept offline and is the main source of trust for all your notary repositories. Use a secure passphrase for this one.</li><li>one target key which will correspond to the specific repository that you will be signing, <code>docker.io/maxking/mailman-web</code> in this case</li><li>one snapshot key which is….</li></ul><p>So, after you are done with building the images, you can now push the image to Docker Hub along with the signature to <code>notary.docker.io</code> which is the default notary server.</p><pre><code>$ docker push --disable-content-trust=false maxking/mailman-web:testing
+</code></pre><p>From a different client, to pull the images and verify the signature run the following command:</p><pre><code>$ docker pull --disable-content-trust=false maxking/mailman-web:testing
+</code></pre><p>This command will fail if either the signature verification process doesn’t succeed because either the signature is not correct or not present.</p><ul class=pa0>
+</ul><div class="mt6 instapaper_ignoref">
+</div></div><aside class="w-30-l mt6-l">
+</aside></article></main><footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://maxking.github.io>
+&copy; maxking's blog 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div></div></footer></body></html>

@@ -1,0 +1,82 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>WeeChat + Nginx | maxking's blog</title><meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="WeeChat + Nginx I talked before about different solutions for persistent IRC and how I settled on using WeeChat. This post is about how I use the relay feature in WeeChat to interact with it remotely.
+WeeChat has a remote user protocol called as relay protocol that people can use to connect WeeChat clients to remote running instances of it. It is helpful when you want to run WeeChat on a remote server and connect using clients from various different places.">
+<meta name=generator content="Hugo 0.93.2">
+<meta name=robots content="noindex, nofollow">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="WeeChat + Nginx">
+<meta property="og:description" content="WeeChat + Nginx I talked before about different solutions for persistent IRC and how I settled on using WeeChat. This post is about how I use the relay feature in WeeChat to interact with it remotely.
+WeeChat has a remote user protocol called as relay protocol that people can use to connect WeeChat clients to remote running instances of it. It is helpful when you want to run WeeChat on a remote server and connect using clients from various different places.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://maxking.github.io/posts/weechat-+-nginx/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2017-07-19T08:43:12+00:00">
+<meta property="article:modified_time" content="2017-07-19T08:43:12+00:00">
+<meta itemprop=name content="WeeChat + Nginx">
+<meta itemprop=description content="WeeChat + Nginx I talked before about different solutions for persistent IRC and how I settled on using WeeChat. This post is about how I use the relay feature in WeeChat to interact with it remotely.
+WeeChat has a remote user protocol called as relay protocol that people can use to connect WeeChat clients to remote running instances of it. It is helpful when you want to run WeeChat on a remote server and connect using clients from various different places."><meta itemprop=datePublished content="2017-07-19T08:43:12+00:00">
+<meta itemprop=dateModified content="2017-07-19T08:43:12+00:00">
+<meta itemprop=wordCount content="375">
+<meta itemprop=keywords content><meta name=twitter:card content="summary">
+<meta name=twitter:title content="WeeChat + Nginx">
+<meta name=twitter:description content="WeeChat + Nginx I talked before about different solutions for persistent IRC and how I settled on using WeeChat. This post is about how I use the relay feature in WeeChat to interact with it remotely.
+WeeChat has a remote user protocol called as relay protocol that people can use to connect WeeChat clients to remote running instances of it. It is helpful when you want to run WeeChat on a remote server and connect using clients from various different places.">
+</head><body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+maxking's blog
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div></div></div></nav></div></header><main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside><div id=sharing class="mt3 ananke-socials">
+</div><h1 class="f1 athelas mt3 mb1">WeeChat + Nginx</h1><time class="f6 mv4 dib tracked" datetime=2017-07-19T08:43:12Z>July 19, 2017</time>
+</header><div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h1 id=weechat--nginx>WeeChat + Nginx</h1><p>I talked before about different <a href=https://asynchronous.in/2017/03/15/Persistant-IRC-Setup/>solutions for persistent IRC</a> and how I settled on using WeeChat. This post is about how I use the <em>relay</em> feature in WeeChat to interact with it remotely.</p><p>WeeChat has a remote user protocol called as <a href=https://weechat.org/files/doc/devel/weechat_relay_protocol.en.html>relay protocol</a> that people can use to connect WeeChat clients to remote running instances of it. It is helpful when you want to run WeeChat on a remote server and connect using clients from various different places.</p><p>It is very simple to add a new relay to your already running WeeChat:</p><pre><code>/relay add weechat 8080
+/set relay.network.password YOURPASSWORD
+</code></pre><p>This will make WeeChat listen for clients on TCP port 8080 for incoming connections from clients. In a closed or local environment this might work, but it is must that you use SSL when using it over internet.</p><p>WeeChat allows you to create SSL relays and manages SSL certs too! <a href=https://pthree.org/2016/05/20/weechat-relay-with-lets-encrypt-certificates/>See here</a> for a great introduction to running an SSL relay.</p><p>While there hasn’t been any problem with running weechat over SSL, if you are using the same server for serving some other stuff, it makes managing SSL certificates in two places a little too cumbersome. Also, you need to reload each application after you renew the Lets Encrypt certificate (which is what I use!) in every 90 days.</p><p>So, instead I decided to use Nginx to reverse proxy my WeeChat. Here is the configuration that I use to make it work:</p><pre><code>limit_req_zone $binary_remote_addr zone=weechat:10m rate=5r/m;
+
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    '' close;
+}
+
+server {
+
+        listen 443 ssl;
+
+        server_name _;
+        ssl_certificate /etc/letsencrypt/live/&lt;DOMAIN_NAME&gt;/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/&lt;DOMAIN_NAME&gt;/privkey.pem;
+
+        location ^~ /weechat {
+                proxy_pass http://0.0.0.0:8080;
+                proxy_http_version 1.1;
+                proxy_read_timeout 4h;
+                proxy_set_header Connection &quot;upgrade&quot;;
+                proxy_set_header Upgrade $http_upgrade;
+                limit_req zone=weechat burst=1 nodelay;
+        }
+
+}
+</code></pre><p>Make sure that you use the correct <code>bind_address</code> and port in the <code>proxy_pass</code> directive above. If you are using a non-standard port like 2000 or 3000 or sometimes even 8080, it is possible that SELinux would deny Nginx access to that port. To allow Nginx access to the ports run the command below:</p><pre><code>$ sudo setsebool httpd_can_network_connect 1 -P
+</code></pre><p>That is all, now to connect any WeeChat client, point it to your Domain and port 443 using the password that you set for your relay!</p><ul class=pa0>
+</ul><div class="mt6 instapaper_ignoref">
+</div></div><aside class="w-30-l mt6-l">
+</aside></article></main><footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://maxking.github.io>
+&copy; maxking's blog 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div></div></footer></body></html>

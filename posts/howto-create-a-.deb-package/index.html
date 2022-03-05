@@ -1,0 +1,76 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>HOWTO: Create a .deb package | maxking's blog</title><meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="HOWTO: Create a .deb package This is basic tutorial on how to get started with building debian packages. It mostly assumes that that the package you are trying to build is either using make or some other simple build system.
+To get some more details about options and other advanced methods and tooling to build .deb packages, see this post. It is a tutorial to build a debian package.
+I started off with building the package for a scons based project, astroid.">
+<meta name=generator content="Hugo 0.93.2">
+<meta name=robots content="noindex, nofollow">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="HOWTO: Create a .deb package">
+<meta property="og:description" content="HOWTO: Create a .deb package This is basic tutorial on how to get started with building debian packages. It mostly assumes that that the package you are trying to build is either using make or some other simple build system.
+To get some more details about options and other advanced methods and tooling to build .deb packages, see this post. It is a tutorial to build a debian package.
+I started off with building the package for a scons based project, astroid.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://maxking.github.io/posts/howto-create-a-.deb-package/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2017-07-03T20:17:27+00:00">
+<meta property="article:modified_time" content="2017-07-03T20:17:27+00:00">
+<meta itemprop=name content="HOWTO: Create a .deb package">
+<meta itemprop=description content="HOWTO: Create a .deb package This is basic tutorial on how to get started with building debian packages. It mostly assumes that that the package you are trying to build is either using make or some other simple build system.
+To get some more details about options and other advanced methods and tooling to build .deb packages, see this post. It is a tutorial to build a debian package.
+I started off with building the package for a scons based project, astroid."><meta itemprop=datePublished content="2017-07-03T20:17:27+00:00">
+<meta itemprop=dateModified content="2017-07-03T20:17:27+00:00">
+<meta itemprop=wordCount content="335">
+<meta itemprop=keywords content><meta name=twitter:card content="summary">
+<meta name=twitter:title content="HOWTO: Create a .deb package">
+<meta name=twitter:description content="HOWTO: Create a .deb package This is basic tutorial on how to get started with building debian packages. It mostly assumes that that the package you are trying to build is either using make or some other simple build system.
+To get some more details about options and other advanced methods and tooling to build .deb packages, see this post. It is a tutorial to build a debian package.
+I started off with building the package for a scons based project, astroid.">
+</head><body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+maxking's blog
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div></div></div></nav></div></header><main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside><div id=sharing class="mt3 ananke-socials">
+</div><h1 class="f1 athelas mt3 mb1">HOWTO: Create a .deb package</h1><time class="f6 mv4 dib tracked" datetime=2017-07-03T20:17:27Z>July 3, 2017</time>
+</header><div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h1 id=howto-create-a-deb-package>HOWTO: Create a .deb package</h1><p>This is <a href="https://wiki.debian.org/Packaging/Intro?action=show&redirect=IntroDebianPackaging">basic tutorial</a> on how to get started with building debian packages. It mostly assumes that that the package you are trying to build is either using make or some other simple build system.</p><p>To get some more details about options and other advanced methods and tooling to build .deb packages, see <a href=https://wiki.debian.org/BuildingTutorial#Edit_the_source_code>this post</a>. It is a tutorial to build a debian package.</p><p>I started off with building the package for a <a href=http://scons.org/>scons</a> based project, <a href=https://github.com/astroidmail/astroid/>astroid</a>. While scons works fine when you are manually trying to compile and install the project, it lacks some important functionality that makes packaging a project based off it difficult. Of the <a href=https://wiki.gentoo.org/wiki/SCons#Why_you_should_NOT_use_SCons_in_your_project>other problems</a> with this build system, the most prominent one is that it doesn’t honor some environment flags like <code>CFLAGS</code> and <code>CPPFLAGS</code> or <code>LD_FLAGS</code>, which means the package maintainer has to add more code to make the build system honor these.</p><p>Also, scons doesn’t allow specifying a DESTINATION directory to install and installs by default only the directory specified by <code>--prefix</code> (e.g. —prefix=/usr will result in package installed at <code>/usr/bin</code>). This becomes a problem because when you try to create a .deb package, you need to install everything under <code>debian/projectname</code>.</p><ul>
+<li><a href=https://askubuntu.com/questions/245008/what-is-the-right-way-to-debianize-software-that-uses-the-scons-build-system>This thread</a> was very helpful for me to get started on writing build script for ubuntu.</li><li>There are options to make things work for other project by using this <a href=https://bitbucket.org/scons/scons/wiki/Installer>recipe</a>.</li></ul><p>The command I am using to build the package is <code>debuild -us -uc</code> . Here is a copy of the <code>debian/rules</code> script which is the most important one to build:</p><pre><code>#!/usr/bin/make -f
+
+SCONS=scons
+DEB_SCONS_OPTIONS := --prefix=/usr --destdir=$(CURDIR)/debian/astroid/usr
+
+%:
+        dh $@
+
+override_dh_auto_build:
+        $(SCONS) $(DEB_SCONS_OPTIONS) -j 4 build
+
+override_dh_auto_clean:
+        dh_auto_clean
+        rm -rf .sconf_tem/ .sconsign.dblite config.log
+
+override_dh_auto_install:
+        $(SCONS) $(DEB_SCONS_OPTIONS) install
+</code></pre><p>Note that this is a <code>Makefile</code> so everything in indented with a single <code>TAB</code> character.</p><p>I also had to modify the <code>SConstruct</code> file, which is nothing but a python file without any extensions and is sort of like a scons config file for the project.</p><ul class=pa0>
+</ul><div class="mt6 instapaper_ignoref">
+</div></div><aside class="w-30-l mt6-l">
+</aside></article></main><footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://maxking.github.io>
+&copy; maxking's blog 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div></div></footer></body></html>

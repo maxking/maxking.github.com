@@ -1,0 +1,112 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>Persistant IRC Setup | maxking's blog</title><meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="IRC stands for Internet Relay Chat, a text based chat network that is commonly used by programmers and open source community to collaborate over projects. You can read more about it in the above linked Wikipedia article.
+IRC is very lightweight and really easy to use, although it has a few shortcomings when you compare it to other messaging apps/technologies that exist today, biggest of which is persistence. It is a synchronous chat.">
+<meta name=generator content="Hugo 0.93.2">
+<meta name=robots content="noindex, nofollow">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="Persistant IRC Setup">
+<meta property="og:description" content="IRC stands for Internet Relay Chat, a text based chat network that is commonly used by programmers and open source community to collaborate over projects. You can read more about it in the above linked Wikipedia article.
+IRC is very lightweight and really easy to use, although it has a few shortcomings when you compare it to other messaging apps/technologies that exist today, biggest of which is persistence. It is a synchronous chat.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://maxking.github.io/posts/persistant-irc/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2017-03-15T12:57:20-07:00">
+<meta property="article:modified_time" content="2017-03-15T12:57:20-07:00">
+<meta itemprop=name content="Persistant IRC Setup">
+<meta itemprop=description content="IRC stands for Internet Relay Chat, a text based chat network that is commonly used by programmers and open source community to collaborate over projects. You can read more about it in the above linked Wikipedia article.
+IRC is very lightweight and really easy to use, although it has a few shortcomings when you compare it to other messaging apps/technologies that exist today, biggest of which is persistence. It is a synchronous chat."><meta itemprop=datePublished content="2017-03-15T12:57:20-07:00">
+<meta itemprop=dateModified content="2017-03-15T12:57:20-07:00">
+<meta itemprop=wordCount content="914">
+<meta itemprop=keywords content><meta name=twitter:card content="summary">
+<meta name=twitter:title content="Persistant IRC Setup">
+<meta name=twitter:description content="IRC stands for Internet Relay Chat, a text based chat network that is commonly used by programmers and open source community to collaborate over projects. You can read more about it in the above linked Wikipedia article.
+IRC is very lightweight and really easy to use, although it has a few shortcomings when you compare it to other messaging apps/technologies that exist today, biggest of which is persistence. It is a synchronous chat.">
+</head><body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+maxking's blog
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div></div></div></nav></div></header><main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside><div id=sharing class="mt3 ananke-socials">
+</div><h1 class="f1 athelas mt3 mb1">Persistant IRC Setup</h1><time class="f6 mv4 dib tracked" datetime=2017-03-15T12:57:20-07:00>March 15, 2017</time>
+</header><div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><p><a href=https://en.wikipedia.org/wiki/Internet_Relay_Chat>IRC</a> stands for Internet
+Relay Chat, a text based chat network that is commonly used by programmers and
+open source community to collaborate over projects. You can read more about it
+in the above linked Wikipedia article.</p><p>IRC is very lightweight and really easy to use, although it has a few
+shortcomings when you compare it to other messaging apps/technologies that exist
+today, biggest of which is persistence. It is a synchronous chat. What that
+means is that you can send/receive messages only when you are actively connected
+to the IRC network.</p><p>There are several solutions to fix this problem that I have explored in the
+past. You can setup an IRC bouncer, that keeps running as a proxy on a computer
+that is always on, and relays the logs/messages to you when you connect it.
+<a href=http://wiki.znc.in/ZNC>ZNC</a> seems to be the most popular choice but for some
+reason I was never <em>easily</em> able to setup ZNC for my personal use. I don’t know
+many people in my personal circle that it use it either, but it does work if you
+want to give it a try.</p><p>Another solution that I have tried in the past is a web based service,
+<a href=https://www.irccloud.com/>IRCCloud</a>. I used IRCCloud for quite some time back
+in my college. It was initially in beta, and so free to use. It allowed for
+persistent connections on 5 networks and has a neat interface. It also has a
+very neat nice android App so that you can chat over your smartphone too! The
+biggest benefit that IRCCloud offers is that it doesn’t need me to run/manage
+anything on my own. Also, it was easier for me to use as my university had a
+stupid proxy to use internet which blocked all outgoing ports except HTTP and
+HTTPS.</p><p>Then later, IRCCloud came out of beta and started with a paid plan, with a
+basic free tier which would keep your connection persistent for only some time
+(7 days?). The paid model was $5/mo, which is what a small <a href=https://www.digitalocean.com/>Digital
+Ocean</a> Droplet costs. Now, even
+<a href="http://welcome.linode.com/features/?keyword=linode&utm_source=bing&utm_medium=cpc&utm_campaign=Linode%20-%20Brand%20-%20Search&utm_term=linode&utm_content=Linode">Linode</a>
+and <a href=https://aws.amazon.com/>AWS</a> have similar budget friendly servers. It
+might make sense to someone who doesn’t want to manage their own service to use
+the paid plan, but I decided to instead get a small VPS and try something
+new. Also, <a href=http://education.github.com>Github’s Education Pack</a> started
+offering $100 in Digital Ocean credits to first time users, which made the
+transition free for me.</p><p>Right now, there are several other options if you want to get a server for free for a small time (or longer). Like:</p><ul>
+<li>Amazon Web Service (AWS) Free tier offers a micro instance free for 1 year for new users. I had some problems using it initially because I didn’t own a credit card at the time in India.</li><li>Digital Ocean offers $100 in free credits through Github education pack, which can run it’s smallest instace ($5/mo) for 20 months.</li><li>Google Cloud Platform (GCP) provides $300 in free credits to use for 12 months which I <em>think</em> can also power a micro/small instance for an year. Recently at Google’s Next ’17 conference, they announced that GCP will have a <a href=https://cloud.google.com/free/>free tier</a> that would remain free, that will remain free <em>forever</em>.</li></ul><p>So, we now have a plenty of options to have a small VPS online to run your
+persistent IRC. Let’s look at some of the software that I have explored to run
+on my server:</p><p><a href=http://www.quassel-irc.org/>Quassel</a> was recommended to my by one of my
+friends. It has a server client architecture where the client can be used to
+connect to an always running instance of server. Having used it for almost 2
+years, I can vouch that it is a <em>very</em> stable piece of software. Setting it up
+is almost a breeze. Debian/Ubuntu also have packages for them in their
+repositories that you can easily install. On the first run, you can setup your
+configuration and then connect from clients from different places. It has one
+for Windows, Linux, Android (probably even Mac, never checked).</p><p>I had no good reason to switch from Quassel to anything else, except for the
+fact that I got bored of its client. There are no other alternatives that you
+can use to connect to. Also, it doesn’t have any support for
+plugins/scripts. So, I came to know about this new alternative that everyone
+used at my new University (OSU), Weechat.</p><p><a href=https://weechat.org/>Weechat</a> is an open source project that works similar to
+Quassel but has much more functionality to offer. It can act as an IRC proxy and
+so you can use your favorite client with it. Also, it has a custom protocol and
+clients that use that. I use an HTML5 based web frontend called <a href=http://www.glowing-bear.org/>Glowing
+Bear</a>, which is also an android app. There is a Qt
+based client, an emacs client too! It supports scripting and has a <a href=https://weechat.org/scripts/>very good
+list of scripts</a> already written for it. I still
+haven’t used this feature too much, but it is really awesome and easy to
+use. And did I mention that you can use Python to write scripts for it ?!
+Setting up WeeChat is a teeny bit more difficult that quassel if you want to use
+SSL, which I wanted to. Glowing Bear doesn’t allow self signed certificates, so
+I had to get one from <a href=https://letsencrypt.org/>Lets Encrypt</a>, which btw is
+very easy to get. I will write another blog post with details about how to
+setup WeeChat with SSL enabled on a VPS.</p><ul class=pa0>
+</ul><div class="mt6 instapaper_ignoref">
+</div></div><aside class="w-30-l mt6-l">
+</aside></article></main><footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://maxking.github.io>
+&copy; maxking's blog 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div></div></footer></body></html>

@@ -1,0 +1,121 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>Gsoc 2013 - Pilot! | maxking's blog</title><meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="In this post I will first start with my introduction in brief and then move on to my gsoc project. I am a undergrad student at Indian Institute of Technology, Kharagpur doing my majors in Department of Metallurgical and Materials Engineering expecting to pass out in 2015. This summer I will be working for GNU Mailman under Python Software Foundation for my gsoc project - Implementation of OpenPGP with Mailman.">
+<meta name=generator content="Hugo 0.93.2">
+<meta name=robots content="noindex, nofollow">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="Gsoc 2013 - Pilot!">
+<meta property="og:description" content="In this post I will first start with my introduction in brief and then move on to my gsoc project. I am a undergrad student at Indian Institute of Technology, Kharagpur doing my majors in Department of Metallurgical and Materials Engineering expecting to pass out in 2015. This summer I will be working for GNU Mailman under Python Software Foundation for my gsoc project - Implementation of OpenPGP with Mailman.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://maxking.github.io/2013/06/12/gosc-into/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2013-06-12T00:00:00+00:00">
+<meta property="article:modified_time" content="2013-06-12T00:00:00+00:00">
+<meta itemprop=name content="Gsoc 2013 - Pilot!">
+<meta itemprop=description content="In this post I will first start with my introduction in brief and then move on to my gsoc project. I am a undergrad student at Indian Institute of Technology, Kharagpur doing my majors in Department of Metallurgical and Materials Engineering expecting to pass out in 2015. This summer I will be working for GNU Mailman under Python Software Foundation for my gsoc project - Implementation of OpenPGP with Mailman."><meta itemprop=datePublished content="2013-06-12T00:00:00+00:00">
+<meta itemprop=dateModified content="2013-06-12T00:00:00+00:00">
+<meta itemprop=wordCount content="489">
+<meta itemprop=keywords content="gsoc,mailman,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="Gsoc 2013 - Pilot!">
+<meta name=twitter:description content="In this post I will first start with my introduction in brief and then move on to my gsoc project. I am a undergrad student at Indian Institute of Technology, Kharagpur doing my majors in Department of Metallurgical and Materials Engineering expecting to pass out in 2015. This summer I will be working for GNU Mailman under Python Software Foundation for my gsoc project - Implementation of OpenPGP with Mailman.">
+</head><body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+maxking's blog
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div></div></div></nav></div></header><main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside><div id=sharing class="mt3 ananke-socials">
+</div><h1 class="f1 athelas mt3 mb1">Gsoc 2013 - Pilot!</h1><time class="f6 mv4 dib tracked" datetime=2013-06-12T00:00:00Z>June 12, 2013</time>
+</header><div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l">
+<p>In this post I will first start with my introduction in brief and then move
+on to my gsoc project. I am a undergrad student
+at <a href=http://iitkgp.ac.in>Indian Institute of Technology, Kharagpur</a>
+doing my majors in Department of Metallurgical and Materials Engineering
+expecting to pass out in 2015. This summer I will be working for GNU Mailman
+under Python Software Foundation for my gsoc project -
+<i>Implementation of OpenPGP with Mailman.</i><p>
+<center>
+<img src=/images/mailman.png id=mailman_logo>
+<img src=/images/python-logo.gif id=python-logo>
+</center>
+<p>
+While many of you might be aware about what OpenPGP/GPG is, but for those of you
+who don't I will try to introduce it in brief. OpenPGP is the world's most
+widely used email encryption/signing standard. It was originally derived from
+PGP( Pretty Good Privacy ), first created
+by <a href=https://www.philzimmermann.com/EN/background/index.html>Phil
+Zimmermann</a> in 1991. GPG( Gnu Privacy Guard ) is complete free implementation
+of OpenPGP and comes with most of linux distros today with a default command
+line and various other GUI tools. Although I have mentioned GPG in reference to
+emails, it can be used to sign/encrypt any text or file. You can encrypt files
+on your disk. If you see its actually analogous to email -- you are sending some
+encrypted data to future-you and want that the data remains same and protected
+when future-you receives it.
+</p><p>
+I remember when first time I asked Steve about how should OpenPGP be implemented
+in mailman? He answered "<i>It depends on what OpenPGP means to you</i>". There
+are a lot of things that you can do with OpenPGP but not all is of our interest
+here. A very brief description of my project is : You digitally sign your email;
+send it to mailman; mailman checks your signature(analogous to physical
+signatures); verifies that its you; mailman then signs the emails itself; sends
+it to all the subscribers. You want to know what <i>Mailman</i>
+is? <a href=http://www.list.org/> Mailman </a> is the GNU mailing list
+software which can be used for e-newsletters and few other purposes
+too. Currently Mailman3 is under <a href=https://launchpad.net/mailman>
+development </a> along with its web interface(Postorius)and the
+archiver(Hyperkitty).</p><p>
+So coming back to my project, what do you actually mean by signing an email? A
+typical OpenPGP signed message looks like this:
+</p><pre>
+  -----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Kindly reply in a signed email only.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iQEcBAEBAgAGBQJRuU57AAoJEPVZtmCk10dURYUH/2FPPllsJcXhL3nXLkqT3Zc0
+v/vjc0AGgQPj7/Ir9ENxOjgzQ/Mvp5HAMTE1jk+0wsF0Ma8HAu8SxtuFSpgsa78Z
+FqkfHYtwvHsErdNOy6hfjEZG6h6I+Y1lKO6B/aQ2trEy1ZTUWyJx9bK0u0VR8JSc
+xaUw+YNAAWDzKPac9XLdUTbL4/2gPEeX/mqs0wkpn+2MXMp3Tj1Vf6E829C3NKKq
+VkUTtVzFoiEHdh1axmIBea/8dLxqoDVAuzUJyt9zxDjz/8p0ZweLUFk0XGbwpiqk
+qn7nw1UGgkDyLxk77o5QMorFB7B/zJjT3FJGnTSwT3GBLelrD6V+rIrYuq/BH0s=
+=psBF
+-----END PGP SIGNATURE-----
+
+</pre><p>
+The <b>Hash</b> tells about the hashing algorithm used to create the signature,
+then there is the actual message followed by the signature. This is a ascii
+coded signature so that it can be attached in emails without problems of
+unsupported charset. The signature is actually a gibberish text created by
+processing your message, using your secret-key, which is very difficult to
+reproduce without your secret-key. Because of this reason it acts as your
+signature, a mark of your <i>ownership</i> of the message. I will come up with a
+detailed post on OpenPGP signature types and application soon.
+</p><ul class=pa0>
+<li class="list di">
+<a href=/tags/gsoc class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">gsoc</a>
+</li><li class="list di">
+<a href=/tags/mailman class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mailman</a>
+</li></ul><div class="mt6 instapaper_ignoref">
+</div></div><aside class="w-30-l mt6-l">
+</aside></article></main><footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://maxking.github.io>
+&copy; maxking's blog 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div></div></footer></body></html>
