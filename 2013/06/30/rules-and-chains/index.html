@@ -1,44 +1,7 @@
-<!doctype html><html lang=en-us>
-<head>
-<meta charset=utf-8>
-<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
-<title>Rules and Chains | maxking's blog</title><meta name=viewport content="width=device-width,minimum-scale=1">
-<meta name=description content="This post talks about the basic messaging flow in mailman and then a little detail about what are rules and chains in Mailman. So a message can be injected in mailman system using a LMTP server via LMTP. LMTP(Local Mail Transfer Protocol) is a derivative of ESMTP(Extended SMTP), which is a extension of well known SMTP(Simple Mail Transfer Protocol). LMTP runner parses the message into a tuple of type (mailing_list, message, message_data) and stores it in a serialized form called python pickle(.">
-<meta name=generator content="Hugo 0.93.2">
-<meta name=robots content="noindex, nofollow">
-<link rel=stylesheet href=/ananke/css/main.min.css>
-<meta property="og:title" content="Rules and Chains">
-<meta property="og:description" content="This post talks about the basic messaging flow in mailman and then a little detail about what are rules and chains in Mailman. So a message can be injected in mailman system using a LMTP server via LMTP. LMTP(Local Mail Transfer Protocol) is a derivative of ESMTP(Extended SMTP), which is a extension of well known SMTP(Simple Mail Transfer Protocol). LMTP runner parses the message into a tuple of type (mailing_list, message, message_data) and stores it in a serialized form called python pickle(.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://asynchronous.in/2013/06/30/rules-and-chains/"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2013-06-30T00:00:00+00:00">
-<meta property="article:modified_time" content="2013-06-30T00:00:00+00:00">
-<meta itemprop=name content="Rules and Chains">
-<meta itemprop=description content="This post talks about the basic messaging flow in mailman and then a little detail about what are rules and chains in Mailman. So a message can be injected in mailman system using a LMTP server via LMTP. LMTP(Local Mail Transfer Protocol) is a derivative of ESMTP(Extended SMTP), which is a extension of well known SMTP(Simple Mail Transfer Protocol). LMTP runner parses the message into a tuple of type (mailing_list, message, message_data) and stores it in a serialized form called python pickle(."><meta itemprop=datePublished content="2013-06-30T00:00:00+00:00">
-<meta itemprop=dateModified content="2013-06-30T00:00:00+00:00">
-<meta itemprop=wordCount content="621">
-<meta itemprop=keywords content="gsoc,mailman,"><meta name=twitter:card content="summary">
-<meta name=twitter:title content="Rules and Chains">
-<meta name=twitter:description content="This post talks about the basic messaging flow in mailman and then a little detail about what are rules and chains in Mailman. So a message can be injected in mailman system using a LMTP server via LMTP. LMTP(Local Mail Transfer Protocol) is a derivative of ESMTP(Extended SMTP), which is a extension of well known SMTP(Simple Mail Transfer Protocol). LMTP runner parses the message into a tuple of type (mailing_list, message, message_data) and stores it in a serialized form called python pickle(.">
-</head><body class="ma0 avenir bg-near-white">
-<header>
-<div class=bg-black>
-<nav class="pv3 ph3 ph4-ns" role=navigation>
-<div class="flex-l justify-between items-center center">
-<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
-maxking's blog
-</a>
-<div class="flex-l items-center">
-<div class=ananke-socials>
-</div></div></div></nav></div></header><main class=pb7 role=main>
-<article class="flex-l flex-wrap justify-between mw8 center ph3">
-<header class="mt4 w-100">
-<aside class="instapaper_ignoref b helvetica tracked">
-POSTS
-</aside><div id=sharing class="mt3 ananke-socials">
-</div><h1 class="f1 athelas mt3 mb1">Rules and Chains</h1><time class="f6 mv4 dib tracked" datetime=2013-06-30T00:00:00Z>June 30, 2013</time>
-</header><div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l">
-<p>This post talks about the basic messaging flow in mailman and then a little
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{--accent-color:#FF4D4D}</style><title>Rules and Chains</title><meta name=description content="Ramblings and tech things"><meta name=keywords content="gsoc,mailman"><meta property="og:url" content="https://asynchronous.in/2013/06/30/rules-and-chains/"><meta property="og:type" content="website"><meta property="og:title" content="Rules and Chains"><meta property="og:description" content="Ramblings and tech things"><meta property="og:image" content="https://asynchronous.in"><meta property="og:image:secure_url" content="https://asynchronous.in"><meta name=twitter:card content="summary_large_image"><meta name=twitter:title content="Rules and Chains"><meta name=twitter:description content="Ramblings and tech things"><meta property="twitter:domain" content="https://asynchronous.in/2013/06/30/rules-and-chains/"><meta property="twitter:url" content="https://asynchronous.in/2013/06/30/rules-and-chains/"><meta name=twitter:image content="https://asynchronous.in"><link rel=canonical href=https://asynchronous.in/2013/06/30/rules-and-chains/><link rel=stylesheet type=text/css href=/css/normalize.min.css media=print><link rel=stylesheet type=text/css href=/css/main.min.css><link id=dark-theme rel=stylesheet href=/css/dark.min.css><script src=/js/bundle.min.edd985581bf860dfb4507e5885197f1680160c7fe19f23b31e183126d99dd596.js integrity="sha256-7dmFWBv4YN+0UH5YhRl/FoAWDH/hnyOzHhgxJtmd1ZY="></script></head><body><script type=text/javascript>setThemeByUserPref()</script><header class=header><nav class=header-nav><div class=nav-title><a class=nav-brand href=https://asynchronous.in>maxking's blog</a></div><div class=nav-links><div class=nav-link><a href=https://asynchronous.in/posts/>Posts</a></div><div class=nav-link><a href=https://asynchronous.in/tags/>Tags</a></div><div class=nav-link><a href=https://github.com/maxking><span data-feather=github></span></a></div><span class=nav-icons-divider></span><div class="nav-link dark-theme-toggle"><span id=dark-theme-toggle-screen-reader-target class=sr-only></span>
+<a><span id=theme-toggle-icon data-feather=moon></span></a></div><div class=nav-link id=hamburger-menu-toggle><span id=hamburger-menu-toggle-screen-reader-target class=sr-only>menu</span>
+<a><span data-feather=menu></span></a></div><ul class="nav-hamburger-list visibility-hidden"><li class=nav-item><a href=https://asynchronous.in/posts/>Posts</a></li><li class=nav-item><a href=https://asynchronous.in/tags/>Tags</a></li><li class=nav-item><a href=https://github.com/maxking><span data-feather=github></span></a></li><li class="nav-item dark-theme-toggle"><span id=dark-theme-toggle-screen-reader-target class=sr-only>theme</span>
+<a><span id=theme-toggle-icon data-feather=moon></span></a></li></ul></div></nav></header><main id=content><div class="post container"><div class=post-header-section><h1>Rules and Chains</h1><small role=doc-subtitle></small><p class=post-date>June 30, 2013</p><ul class=post-tags><li class=post-tag><a href=https://asynchronous.in/tags/gsoc>gsoc</a></li><li class=post-tag><a href=https://asynchronous.in/tags/mailman>mailman</a></li></ul></div><div class=post-content><p><p>This post talks about the basic messaging flow in mailman and then a little
 detail about what are rules and chains in Mailman. So a message can be injected
 in mailman system using a LMTP server via
 LMTP. <a href=http://tools.ietf.org/html/rfc2033#section-4>LMTP</a>(Local Mail
@@ -54,57 +17,52 @@ by <i>switchboards</i>, where all the messages are stored till a <i>runner</i>
 wakes up and sends them one by one for processing according to the queue that
 they were queued in, e.g. IN runner sends to file to pipeline queue where i
 Below is a graph is decided if the message will be accepted, discarded or held
-for moderation. Below is a graph depicting the message flow in mailman.</p><center>
-<img src=/images/mailman-messaging-flow.png height=400px>
-</center>
-<p>How is it decided if a message is 'fit' for posting? This process is
+for moderation. Below is a graph depicting the message flow in mailman.</p><center><img src=/images/mailman-messaging-flow.png height=400px></center><p>How is it decided if a message is 'fit' for posting? This process is
 called <i>Moderation</i> where a message is tested against a set of rules. Rules
 are simple checks which return True if the rule hits and False in-case it
 misses. Moderation does not change anything in message, but it may record the
 processing information(like rule hits and misses) information in a metadata
-dictionary. Each rule has the following structure:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#a6e22e>@implementer</span>(IRule)
-</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>New_Rule</span>:
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>check</span>(self, mlist, msg, msgdata):
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> foo <span style=color:#f92672>==</span> foobar:
-</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>True</span>
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>else</span>:
-</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>False</span></span></span></code></pre></div><p>
-You can write your own rules to check whatever criteria you want mailman to
+dictionary. Each rule has the following structure:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=ln>1</span><span class=cl><span class=nd>@implementer</span><span class=p>(</span><span class=n>IRule</span><span class=p>)</span>
+</span></span><span class=line><span class=ln>2</span><span class=cl><span class=k>class</span> <span class=nc>New_Rule</span><span class=p>:</span>
+</span></span><span class=line><span class=ln>3</span><span class=cl>
+</span></span><span class=line><span class=ln>4</span><span class=cl>    <span class=k>def</span> <span class=nf>check</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>mlist</span><span class=p>,</span> <span class=n>msg</span><span class=p>,</span> <span class=n>msgdata</span><span class=p>):</span>
+</span></span><span class=line><span class=ln>5</span><span class=cl>        <span class=k>if</span> <span class=n>foo</span> <span class=o>==</span> <span class=n>foobar</span><span class=p>:</span>
+</span></span><span class=line><span class=ln>6</span><span class=cl>            <span class=k>return</span> <span class=kc>True</span>
+</span></span><span class=line><span class=ln>7</span><span class=cl>        <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=ln>8</span><span class=cl>            <span class=k>return</span> <span class=kc>False</span></span></span></code></pre></div><p>You can write your own rules to check whatever criteria you want mailman to
 check before accepting the message. All the rules reside
 inside <b>/src/mailman/rules/</b> in mailman source code. All of the rules are
 arranged in a sequential manner to create a <b>chain</b>. Each list has two
 default start chains associated with it - first for normal postings and second
 one is for admin postings. The incoming runner checks who the message is
-addressed to and accordingly the moderation occurs for admin or normal postings.
-</p><p>The <b>default-builtin-chain</b> has a predefined list of rules to check
+addressed to and accordingly the moderation occurs for admin or normal postings.</p><p>The <b>default-builtin-chain</b> has a predefined list of rules to check
 before the message is discarded, held or accepted. In mailman3 the list is as
-follows in the order in which they are called:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>    _link_descriptions <span style=color:#f92672>=</span> (
-</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;approved&#39;</span>, LinkAction<span style=color:#f92672>.</span>jump, <span style=color:#e6db74>&#39;accept&#39;</span>),
-</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;emergency&#39;</span>, LinkAction<span style=color:#f92672>.</span>jump, <span style=color:#e6db74>&#39;hold&#39;</span>),
-</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;loop&#39;</span>, LinkAction<span style=color:#f92672>.</span>jump, <span style=color:#e6db74>&#39;discard&#39;</span>),
-</span></span><span style=display:flex><span>        <span style=color:#75715e># Determine whether the member or nonmember has an action shortcut.</span>
-</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;member-moderation&#39;</span>, LinkAction<span style=color:#f92672>.</span>jump, <span style=color:#e6db74>&#39;moderation&#39;</span>),
-</span></span><span style=display:flex><span>        <span style=color:#75715e># Do all of the following before deciding whether to hold the message.</span>
-</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;signature&#39;</span>, LinkAction<span style=color:#f92672>.</span>jump, <span style=color:#e6db74>&#39;discard&#39;</span>),
-</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;administrivia&#39;</span>, LinkAction<span style=color:#f92672>.</span>defer, <span style=color:#66d9ef>None</span>),
-</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;implicit-dest&#39;</span>, LinkAction<span style=color:#f92672>.</span>defer, <span style=color:#66d9ef>None</span>),
-</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;max-recipients&#39;</span>, LinkAction<span style=color:#f92672>.</span>defer, <span style=color:#66d9ef>None</span>),
-</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;max-size&#39;</span>, LinkAction<span style=color:#f92672>.</span>defer, <span style=color:#66d9ef>None</span>),
-</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;news-moderation&#39;</span>, LinkAction<span style=color:#f92672>.</span>defer, <span style=color:#66d9ef>None</span>),
-</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;no-subject&#39;</span>, LinkAction<span style=color:#f92672>.</span>defer, <span style=color:#66d9ef>None</span>),
-</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;suspicious-header&#39;</span>, LinkAction<span style=color:#f92672>.</span>defer, <span style=color:#66d9ef>None</span>),
-</span></span><span style=display:flex><span>        <span style=color:#75715e># Now if any of the above hit, jump to the hold chain.</span>
-</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;any&#39;</span>, LinkAction<span style=color:#f92672>.</span>jump, <span style=color:#e6db74>&#39;hold&#39;</span>),
-</span></span><span style=display:flex><span>        <span style=color:#75715e># Take a detour through the header matching chain, which we&#39;ll create</span>
-</span></span><span style=display:flex><span>        <span style=color:#75715e># later.</span>
-</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;truth&#39;</span>, LinkAction<span style=color:#f92672>.</span>detour, <span style=color:#e6db74>&#39;header-match&#39;</span>),
-</span></span><span style=display:flex><span>        <span style=color:#75715e># Check for nonmember moderation.</span>
-</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;nonmember-moderation&#39;</span>, LinkAction<span style=color:#f92672>.</span>jump, <span style=color:#e6db74>&#39;moderation&#39;</span>),
-</span></span><span style=display:flex><span>        <span style=color:#75715e># Finally, the builtin chain jumps to acceptance.</span>
-</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;truth&#39;</span>, LinkAction<span style=color:#f92672>.</span>jump, <span style=color:#e6db74>&#39;accept&#39;</span>),
-</span></span><span style=display:flex><span>     )</span></span></code></pre></div><p>In the above list each entry consists of a tuple of the
-form <span class=inline-code> ('rule_name', LinkAction.action,
+follows in the order in which they are called:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=ln> 1</span><span class=cl>    <span class=n>_link_descriptions</span> <span class=o>=</span> <span class=p>(</span>
+</span></span><span class=line><span class=ln> 2</span><span class=cl>        <span class=p>(</span><span class=s1>&#39;approved&#39;</span><span class=p>,</span> <span class=n>LinkAction</span><span class=o>.</span><span class=n>jump</span><span class=p>,</span> <span class=s1>&#39;accept&#39;</span><span class=p>),</span>
+</span></span><span class=line><span class=ln> 3</span><span class=cl>        <span class=p>(</span><span class=s1>&#39;emergency&#39;</span><span class=p>,</span> <span class=n>LinkAction</span><span class=o>.</span><span class=n>jump</span><span class=p>,</span> <span class=s1>&#39;hold&#39;</span><span class=p>),</span>
+</span></span><span class=line><span class=ln> 4</span><span class=cl>        <span class=p>(</span><span class=s1>&#39;loop&#39;</span><span class=p>,</span> <span class=n>LinkAction</span><span class=o>.</span><span class=n>jump</span><span class=p>,</span> <span class=s1>&#39;discard&#39;</span><span class=p>),</span>
+</span></span><span class=line><span class=ln> 5</span><span class=cl>        <span class=c1># Determine whether the member or nonmember has an action shortcut.</span>
+</span></span><span class=line><span class=ln> 6</span><span class=cl>        <span class=p>(</span><span class=s1>&#39;member-moderation&#39;</span><span class=p>,</span> <span class=n>LinkAction</span><span class=o>.</span><span class=n>jump</span><span class=p>,</span> <span class=s1>&#39;moderation&#39;</span><span class=p>),</span>
+</span></span><span class=line><span class=ln> 7</span><span class=cl>        <span class=c1># Do all of the following before deciding whether to hold the message.</span>
+</span></span><span class=line><span class=ln> 8</span><span class=cl>        <span class=p>(</span><span class=s1>&#39;signature&#39;</span><span class=p>,</span> <span class=n>LinkAction</span><span class=o>.</span><span class=n>jump</span><span class=p>,</span> <span class=s1>&#39;discard&#39;</span><span class=p>),</span>
+</span></span><span class=line><span class=ln> 9</span><span class=cl>        <span class=p>(</span><span class=s1>&#39;administrivia&#39;</span><span class=p>,</span> <span class=n>LinkAction</span><span class=o>.</span><span class=n>defer</span><span class=p>,</span> <span class=kc>None</span><span class=p>),</span>
+</span></span><span class=line><span class=ln>10</span><span class=cl>        <span class=p>(</span><span class=s1>&#39;implicit-dest&#39;</span><span class=p>,</span> <span class=n>LinkAction</span><span class=o>.</span><span class=n>defer</span><span class=p>,</span> <span class=kc>None</span><span class=p>),</span>
+</span></span><span class=line><span class=ln>11</span><span class=cl>        <span class=p>(</span><span class=s1>&#39;max-recipients&#39;</span><span class=p>,</span> <span class=n>LinkAction</span><span class=o>.</span><span class=n>defer</span><span class=p>,</span> <span class=kc>None</span><span class=p>),</span>
+</span></span><span class=line><span class=ln>12</span><span class=cl>        <span class=p>(</span><span class=s1>&#39;max-size&#39;</span><span class=p>,</span> <span class=n>LinkAction</span><span class=o>.</span><span class=n>defer</span><span class=p>,</span> <span class=kc>None</span><span class=p>),</span>
+</span></span><span class=line><span class=ln>13</span><span class=cl>        <span class=p>(</span><span class=s1>&#39;news-moderation&#39;</span><span class=p>,</span> <span class=n>LinkAction</span><span class=o>.</span><span class=n>defer</span><span class=p>,</span> <span class=kc>None</span><span class=p>),</span>
+</span></span><span class=line><span class=ln>14</span><span class=cl>        <span class=p>(</span><span class=s1>&#39;no-subject&#39;</span><span class=p>,</span> <span class=n>LinkAction</span><span class=o>.</span><span class=n>defer</span><span class=p>,</span> <span class=kc>None</span><span class=p>),</span>
+</span></span><span class=line><span class=ln>15</span><span class=cl>        <span class=p>(</span><span class=s1>&#39;suspicious-header&#39;</span><span class=p>,</span> <span class=n>LinkAction</span><span class=o>.</span><span class=n>defer</span><span class=p>,</span> <span class=kc>None</span><span class=p>),</span>
+</span></span><span class=line><span class=ln>16</span><span class=cl>        <span class=c1># Now if any of the above hit, jump to the hold chain.</span>
+</span></span><span class=line><span class=ln>17</span><span class=cl>        <span class=p>(</span><span class=s1>&#39;any&#39;</span><span class=p>,</span> <span class=n>LinkAction</span><span class=o>.</span><span class=n>jump</span><span class=p>,</span> <span class=s1>&#39;hold&#39;</span><span class=p>),</span>
+</span></span><span class=line><span class=ln>18</span><span class=cl>        <span class=c1># Take a detour through the header matching chain, which we&#39;ll create</span>
+</span></span><span class=line><span class=ln>19</span><span class=cl>        <span class=c1># later.</span>
+</span></span><span class=line><span class=ln>20</span><span class=cl>        <span class=p>(</span><span class=s1>&#39;truth&#39;</span><span class=p>,</span> <span class=n>LinkAction</span><span class=o>.</span><span class=n>detour</span><span class=p>,</span> <span class=s1>&#39;header-match&#39;</span><span class=p>),</span>
+</span></span><span class=line><span class=ln>21</span><span class=cl>        <span class=c1># Check for nonmember moderation.</span>
+</span></span><span class=line><span class=ln>22</span><span class=cl>        <span class=p>(</span><span class=s1>&#39;nonmember-moderation&#39;</span><span class=p>,</span> <span class=n>LinkAction</span><span class=o>.</span><span class=n>jump</span><span class=p>,</span> <span class=s1>&#39;moderation&#39;</span><span class=p>),</span>
+</span></span><span class=line><span class=ln>23</span><span class=cl>        <span class=c1># Finally, the builtin chain jumps to acceptance.</span>
+</span></span><span class=line><span class=ln>24</span><span class=cl>        <span class=p>(</span><span class=s1>&#39;truth&#39;</span><span class=p>,</span> <span class=n>LinkAction</span><span class=o>.</span><span class=n>jump</span><span class=p>,</span> <span class=s1>&#39;accept&#39;</span><span class=p>),</span>
+</span></span><span class=line><span class=ln>25</span><span class=cl>     <span class=p>)</span></span></span></code></pre></div><p>In the above list each entry consists of a tuple of the
+form <span class=inline-code>('rule_name', LinkAction.action,
 'target')</span>. The first element ,as evident from the name, is the name of
 the rule that is to be called, the second element tell about what action is
 taken if the rule hits(or return True). The last part is the target queue to
@@ -112,23 +70,4 @@ which the message is copied to if the rule hits(or you may customise it of cours
 for when rule misses), it is `None` incase the rule does not have
 action. According to your convenience you can create your own chains. In the
 above list the <b>signature</b> rule is the one I added to check for
-openpgp-signature.
-</p><ul class=pa0>
-<li class="list di">
-<a href=/tags/gsoc class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">gsoc</a>
-</li><li class="list di">
-<a href=/tags/mailman class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mailman</a>
-</li></ul><div class="mt6 instapaper_ignoref">
-</div></div><aside class="w-30-l mt6-l">
-<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
-<p class="f5 b mb3">Related</p><ul class="pa0 list">
-<li class=mb2>
-<a href=/2013/06/12/gosc-into/>Gsoc 2013 - Pilot!</a>
-</li></ul></div></aside></article></main><footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
-<div class="flex justify-between">
-<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://asynchronous.in>
-&copy; maxking's blog 2022
-</a>
-<div>
-<div class=ananke-socials>
-</div></div></div></footer></body></html>
+openpgp-signature.</p></p></div><div class=prev-next></div><script>let backToTopButton=document.getElementById("btt-button");window.onscroll=function(){scrollFunction()};function scrollFunction(){document.body.scrollTop>20||document.documentElement.scrollTop>20?backToTopButton.style.display="block":backToTopButton.style.display="none"}function topFunction(){smoothScrollToTop()}function smoothScrollToTop(){const e=()=>{const t=document.documentElement.scrollTop||document.body.scrollTop;t>0&&(window.requestAnimationFrame(e),window.scrollTo(0,t-t/8))};e()}</script></div></main><footer class=footer><span>Made with &#10084;&#65039; using <a target=_blank href=https://github.com/526avijitgupta/gokarna>Gokarna</a></span></footer></body></html>
