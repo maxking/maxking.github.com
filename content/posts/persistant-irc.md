@@ -1,6 +1,7 @@
 +++
 date = "2017-03-15T12:57:20-07:00"
 title = "Persistant IRC Setup"
+type = "post"
 +++
 
 [IRC](https://en.wikipedia.org/wiki/Internet_Relay_Chat) stands for Internet

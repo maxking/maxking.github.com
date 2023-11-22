@@ -1,6 +1,7 @@
 ---
 title: "How does traceroute work?"
 date: "2017-08-06 09:40:53"
+type: "post"
 ---
 
 
@@ -13,7 +14,7 @@ date: "2017-08-06 09:40:53"
 Then you can use it to trace the route back to let’s say this server (asynchronous.in) :
 
 
-    $ traceroute asynchronous.in  
+    $ traceroute asynchronous.in
     traceroute to asynchronous.in (104.24.120.93), 30 hops max, 60 byte packets
      1  10.249.0.2 (10.249.0.2)  2.242 ms  2.087 ms  2.239 ms
      2  mc2-...oregonstate.edu (128.193.106.132)  2.557 ms  2.515 ms  3.150 ms

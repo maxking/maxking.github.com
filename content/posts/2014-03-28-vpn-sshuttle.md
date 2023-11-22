@@ -4,6 +4,7 @@ name: vpn-sshuttle
 time: 2014-03-28 16:41:00.001000 +05:30
 title: Sshuttle VPN to bypass proxy
 url: /2014/03/28/vpn-sshuttle/
+type: post
 ---
 
 Proxy servers in my college has made my life like a living hell. Blocking IRC and

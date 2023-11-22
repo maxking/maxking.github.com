@@ -1,13 +1,14 @@
 ---
 title: "So I bought a Yubikey, now what?"
 date: "2017-08-09 16:45:03"
+type: "post"
 ---
 
 
 # So I bought a Yubikey, now what?
 [Yubikey](https://www.yubico.com/products/yubikey-hardware/)s  are small usb security keys that can be used in various ways to improve the day to day workflow from the security point of view. I recently got one and started exploring and everything you can do with Yubikey 4 on a Linux machine.
 
-First and most simple usage of Yubikeys are for 2nd factor authentication of several different websites like Github, Google etc. However, the native support for Yubikeys (also called as U2F standard keys) exists only in Google chrome browser as of now. 
+First and most simple usage of Yubikeys are for 2nd factor authentication of several different websites like Github, Google etc. However, the native support for Yubikeys (also called as U2F standard keys) exists only in Google chrome browser as of now.
 
 Because I recently moved to Firefox 54 (see this if you want to know [what is special about v54 release of FF](https://medium.com/mozilla-tech/the-search-for-the-goldilocks-browser-and-why-firefox-may-be-just-right-for-you-1f520506aa35)) and have been pretty much happy with it. I can keep over 30-40 tabs open without every worrying about my computer getting slow. Sure if I open a lot of tasks, Firefox itself gets a bit slow, but I guess this compromise works well where I can keep enough tabs open when I want.
 

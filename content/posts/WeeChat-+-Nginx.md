@@ -1,6 +1,7 @@
 ---
 title: "WeeChat + Nginx"
 date: "2017-07-19 08:43:12"
+type: "post"
 ---
 
 
@@ -15,7 +16,7 @@ It is very simple to add a new relay to your already running WeeChat:
     /relay add weechat 8080
     /set relay.network.password YOURPASSWORD
 
-This will make WeeChat listen for clients on TCP port 8080 for incoming connections from clients. In a closed or local environment this might work, but it is must that you use SSL when using it over internet. 
+This will make WeeChat listen for clients on TCP port 8080 for incoming connections from clients. In a closed or local environment this might work, but it is must that you use SSL when using it over internet.
 
 WeeChat allows you to create SSL relays and manages SSL certs too! [See here](https://pthree.org/2016/05/20/weechat-relay-with-lets-encrypt-certificates/) for a great introduction to running an SSL relay.
 
@@ -24,20 +25,20 @@ While there hasn’t been any problem with running weechat over SSL, if you are 
 So, instead I decided to use Nginx to reverse proxy my WeeChat. Here is the configuration that I use to make it work:
 
     limit_req_zone $binary_remote_addr zone=weechat:10m rate=5r/m;
-    
+
     map $http_upgrade $connection_upgrade {
         default upgrade;
         '' close;
     }
-    
+
     server {
-    
+
             listen 443 ssl;
-    
+
             server_name _;
             ssl_certificate /etc/letsencrypt/live/<DOMAIN_NAME>/fullchain.pem;
             ssl_certificate_key /etc/letsencrypt/live/<DOMAIN_NAME>/privkey.pem;
-    
+
             location ^~ /weechat {
                     proxy_pass http://0.0.0.0:8080;
                     proxy_http_version 1.1;
@@ -46,7 +47,7 @@ So, instead I decided to use Nginx to reverse proxy my WeeChat. Here is the conf
                     proxy_set_header Upgrade $http_upgrade;
                     limit_req zone=weechat burst=1 nodelay;
             }
-    
+
     }
 
 Make sure that you use the correct `bind_address` and port in the `proxy_pass` directive above. If you are using a non-standard port like 2000 or 3000 or sometimes even 8080, it is possible that SELinux would deny Nginx access to that port. To allow Nginx access to the ports run the command below:

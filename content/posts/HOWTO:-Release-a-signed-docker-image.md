@@ -1,6 +1,7 @@
 ---
 title: "HOWTO: Release a signed docker image"
 date: "2017-07-03 20:17:23"
+type: "post"
 ---
 
 
@@ -10,11 +11,11 @@ First, install notary from one of the released versions.
 Then, you need to build a new image with a specific tag, lets say you are building an image called `maxking/mailman-web` and you decide to sign the `testing` tag:
 
 
-    $ docker build --disable-cotent-trust=false -t maxking/mailman-web:latest . 
+    $ docker build --disable-cotent-trust=false -t maxking/mailman-web:latest .
 
-The above command will build the image and then ask you to initialize a few keys if you haven’t yet created the keys. There will be in total three keys, 
+The above command will build the image and then ask you to initialize a few keys if you haven’t yet created the keys. There will be in total three keys,
 
-- one root key which will be kept offline and is the main source of trust for all your notary repositories. Use a secure passphrase for this one. 
+- one root key which will be kept offline and is the main source of trust for all your notary repositories. Use a secure passphrase for this one.
 - one target key which will correspond to the specific repository that you will be signing, `docker.io/maxking/mailman-web` in this case
 - one snapshot key which is….
 

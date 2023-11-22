@@ -1,6 +1,7 @@
 ---
 title: "Sending email from Django in Google Cloud using Amazon SES"
 date: "2017-07-12 15:30:35"
+type: "post"
 ---
 
 
@@ -9,9 +10,9 @@ First question to this from many people would be Why?
 
 The simple answer is that I have free credits in GCloud and SES is simple and cheap to send emails. I don’t want a full GApps account to to send emails.
 
-After you have signed up for Amazon SES and configured your domains and sending address, you need to configure your GCloud server to send emails via SES. By default, you cannot use any standard SMTP port like 25, 587 or 465 from GCloud. 
+After you have signed up for Amazon SES and configured your domains and sending address, you need to configure your GCloud server to send emails via SES. By default, you cannot use any standard SMTP port like 25, 587 or 465 from GCloud.
 
-Blocking outgoing connections on port 25 is not something uncommon today and most cloud providers do that to thwart spam coming from their server, but not many of them block 465 and 587 isn’t something I have seen often. 
+Blocking outgoing connections on port 25 is not something uncommon today and most cloud providers do that to thwart spam coming from their server, but not many of them block 465 and 587 isn’t something I have seen often.
 
 But, SES allows you to use port 2587 to connect to using the SMTPS protocol (secure smtp over TLS). The following configuration works for me when using Django:
 

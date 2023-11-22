@@ -5,6 +5,7 @@ tags: ["gsoc","mailman", "python", "mock", "testing"]
 time: 2013-06-12 17:23:00.001000 +05.30
 title: Are you mocking me?
 url: /2013/07/19/are-you-mocking-me/
+type: post
 ---
 
 <p>Unit testing is one of the most important parts of any project. TDD (test
@@ -36,7 +37,7 @@ the code:</p>
 
 {{< highlight python  >}}
 from mailman.utilities.gpg import GPG
- 
+
 @implementer(IRule)
 class Signature:
     """Look for pgp-signature."""
@@ -69,10 +70,10 @@ import mock
 class TestSignatureMime(unittest.TestCase):
     """Test the signature handler."""
 
-  class Dummy_GPG_True:    
+  class Dummy_GPG_True:
       def __init__(self, dir):
           self._dir = dir
-        
+
       def verify_inline_signature(self, data):
           return True
 

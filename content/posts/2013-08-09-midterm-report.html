@@ -4,6 +4,7 @@ name: midterm-report
 time: 2013-08-09 00:23:00.001000 +05.30
 title: Midterm Report
 url: /2013/08/09/midterm-report/
+type: post
 ---
 
 <p>
@@ -13,7 +14,7 @@ my <a href="https://code.launchpad.net/~raj-abhilash1/mailman/master"> launchpad
 branch</a>.
 
 <p>
-  <b>Accomplishments:</b> 
+  <b>Accomplishments:</b>
 <ul>
   <li> A signature rule(src/mailman/rules/signature.py) to check for OpenPGP
      signature in a message, incase the signature is found it tries to verify the
@@ -21,7 +22,7 @@ branch</a>.
 
   <li> A gpg utility(src/mailman/utilities/gpg.py) to perform all the signature
     related tasks using `python-gnupg`(v0.3.4). It signs and verifies the signature.</li>
-    
+
   <li> A signmessage handler(src/mailman/handlers/signmessage.py) to sign the
     outgoing message using the gpg utility.(Signing a message is still incomplete in
     the sense we do not have a way to store and use keys. For now it has a
@@ -39,12 +40,12 @@ branch</a>.
       signature is not documented at all and is converse of what I could think
       of. It just occurred to me to try out the other possibility which turned
       out to be the right way.</li>
-  
+
     <li> Version control was also a issue that I encountered. Initially I
       started to work on git mirror of mailman. When I tried to port the code
       back to bazaar and push to github it took me(and others) a lot of
       brainstorming. Finally I did that using bzr-git.</li>
-  
+
     <li> Deciding the structure of the signed message that we were going to send
       out. Initially it was decided to leave sender's signature intact so that
       if someone wants to verify it he can do it, but there can-not be two
@@ -63,7 +64,7 @@ branch</a>.
 <p>
   Some furthur assistance and research on which format do MUAs support the
   most should be implemented.
-  
+
   * python-gnupg does not provide any way to search for keys based on
   key-data like email-address. I need some more work to get this working.
 

@@ -1,6 +1,7 @@
 ---
 title: "HOWTO: Release on PyPI"
 date: "2017-07-02 23:06:47"
+type: "post"
 ---
 
 

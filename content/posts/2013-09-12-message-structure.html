@@ -4,6 +4,7 @@ name: message-structure
 time: 2013-08-09 00:23:00.001000 +05.30
 title: Structure of Email
 url: /2013/09/12/message-structure/
+type: post
 ---
 
 <p> This week I was busy investigating which kind of email does MUAs accept and
@@ -14,7 +15,7 @@ have though before. There are emails which can remove styling depending on the
 mail client where you are viewing the email. The email clients are generally
 called as MUA(Mail User Agent). Now as per decided before we were planning to
 send out signed emails which had signature from both sender and mailman. The
-structure of a normal `pgp-signed` message is: 
+structure of a normal `pgp-signed` message is:
 <pre>
 multipart/signed
     text/plain
@@ -35,7 +36,7 @@ multipart/signed
 The above structure does not work with my MUA for the reason that my
 MUA(<a href="http://www.djcbsoftware.nl/code/mu/mu4e.html">mu4e</a>) fails to
 find any signature part inside the email as it gets an 'multipart/mixed' type
-instead of 'application/pgp-signature'. 
+instead of 'application/pgp-signature'.
 <pre>
 multipart/alternative
     multipart/signed

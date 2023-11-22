@@ -1,6 +1,7 @@
 +++
 date = "2017-02-08T13:02:38-08:00"
 title = "Move to Hugo"
+type = "post"
 +++
 
 I have been planning to rejuvenate this blog with a new design and hopefully

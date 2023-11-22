@@ -1,6 +1,7 @@
 +++
 date = "Fri Apr 21 10:51:03 IST 2017"
 title = "Email with notmuch and astroid"
+type = "post"
 +++
 
 
@@ -24,16 +25,16 @@ First, [offlineimap](http://www.offlineimap.org/) fetches all my email from diff
     [general]
     accounts = Gmail
     pythonfile = ~/.offlineimap.py
-    
+
     [Account Gmail]
     localrepository = GmailLocal
     remoterepository = GmailRemote
     maxage = 100
-    
+
     [Repository GmailLocal]
     type = Maildir
     localfolders = ~/.maildir/Gmail/
-    
+
     [Repository GmailRemote]
     type = Gmail
     sslcacertfile = /etc/ssl/certs/ca-certificates.crt
@@ -45,17 +46,17 @@ First, [offlineimap](http://www.offlineimap.org/) fetches all my email from diff
                                          "993")
     folderfilter = lambda foldername: foldername  not in ['[Gmail]/All Mail',
                                 '[Gmail]/Trash', '[Gmail]/Bin',
-                                '[Gmail]/Sent Mail', '[Gmail]/Starred', 
+                                '[Gmail]/Sent Mail', '[Gmail]/Starred',
                                 '[Gmail]/Spam','SPAM' ]
     holdconnectionopen = true
     keepalive = 60
-    
+
 
 The above settings required a python script to fetch the password   `~/.offlineimap.py` :
 
     #!/usr/bin/python
     import re, os
-    
+
     def get_password_emacs(machine, login, port):
         s = "machine %s login %s port %s password ([^ ]*)\n" % (machine, login, port)
         p = re.compile(s)
@@ -85,31 +86,31 @@ Next, we move on to notmuch. You can install it on Debian/Ubuntu systems using:
 
     $ sudo apt-get install notmuch
 
-Here is a simple configuration for notmuch, stored at `~/.notmuch-config` 
+Here is a simple configuration for notmuch, stored at `~/.notmuch-config`
 
     # .notmuch-config - Configuration file for the notmuch mail system
     #
     # For more information about notmuch, see http://notmuchmail.org
-    
+
     [database]
     path=~/.maildir
-    
+
     [user]
     name=Abhilash Raj
     primary_email=username@gmail.com
     # If you have mutiple accuonts, uncomment the line below.
     # other_email=other_email@gmail.com
-    
+
     [new]
     tags=unread;new;
     ignore=
-    
+
     [search]
     exclude_tags=deleted;spam;
-    
+
     [maildir]
     synchronize_flags=true
-    
+
     [crypto]
     gpg_path=gpg2
 
@@ -118,30 +119,30 @@ After you have this, try `notmuch new` command. It will index all your emails an
 
     $ notmuch
     Notmuch is configured and appears to have a database. Excellent!
-    
+
     At this point you can start exploring the functionality of notmuch by
     using commands such as:
-    
+
             notmuch search tag:inbox
-    
+
             notmuch search to:"Your Name"
-    
+
             notmuch search from:"username@gmail.com"
-    
+
             notmuch search subject:"my favorite things"
-    
+
     See "notmuch help search" for more details.
-    
+
     You can also use "notmuch show" with any of the thread IDs resulting
     from a search. Finally, you may want to explore using a more sophisticated
     interface to notmuch such as the emacs interface implemented in notmuch.el
     or any other interface described at https://notmuchmail.org
-    
+
     And don't forget to run "notmuch new" whenever new mail arrives.
-    
+
     Have fun, and may your inbox never have much mail.
 
-Notmuch is used by [several different email clients](https://notmuchmail.org/frontends/). You can test and try which ones you like the best. There is an emacs client so that you don’t ever have to leave emacs for your email. I tried it for a little while but just didn’t feel the best to me. 
+Notmuch is used by [several different email clients](https://notmuchmail.org/frontends/). You can test and try which ones you like the best. There is an emacs client so that you don’t ever have to leave emacs for your email. I tried it for a little while but just didn’t feel the best to me.
 
 Last week I stumbled upon another frontend to notmuch called [Astroid](https://astroidmail.github.io/). It is a sleek interface written in C++ and renders emails using webkit. You write emails in your favorite text editor that can be spawn off or embeded inside of Astroid. I have embeded emacs in Astroid which is super freaking awesome!
 
@@ -150,20 +151,20 @@ I compiled and installed Astroid from the [source](https://github.com/astroidmai
 Astroid uses a script called `poll.sh` at `~/.config/astroid/poll.sh` to fetch your email if you want. You can write your own commands in the script which can do several other things than just fetching email, like indexing new emails, notifying you of new emails etc. Here is what mys script looks like:
 
     #! /bin/bash
-    
+
     if ! ping -w 1 -W 1 -c 1 mail.google.com; then
         echo "there is no internet connection"
         exit
     fi
-    
+
     echo "Checking new mail!"
     /usr/bin/offlineimap
-    
+
     NEW_MAIL=false
     if ! (notmuch new | grep "No new mail."); then
         NEW_MAIL=true
     fi
-    
+
     # Tag email etc. here
     notmuch tag --batch <<EOF
         +urgent tag:new and subject:URGENT
@@ -174,12 +175,12 @@ Astroid uses a script called `poll.sh` at `~/.config/astroid/poll.sh` to fetch y
         -new tag:new
     EOF
     notmuch tag -inbox tag:promo or tag:social
-    
+
     if [ $NEW_MAIL = true ]; then
         notify-send "New mail."
     fi
 
-The most important part of the script that you should change is the part starting with `notmuch tag --batch`  . This is how notmuch tags all your emails based on some pre-defined rules. All the new emails are tagged with `new` and `unread` by default and then the rest of the processing can happen on the emails that have `new` tag. 
+The most important part of the script that you should change is the part starting with `notmuch tag --batch`  . This is how notmuch tags all your emails based on some pre-defined rules. All the new emails are tagged with `new` and `unread` by default and then the rest of the processing can happen on the emails that have `new` tag.
 
 [Notmuch’s documentation](https://notmuchmail.org/initial_tagging/) mentions different ways in which you can tag your emails as they arrive. There are several different ways and you can choose whatever works the best for you. I encourage you to dive more into tagging and different robust ways to tag emails as this is going to be the central piece of your workflow. If you are smart, you will be able to automate a large part of filtering process and increase your productivity to a very high level. It is very easy to write scripts that can classify your emails to into certain categories based on the headers or content of the email. If you want to get all your Gmail tags in notmuch, you can do this:
 
@@ -197,7 +198,7 @@ The final thing that you want to setup is how emails are sent. By default, Astro
     auth on
     logfile ~/.msmtp.log
     tls_trust_file /etc/ssl/certs/ca-certificates.crt
-    
+
     account gmail
     host smtp.gmail.com
     from username@gmail.com
@@ -208,6 +209,6 @@ The final thing that you want to setup is how emails are sent. By default, Astro
     port 587
     passwordeval gpg2 --no-tty -q -d ~/.msmtp-gmail.gpg
 
-Your gmail password is supposed to be stored encrypted in `~/.msmtp-gmail.gpg` file. There are other ways that you can provide your password to msmtp, [have a look at the example](http://msmtp.sourceforge.net/doc/msmtp.html#Examples) configuration in the documentation. 
+Your gmail password is supposed to be stored encrypted in `~/.msmtp-gmail.gpg` file. There are other ways that you can provide your password to msmtp, [have a look at the example](http://msmtp.sourceforge.net/doc/msmtp.html#Examples) configuration in the documentation.
 
 Hope you have fun with emails!

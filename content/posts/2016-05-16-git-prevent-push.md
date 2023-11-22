@@ -2,6 +2,7 @@
 date: 2016-05-16T13:23:08Z
 name: prevent-git-push
 title: Prevent Git Push
+type: post
 ---
 
 It happens with me sometimes that I push to repositories that I must not push

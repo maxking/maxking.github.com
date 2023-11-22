@@ -1,6 +1,7 @@
 ---
 title: "Articles"
 date: "2017-07-05 12:57:34"
+type: page
 ---
 
 
@@ -19,7 +20,7 @@ date: "2017-07-05 12:57:34"
 - A nice [article](https://benbernardblog.com/the-case-of-the-mysterious-python-crash/) on how to limit the size of the data read by a get request when using requests library in Python. This article was about how the author wanted to stop his web crawler from downloading a web page that was giving out an infinite stack of php error messages causing the crawling program to finally run out of memory.
 - A [good list](https://blog.signifai.io/not-your-fathers-python-amazing-powerful-frameworks/) of Python asynchronous frameworks and how they stand against the new asyncio library in the Python Standard Library . This articles talks about the latest web frameworks that exist today in python and small detail about the various primitives that they use to achieve better performance than asyncio.
 - An [excellent guide](http://www.kfirlavi.com/blog/2012/11/14/defensive-bash-programming/) on defensive bash programming. Also, this is a [guide](https://google.github.io/styleguide/shell.xml) from google for bash programming style. If you are at it, writing some bash programs, there is a [linter](https://www.shellcheck.net/) that you can use to check your programs.
-- “[Why Jhonny can’t encrypt](https://www.usenix.org/conference/8th-usenix-security-symposium/why-johnny-cant-encrypt-usability-evaluation-pgp-50)” - 
+- “[Why Jhonny can’t encrypt](https://www.usenix.org/conference/8th-usenix-security-symposium/why-johnny-cant-encrypt-usability-evaluation-pgp-50)” -
 - An opinionated [post](https://www.jwz.org/blog/2017/03/signal-leaks-your-phone-number-to-everyone-in-your-contacts/) about how Signal works and is supposed to work.
 - Jessie Frazzelle talks about [why containers are still not a valid replacement as a sandbox](https://blog.jessfraz.com/post/getting-towards-real-sandbox-containers/). This blog talks about several shortcomings in Linux containers and how has she been working to improve the situation. It also points to some other awesome work being done in the same area.  [Subgraph OS](https://subgraph.com/) sounds like a very interesting concept and I would love to explore it more.
 - [Testing Exim](https://github.com/Exim/exim/wiki/TestingExim) - A very useful wiki to test if your exim installation is working properly.
