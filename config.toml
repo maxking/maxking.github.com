@@ -17,8 +17,9 @@ enableRobotsTXT = true
   title = "maxking's blog"
   [author]
   name = "Abhilash Raj"
-
-
+  showPostsOnHomePage = "recent"
+  footer = "Abhilash Raj"
+  togglePreviousAndNextButtons = "true"
 
 
 [menu]
@@ -48,7 +49,7 @@ enableRobotsTXT = true
 
   [[menu.main]]
     identifier = "github"
-    url = "https://github.com"
+    url = "https://github.com/maxking"
     weight = 3
 
     # We use feather-icons: https://feathericons.com/
